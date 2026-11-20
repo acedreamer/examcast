@@ -8,9 +8,23 @@ from typing import Literal
 from pydantic import BaseModel, Field
 
 
+LanguageCode = Literal["en", "hi", "ml"]
+PacingMode = Literal["deep_dive", "revision", "exam_drill", "eli5"]
+ChunkType = Literal["text", "table", "formula", "figure", "chart"]
+
+PACING_BATCH_LIMITS: dict[str, tuple[int, int, int]] = {
+    # pacing: (max_chunks, max_chars, max_pages)
+    "deep_dive": (20, 9000, 4),
+    "revision": (32, 13000, 5),
+    "exam_drill": (24, 10000, 4),
+    "eli5": (20, 9000, 4),
+}
+
+
 class VoicePair(BaseModel):
     id: str
     label: str
+    language: LanguageCode = "en"
     host_a_voice: str
     host_b_voice: str
 
@@ -19,20 +33,37 @@ VOICE_PAIRS: list[VoicePair] = [
     VoicePair(
         id="us_natural",
         label="US Natural",
+        language="en",
         host_a_voice="en-US-AndrewMultilingualNeural",
         host_b_voice="en-US-AvaMultilingualNeural",
     ),
     VoicePair(
         id="in_english",
         label="Indian English",
+        language="en",
         host_a_voice="en-IN-PrabhatNeural",
         host_b_voice="en-IN-NeerjaExpressiveNeural",
     ),
     VoicePair(
         id="uk_natural",
         label="UK Natural",
+        language="en",
         host_a_voice="en-GB-RyanNeural",
         host_b_voice="en-GB-SoniaNeural",
+    ),
+    VoicePair(
+        id="hi_in",
+        label="Hindi · Madhur & Swara",
+        language="hi",
+        host_a_voice="hi-IN-MadhurNeural",
+        host_b_voice="hi-IN-SwaraNeural",
+    ),
+    VoicePair(
+        id="ml_in",
+        label="Malayalam · Midhun & Sobhana",
+        language="ml",
+        host_a_voice="ml-IN-MidhunNeural",
+        host_b_voice="ml-IN-SobhanaNeural",
     ),
 ]
 
@@ -65,6 +96,7 @@ class Chunk(BaseModel):
     page: int
     bbox: list[float]
     text: str
+    chunk_type: ChunkType = "text"
 
 
 class ScriptLine(BaseModel):
@@ -88,6 +120,8 @@ class BatchRecord(BaseModel):
     page_range: list[int] | None = None
     raw_script_file: str | None = None
     prev_script_file: str | None = None
+    pacing: PacingMode | None = None
+    language: LanguageCode | None = None
 
 
 class StudyState(BaseModel):
@@ -97,6 +131,8 @@ class StudyState(BaseModel):
     host_a_voice: str = VOICE_PAIRS[0].host_a_voice
     host_b_voice: str = VOICE_PAIRS[0].host_b_voice
     auto_scroll: bool = True
+    pacing: PacingMode = "deep_dive"
+    language: LanguageCode = "en"
 
 
 class PageCoverage(BaseModel):
@@ -123,6 +159,7 @@ class CoverageInfo(BaseModel):
     partial_pages: list[PageCoverage]
     suggested_next_range: SuggestedRange
     estimated_total_sec: float
+    is_complete: bool = False
 
 
 class SessionData(BaseModel):
@@ -159,6 +196,8 @@ class GenerateRequest(BaseModel):
     mode: Literal["replace", "append"] = "replace"
     start_page: int | None = None
     end_page: int | None = None
+    pacing: PacingMode | None = None
+    language: LanguageCode | None = None
 
 
 class ResynthesizeRequest(BaseModel):
@@ -173,6 +212,12 @@ class StatePatchRequest(BaseModel):
     host_a_voice: str | None = None
     host_b_voice: str | None = None
     auto_scroll: bool | None = None
+    pacing: PacingMode | None = None
+    language: LanguageCode | None = None
+
+
+class ReparseRequest(BaseModel):
+    use_vision: bool = True
 
 
 class GenerateProgress(BaseModel):
