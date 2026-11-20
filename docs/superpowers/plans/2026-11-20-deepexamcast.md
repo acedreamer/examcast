@@ -26,6 +26,24 @@
 
 ---
 
+## Model Allocation & Swarm Orchestration
+
+| Task | Scope | Complexity | Implementer Worker & Model | Reviewer Worker & Model |
+| :--- | :--- | :--- | :--- | :--- |
+| **Orchestration** | Briefs, diffs, ledger, adjudication, gates | Orchestrator | Coordinator (`Orchestrator (Neon)`) | — |
+| **Task 1** | Deps, `.impeccable.md`, `deepexamcast/models.py` | Low | `task-1-impl` (`gemini-4-hydrogen-low`) | `task-1-rev` (`gemini-4-hydrogen-low`) |
+| **Task 2** | `deepexamcast/pdf_parser.py` (band/column, rotation, CropBox) | High | `task-2-impl` (`gemini-4-hydrogen-high`) | `task-2-rev` (`gemini-4-hydrogen-medium`) |
+| **Task 3** | `deepexamcast/prompt_builder.py` | Medium | `task-3-impl` (`gemini-4-hydrogen-medium`) | `task-3-rev` (`gemini-4-hydrogen-low`) |
+| **Task 4** | `deepexamcast/script_parser.py` (multi-candidate, typo-tolerant) | Medium | `task-4-impl` (`gemini-4-hydrogen-medium`) | `task-4-rev` (`gemini-4-hydrogen-medium`) |
+| **Task 5** | `deepexamcast/tts_engine.py` (async semaphore, dedup, MP3 duration) | High | `task-5-impl` (`gemini-4-hydrogen-high`) | `task-5-rev` (`gemini-4-hydrogen-medium`) |
+| **Task 6** | `deepexamcast/session_store.py` (locks, undo, coverage, GC) | High | `task-6-impl` (`gemini-4-hydrogen-high`) | `task-6-rev` (`gemini-4-hydrogen-high`) |
+| **Task 7** | `app.py` + `tests/test_api_integration.py` (15 routes, races) | High | `task-7-impl` (`gemini-4-hydrogen-high`) | `task-7-rev` (`gemini-4-hydrogen-high`) |
+| **Task 8** | `static/index.html` (M3 Expressive, PDF.js 4.10.38, dual-`<audio>`) | High | `task-8-impl` (`gemini-4-hydrogen-high`) | `task-8-rev` (`gemini-4-hydrogen-high`) |
+| **Task 9** | `README.md` + final live verification gate | Low | `task-9-impl` (`gemini-4-hydrogen-low`) | `task-9-rev` (`gemini-4-hydrogen-low`) |
+| **Final Review** | Whole-branch audit (`main..HEAD`) + Minor findings triage | High | — | `final-branch-rev` (`gemini-4-hydrogen-high`) |
+
+---
+
 ## File Structure
 
 | File | Responsibility |
@@ -476,8 +494,8 @@ def test_suppresses_repeating_headers_footers_and_page_numbers():
 def test_micro_chunk_merging_and_image_only_filtering():
     def build(doc):
         p = doc.new_page(width=600, height=800)
-        p.insert_textbox(fitz.Rect(60, 120, 82, 145), "•")
-        p.insert_textbox(fitz.Rect(88, 120, 520, 165), "Mutex locks prevent simultaneous critical section entry.")
+        p.insert_textbox(fitz.Rect(60, 120, 180, 136), "Note:")
+        p.insert_textbox(fitz.Rect(60, 142, 520, 175), "Mutex locks prevent simultaneous critical section entry.")
         p.draw_rect(fitz.Rect(100, 300, 400, 450), color=(0, 0, 0))
         doc.new_page(width=600, height=800)  # Blank page with 0 text blocks
 
@@ -486,7 +504,7 @@ def test_micro_chunk_merging_and_image_only_filtering():
     assert pages[0].chunk_count == 1
     assert pages[1].chunk_count == 0
     assert len(chunks) == 1
-    assert "Mutex locks prevent" in chunks[0].text
+    assert "Note:" in chunks[0].text and "Mutex locks prevent" in chunks[0].text
     assert chunks[0].bbox[0] <= 0.12
 
 
@@ -2536,7 +2554,8 @@ def test_concurrent_patch_preserved_and_409_and_status_reset_on_502(client_and_d
             raise RuntimeError("boom")
 
     monkeypatch.setattr("deepexamcast.tts_engine.edge_tts.Communicate", FailCommunicate)
-    monkeypatch.setattr("deepexamcast.tts_engine.asyncio.sleep", lambda _s: asyncio.sleep(0))
+    real_sleep = asyncio.sleep
+    monkeypatch.setattr("deepexamcast.tts_engine.asyncio.sleep", lambda _s: real_sleep(0))
     fail_resp = client.post(
         f"/api/sessions/{sid}/generate",
         json={
