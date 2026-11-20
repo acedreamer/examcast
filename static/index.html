@@ -6,74 +6,77 @@
   <title>DeepExamCast — Synced Exam Audio Lecture Studio</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&family=Sora:wght@500;600;700&display=swap" rel="stylesheet">
-  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&family=Plus+Jakarta+Sans:wght@500;600;700&display=swap" rel="stylesheet">
 
   <style data-m3-tokens>
     :root {
-      /* Material 3 Expressive — Nocturnal Study-Lamp Dark Theme */
-      --md-sys-color-primary: #F5C84C;
-      --md-sys-color-on-primary: #3D2E00;
-      --md-sys-color-primary-container: #574300;
-      --md-sys-color-on-primary-container: #FFE08A;
-      --md-sys-color-primary-fixed: #FFE08A;
-      --md-sys-color-primary-fixed-dim: #F5C84C;
-      --md-sys-color-on-primary-fixed: #241A00;
-      --md-sys-color-on-primary-fixed-variant: #574300;
+      /* Material 3 Expressive — Nocturnal Warm-Charcoal Dark Theme */
+      --md-canvas: #131316;
+      --md-surface-low: #1B1B1F;
+      --md-surface: #212126;
+      --md-surface-high: #2B2B31;
+      --md-surface-highest: #383842;
+      --md-sheet: #24242A;
+      --md-well: #151519;
+      --md-dock: #25252B;
+      --md-outline-subtle: rgba(255, 255, 255, 0.08);
+      --md-outline: #7E7E8D;
 
-      --md-sys-color-secondary: #ADC6FF;
-      --md-sys-color-on-secondary: #102F60;
-      --md-sys-color-secondary-container: #2B4678;
-      --md-sys-color-on-secondary-container: #D8E2FF;
+      --md-primary: #F3C669;
+      --md-on-primary: #1D1500;
+      --md-primary-container: #3F310E;
+      --md-on-primary-container: #FFE09B;
+      --md-primary-border-active: rgba(243, 198, 105, 0.55);
+      --md-active-tint: rgba(243, 198, 105, 0.06);
 
-      --md-sys-color-tertiary: #80D5C8;
-      --md-sys-color-on-tertiary: #003731;
-      --md-sys-color-tertiary-container: #005048;
-      --md-sys-color-on-tertiary-container: #9DF2E4;
+      --md-secondary: #DDD9F6;
+      --md-professor-bg: #39384D;
+      --md-professor-fg: #DDD9F6;
 
-      --md-sys-color-surface: #111318;
-      --md-sys-color-surface-dim: #0D1015;
-      --md-sys-color-surface-bright: #37393E;
-      --md-sys-color-surface-container-lowest: #0C0E13;
-      --md-sys-color-surface-container-low: #171A20;
-      --md-sys-color-surface-container: #1C1F26;
-      --md-sys-color-surface-container-high: #262A33;
-      --md-sys-color-surface-container-highest: #313540;
-      --md-sys-color-on-surface: #E2E2E9;
-      --md-sys-color-on-surface-variant: #C4C6D0;
-      --md-sys-color-outline: #8E9099;
-      --md-sys-color-outline-variant: #44474F;
+      --md-student-bg: #253D32;
+      --md-student-fg: #B7E4CE;
+      --md-mint: #B7E4CE;
+      --md-on-mint: #0E281D;
 
-      --md-sys-color-inverse-surface: #E2E2E9;
-      --md-sys-color-on-inverse-surface: #2E3036;
-      --md-sys-color-inverse-primary: #745B00;
+      --md-exam-note-bg: #3F310E;
+      --md-exam-note-fg: #FFE09B;
 
-      --md-sys-color-error: #FFB4AB;
-      --md-sys-color-on-error: #690005;
-      --md-sys-color-error-container: #93000A;
-      --md-sys-color-on-error-container: #FFDAD6;
-      --md-sys-color-scrim: rgba(0, 0, 0, 0.56);
+      --md-on-surface: #F4F4F8;
+      --md-on-surface-variant: #B9B9C6;
+      --md-inverse-surface: #F4F4F8;
+      --md-on-inverse-surface: #1B1B1F;
+      --md-inverse-primary: #7A5800;
 
-      /* PDF Highlight Tokens */
-      --md-sys-color-pdf-highlight-fill: rgba(250, 204, 21, 0.35);
-      --md-sys-color-pdf-highlight-border: rgba(245, 158, 11, 0.85);
-      --md-sys-color-state-hover: rgba(226, 226, 233, 0.08);
-      --md-sys-color-state-focus: rgba(226, 226, 233, 0.12);
-      --md-sys-color-state-pressed: rgba(226, 226, 233, 0.12);
+      --md-error: #FFB4AB;
+      --md-error-container: #93000A;
+      --md-on-error-container: #FFDAD6;
+      --md-scrim: rgba(0, 0, 0, 0.45);
+      --md-shadow-elevated: 0 12px 32px rgba(0, 0, 0, 0.42);
+      --md-shadow-sheet: -12px 0 40px rgba(0, 0, 0, 0.52);
+
+      /* PDF Highlight & State Layer Tokens */
+      --md-pdf-highlight-fill: rgba(243, 198, 105, 0.32);
+      --md-pdf-highlight-border: rgba(243, 198, 105, 0.88);
+      --md-pdf-hover-fill: rgba(243, 198, 105, 0.14);
+      --md-pdf-hover-border: rgba(243, 198, 105, 0.45);
+      --md-state-hover: rgba(244, 244, 248, 0.08);
+      --md-scrollbar-thumb: rgba(244, 244, 248, 0.16);
+      --md-scrollbar-thumb-hover: rgba(244, 244, 248, 0.28);
 
       /* Typography */
-      --md-sys-typescale-display: 'Sora', system-ui, -apple-system, sans-serif;
-      --md-sys-typescale-body: 'Figtree', system-ui, -apple-system, sans-serif;
-      --md-sys-typescale-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, monospace;
+      --md-typescale-display: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+      --md-typescale-body: 'Inter', system-ui, -apple-system, sans-serif;
+      --md-typescale-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, monospace;
 
       /* Shape Scale */
-      --md-sys-shape-extra-small: 4px;
-      --md-sys-shape-small: 8px;
-      --md-sys-shape-medium: 12px;
-      --md-sys-shape-large: 16px;
-      --md-sys-shape-large-increased: 20px;
-      --md-sys-shape-extra-large: 28px;
-      --md-sys-shape-full: 9999px;
+      --md-shape-xs: 4px;
+      --md-shape-sm: 8px;
+      --md-shape-md: 12px;
+      --md-shape-lg: 16px;
+      --md-shape-lg-inc: 20px;
+      --md-shape-xl: 24px;
+      --md-shape-xl-inc: 28px;
+      --md-shape-full: 9999px;
 
       /* Compiled Material 3 (Expressive) GPU-Compositor Springs */
       --md-sys-motion-spring-fast-spatial-duration: 359ms;
@@ -82,6 +85,9 @@
       --md-sys-motion-spring-default-spatial-duration: 434ms;
       --md-sys-motion-spring-default-spatial-easing: linear(0, 0.0303, 0.1051, 0.2049, 0.3152, 0.4263, 0.5316, 0.6271, 0.7108, 0.7821, 0.8411, 0.8887, 0.9262, 0.955, 0.9764, 0.9917, 1.0023, 1.009, 1.0129, 1.0148, 1.0151, 1.0145, 1.0133, 1.0117, 1.0101, 1.0084, 1.0068, 1.0054, 1.0042, 1.0031, 1.0023, 1.0016, 1);
       --md-sys-motion-spring-default-spatial: 434ms linear(0, 0.0303, 0.1051, 0.2049, 0.3152, 0.4263, 0.5316, 0.6271, 0.7108, 0.7821, 0.8411, 0.8887, 0.9262, 0.955, 0.9764, 0.9917, 1.0023, 1.009, 1.0129, 1.0148, 1.0151, 1.0145, 1.0133, 1.0117, 1.0101, 1.0084, 1.0068, 1.0054, 1.0042, 1.0031, 1.0023, 1.0016, 1);
+      --md-sys-motion-spring-slow-spatial-duration: 599ms;
+      --md-sys-motion-spring-slow-spatial-easing: linear(0, 0.0304, 0.1054, 0.2053, 0.3158, 0.427, 0.5324, 0.628, 0.7116, 0.7828, 0.8417, 0.8893, 0.9267, 0.9554, 0.9767, 0.992, 1.0024, 1.0091, 1.013, 1.0148, 1.0151, 1.0145, 1.0133, 1.0117, 1.01, 1.0083, 1.0068, 1.0053, 1.0041, 1.0031, 1.0022, 1.0015, 1);
+      --md-sys-motion-spring-slow-spatial: 599ms linear(0, 0.0304, 0.1054, 0.2053, 0.3158, 0.427, 0.5324, 0.628, 0.7116, 0.7828, 0.8417, 0.8893, 0.9267, 0.9554, 0.9767, 0.992, 1.0024, 1.0091, 1.013, 1.0148, 1.0151, 1.0145, 1.0133, 1.0117, 1.01, 1.0083, 1.0068, 1.0053, 1.0041, 1.0031, 1.0022, 1.0015, 1);
       --md-sys-motion-spring-fast-effects-duration: 149ms;
       --md-sys-motion-spring-fast-effects-easing: linear(0, 0.0341, 0.1134, 0.2133, 0.3185, 0.4202, 0.5136, 0.5965, 0.6683, 0.7294, 0.7806, 0.8232, 0.8581, 0.8866, 0.9098, 0.9284, 0.9434, 0.9553, 0.9648, 0.9724, 0.9783, 0.9831, 0.9868, 0.9897, 0.992, 0.9937, 0.9951, 0.9962, 0.9971, 0.9977, 0.9982, 0.9986, 1);
       --md-sys-motion-spring-fast-effects: 149ms linear(0, 0.0341, 0.1134, 0.2133, 0.3185, 0.4202, 0.5136, 0.5965, 0.6683, 0.7294, 0.7806, 0.8232, 0.8581, 0.8866, 0.9098, 0.9284, 0.9434, 0.9553, 0.9648, 0.9724, 0.9783, 0.9831, 0.9868, 0.9897, 0.992, 0.9937, 0.9951, 0.9962, 0.9971, 0.9977, 0.9982, 0.9986, 1);
@@ -101,6 +107,9 @@
         --md-sys-motion-spring-default-spatial-duration: 150ms;
         --md-sys-motion-spring-default-spatial-easing: ease-out;
         --md-sys-motion-spring-default-spatial: 150ms ease-out;
+        --md-sys-motion-spring-slow-spatial-duration: 150ms;
+        --md-sys-motion-spring-slow-spatial-easing: ease-out;
+        --md-sys-motion-spring-slow-spatial: 150ms ease-out;
         --md-sys-motion-spring-fast-effects-duration: 150ms;
         --md-sys-motion-spring-fast-effects-easing: ease-out;
         --md-sys-motion-spring-fast-effects: 150ms ease-out;
@@ -124,43 +133,66 @@
       padding: 0;
       height: 100dvh;
       overflow: hidden;
-      background-color: var(--md-sys-color-surface);
-      color: var(--md-sys-color-on-surface);
-      font-family: var(--md-sys-typescale-body);
+      background-color: var(--md-canvas);
+      color: var(--md-on-surface);
+      font-family: var(--md-typescale-body);
       -webkit-font-smoothing: antialiased;
     }
 
+    /* Custom Thin Translucent Scrollbars */
+    * {
+      scrollbar-width: thin;
+      scrollbar-color: var(--md-scrollbar-thumb) transparent;
+    }
+    *::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    *::-webkit-scrollbar-track {
+      background: transparent;
+    }
+    *::-webkit-scrollbar-thumb {
+      background-color: var(--md-scrollbar-thumb);
+      border-radius: var(--md-shape-full);
+    }
+    *::-webkit-scrollbar-thumb:hover {
+      background-color: var(--md-scrollbar-thumb-hover);
+    }
+
     .app-shell {
-      display: flex;
-      flex-direction: column;
+      display: grid;
+      grid-template-rows: 56px minmax(0, 1fr) auto;
       height: 100dvh;
       width: 100%;
       position: relative;
-      background-color: var(--md-sys-color-surface);
+      background-color: var(--md-canvas);
     }
 
-    /* Accessible Focus Ring */
     button:focus-visible,
     select:focus-visible,
     input:focus-visible,
     textarea:focus-visible,
     [tabindex]:focus-visible {
-      outline: 3px solid var(--md-sys-color-secondary);
+      outline: 3px solid var(--md-secondary);
       outline-offset: 2px;
     }
 
-    /* E-01 Top App Bar */
+    .mono-num {
+      font-family: var(--md-typescale-mono);
+      font-variant-numeric: tabular-nums;
+    }
+
+    /* Top App Bar (56px) */
     .top-app-bar {
       display: flex;
       align-items: center;
       justify-content: space-between;
       gap: 12px;
-      min-height: 64px;
-      padding: 8px 16px;
-      background-color: var(--md-sys-color-surface-container);
-      border-bottom: 1px solid var(--md-sys-color-outline-variant);
+      height: 56px;
+      padding: 0 14px;
+      background-color: var(--md-canvas);
       flex-shrink: 0;
-      z-index: 30;
+      z-index: 20;
     }
 
     .brand-lockup {
@@ -170,25 +202,76 @@
       flex-shrink: 0;
     }
 
-    .brand-title {
-      font-family: var(--md-sys-typescale-display);
-      font-size: 1.05rem;
-      font-weight: 600;
-      letter-spacing: -0.02em;
-      color: var(--md-sys-color-on-surface);
+    .brand-icon-tile {
+      width: 34px;
+      height: 34px;
+      border-radius: var(--md-shape-md);
+      background-color: var(--md-primary);
+      color: var(--md-on-primary);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
     }
 
-    .top-actions {
+    .brand-title {
+      font-family: var(--md-typescale-display);
+      font-size: 1.05rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      color: var(--md-on-surface);
+    }
+
+    .session-pill-bar {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 6px 4px 12px;
+      background-color: var(--md-surface-low);
+      border: 1px solid var(--md-outline-subtle);
+      border-radius: var(--md-shape-full);
+      min-width: 0;
+      max-width: 560px;
+    }
+
+    .session-select {
+      background: transparent;
+      color: var(--md-on-surface);
+      border: none;
+      font-family: var(--md-typescale-body);
+      font-size: 0.85rem;
+      font-weight: 500;
+      max-width: 340px;
+      min-height: 32px;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      white-space: nowrap;
+      cursor: pointer;
+    }
+    .session-select option {
+      background-color: var(--md-surface-high);
+      color: var(--md-on-surface);
+    }
+
+    .mode-badge {
+      padding: 4px 10px;
+      border-radius: var(--md-shape-full);
+      background-color: var(--md-surface-high);
+      color: var(--md-on-surface-variant);
+      font-size: 0.72rem;
+      font-weight: 600;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    .top-right-actions {
       display: flex;
       align-items: center;
       gap: 8px;
-      flex-wrap: wrap;
-      justify-content: flex-end;
-      flex: 1;
-      min-width: 0;
+      flex-shrink: 0;
     }
 
-    /* M3 Controls & Expressive Morphing */
+    /* M3 Expressive Buttons */
     .m3-btn {
       display: inline-flex;
       align-items: center;
@@ -196,9 +279,9 @@
       gap: 8px;
       min-height: 40px;
       padding: 0 16px;
-      border-radius: var(--md-sys-shape-full);
+      border-radius: var(--md-shape-full);
       border: 1px solid transparent;
-      font-family: var(--md-sys-typescale-display);
+      font-family: var(--md-typescale-display);
       font-size: 0.84rem;
       font-weight: 600;
       cursor: pointer;
@@ -209,52 +292,42 @@
         border-radius var(--md-sys-motion-spring-fast-spatial),
         background-color var(--md-sys-motion-spring-fast-effects),
         color var(--md-sys-motion-spring-fast-effects),
-        border-color var(--md-sys-motion-spring-fast-effects),
         opacity var(--md-sys-motion-spring-fast-effects);
     }
-
     .m3-btn:disabled {
       opacity: 0.42;
       cursor: not-allowed;
     }
-
     .m3-btn:not(:disabled):active {
       transform: scale(0.97);
-      border-radius: var(--md-sys-shape-medium);
+      border-radius: var(--md-shape-md);
     }
 
     .m3-btn-primary {
-      background-color: var(--md-sys-color-primary);
-      color: var(--md-sys-color-on-primary);
+      background-color: var(--md-primary);
+      color: var(--md-on-primary);
     }
-
     .m3-btn-tonal {
-      background-color: var(--md-sys-color-secondary-container);
-      color: var(--md-sys-color-on-secondary-container);
+      background-color: var(--md-surface-high);
+      color: var(--md-on-surface);
+      border-color: var(--md-outline-subtle);
     }
-
-    .m3-btn-amber-tonal {
-      background-color: var(--md-sys-color-primary-container);
-      color: var(--md-sys-color-on-primary-container);
-      border-color: var(--md-sys-color-outline-variant);
-    }
-
     .m3-btn-outlined {
       background-color: transparent;
-      color: var(--md-sys-color-on-surface);
-      border-color: var(--md-sys-color-outline);
+      color: var(--md-on-surface);
+      border-color: var(--md-outline-subtle);
     }
 
     .m3-icon-btn {
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      min-width: 40px;
-      min-height: 40px;
-      border-radius: var(--md-sys-shape-full);
+      min-width: 38px;
+      min-height: 38px;
+      border-radius: var(--md-shape-full);
       border: 1px solid transparent;
       background-color: transparent;
-      color: var(--md-sys-color-on-surface-variant);
+      color: var(--md-on-surface-variant);
       cursor: pointer;
       transition:
         transform var(--md-sys-motion-spring-fast-spatial),
@@ -262,339 +335,44 @@
         background-color var(--md-sys-motion-spring-fast-effects),
         color var(--md-sys-motion-spring-fast-effects);
     }
-
-    .m3-icon-btn:not(:disabled):active {
-      transform: scale(0.95);
-      border-radius: var(--md-sys-shape-small);
-    }
-
     .m3-icon-btn:disabled {
       opacity: 0.4;
       cursor: not-allowed;
     }
+    .m3-icon-btn:not(:disabled):active {
+      transform: scale(0.95);
+      border-radius: var(--md-shape-sm);
+    }
 
     @media (hover: hover) and (pointer: fine) {
       .m3-btn:not(:disabled):hover {
-        filter: brightness(1.06);
+        filter: brightness(1.07);
       }
       .m3-icon-btn:not(:disabled):hover {
-        background-color: var(--md-sys-color-state-hover);
-        color: var(--md-sys-color-on-surface);
+        background-color: var(--md-state-hover);
+        color: var(--md-on-surface);
       }
       .m3-icon-btn-danger:not(:disabled):hover {
-        color: var(--md-sys-color-error);
+        color: var(--md-error);
       }
     }
 
-    .m3-select, .m3-input, .m3-textarea {
-      background-color: var(--md-sys-color-surface-container-high);
-      color: var(--md-sys-color-on-surface);
-      border: 1px solid var(--md-sys-color-outline-variant);
-      border-radius: var(--md-sys-shape-medium);
-      padding: 8px 12px;
-      font-family: var(--md-sys-typescale-body);
-      font-size: 0.875rem;
-      transition: border-color var(--md-sys-motion-spring-fast-effects);
-    }
-
-    .m3-select {
-      min-height: 40px;
-      max-width: 280px;
-    }
-
-    .m3-input {
-      min-height: 40px;
-      font-family: var(--md-sys-typescale-mono);
-      font-variant-numeric: tabular-nums;
-      background-color: var(--md-sys-color-surface-container-highest);
-    }
-
-    .m3-textarea {
-      width: 100%;
-      min-height: 120px;
-      resize: vertical;
-      background-color: var(--md-sys-color-surface-container-lowest);
-      font-family: var(--md-sys-typescale-mono);
-      font-size: 0.8rem;
-      line-height: 1.5;
-    }
-
-    .mono-num {
-      font-family: var(--md-sys-typescale-mono);
-      font-variant-numeric: tabular-nums;
-    }
-
-    /* E-07 Top-Anchored Script Sheet (GPU Compositor Only, Zero Layout Reflow) */
-    .sheet-scrim {
-      position: fixed;
-      inset: 0;
-      background-color: var(--md-sys-color-scrim);
-      z-index: 35;
-      opacity: 0;
-      pointer-events: none;
-      transition: opacity var(--md-sys-motion-spring-default-effects);
-    }
-
-    .sheet-scrim.open {
-      opacity: 1;
-      pointer-events: auto;
-    }
-
-    .script-sheet {
-      position: fixed;
-      top: 64px;
-      left: 50%;
-      width: min(960px, calc(100vw - 24px));
-      max-height: calc(100dvh - 88px);
-      overflow-y: auto;
-      background-color: var(--md-sys-color-surface-container-high);
-      border: 1px solid var(--md-sys-color-outline-variant);
-      border-top: none;
-      border-radius: 0 0 var(--md-sys-shape-extra-large) var(--md-sys-shape-extra-large);
-      padding: 20px;
-      z-index: 40;
-      box-shadow: 0 18px 44px rgba(0, 0, 0, 0.48);
-      transform: translate3d(-50%, -14px, 0) scale(0.98);
-      opacity: 0;
-      pointer-events: none;
-      transition:
-        transform var(--md-sys-motion-spring-default-spatial),
-        opacity var(--md-sys-motion-spring-default-effects);
-    }
-
-    .script-sheet.open {
-      transform: translate3d(-50%, 0, 0) scale(1);
-      opacity: 1;
-      pointer-events: auto;
-    }
-
-    .sheet-grid {
-      display: grid;
-      gap: 16px;
-    }
-
-    .sheet-row {
-      display: flex;
-      flex-wrap: wrap;
-      align-items: flex-end;
-      gap: 12px;
-    }
-
-    .field-group {
-      display: flex;
-      flex-direction: column;
-      gap: 4px;
-    }
-
-    .field-label {
-      font-size: 0.75rem;
-      font-weight: 600;
-      color: var(--md-sys-color-on-surface-variant);
-      letter-spacing: 0.02em;
-    }
-
-    .linear-track {
-      position: relative;
-      height: 8px;
-      width: 100%;
-      background-color: var(--md-sys-color-surface-container-highest);
-      border-radius: var(--md-sys-shape-full);
-      overflow: hidden;
-    }
-
-    .linear-fill {
-      position: absolute;
-      inset: 0;
-      background-color: var(--md-sys-color-primary);
-      border-radius: var(--md-sys-shape-full);
-      transform-origin: left center;
-      transform: scaleX(0);
-      transition: transform var(--md-sys-motion-spring-default-spatial);
-    }
-
-    .alert-banner {
-      display: flex;
-      align-items: flex-start;
-      justify-content: space-between;
-      gap: 12px;
-      padding: 12px 14px;
-      border-radius: var(--md-sys-shape-large);
-      border: 1px solid var(--md-sys-color-outline-variant);
-      font-size: 0.85rem;
-      line-height: 1.45;
-      transition: opacity var(--md-sys-motion-spring-default-effects);
-    }
-
-    .alert-error {
-      background-color: var(--md-sys-color-error-container);
-      color: var(--md-sys-color-on-error-container);
-    }
-
-    .alert-warning {
-      background-color: var(--md-sys-color-primary-container);
-      color: var(--md-sys-color-on-primary-container);
-    }
-
-    /* E-16..E-19 Sticky Playback Bar */
-    .playback-bar {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      flex-wrap: wrap;
-      padding: 8px 16px;
-      background-color: var(--md-sys-color-surface-container);
-      border-bottom: 1px solid var(--md-sys-color-outline-variant);
-      flex-shrink: 0;
-      z-index: 25;
-    }
-
-    .transport-cluster {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-    }
-
-    .play-pill {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-      min-width: 96px;
-      min-height: 40px;
-      padding: 0 18px;
-      border-radius: var(--md-sys-shape-full);
-      border: none;
-      background-color: var(--md-sys-color-primary);
-      color: var(--md-sys-color-on-primary);
-      font-family: var(--md-sys-typescale-display);
-      font-size: 0.86rem;
-      font-weight: 700;
-      cursor: pointer;
-      transition:
-        transform var(--md-sys-motion-spring-fast-spatial),
-        border-radius var(--md-sys-motion-spring-fast-spatial),
-        opacity var(--md-sys-motion-spring-fast-effects);
-    }
-
-    .play-pill[data-playing="true"] {
-      border-radius: var(--md-sys-shape-medium);
-    }
-
-    .play-pill:not(:disabled):active {
-      transform: scale(0.96);
-      border-radius: var(--md-sys-shape-medium);
-    }
-
-    .play-pill:disabled {
-      opacity: 0.42;
-      cursor: not-allowed;
-    }
-
-    .speed-group {
-      display: inline-flex;
-      align-items: center;
-      gap: 3px;
-      padding: 3px;
-      background-color: var(--md-sys-color-surface-container-low);
-      border-radius: var(--md-sys-shape-full);
-      border: 1px solid var(--md-sys-color-outline-variant);
-    }
-
-    .speed-pill {
-      min-height: 34px;
-      padding: 0 10px;
-      border: none;
-      border-radius: var(--md-sys-shape-full);
-      background-color: transparent;
-      color: var(--md-sys-color-on-surface-variant);
-      font-family: var(--md-sys-typescale-mono);
-      font-size: 0.78rem;
-      font-weight: 600;
-      cursor: pointer;
-      transition:
-        transform var(--md-sys-motion-spring-fast-spatial),
-        border-radius var(--md-sys-motion-spring-fast-spatial),
-        background-color var(--md-sys-motion-spring-fast-effects),
-        color var(--md-sys-motion-spring-fast-effects);
-    }
-
-    .speed-pill[aria-pressed="true"] {
-      background-color: var(--md-sys-color-primary-container);
-      color: var(--md-sys-color-on-primary-container);
-      border-radius: var(--md-sys-shape-small);
-    }
-
-    .speed-pill:active {
-      transform: scale(0.95);
-    }
-
-    .scrubber-wrap {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      flex: 1;
-      min-width: 200px;
-    }
-
-    .m3-slider {
-      flex: 1;
-      min-width: 110px;
-      accent-color: var(--md-sys-color-primary);
-      cursor: pointer;
-      height: 28px;
-    }
-
-    .filter-chip {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      min-height: 36px;
-      padding: 0 14px;
-      border-radius: var(--md-sys-shape-small);
-      border: 1px solid var(--md-sys-color-outline);
-      background-color: transparent;
-      color: var(--md-sys-color-on-surface-variant);
-      font-family: var(--md-sys-typescale-display);
-      font-size: 0.8rem;
-      font-weight: 600;
-      cursor: pointer;
-      transition:
-        transform var(--md-sys-motion-spring-fast-spatial),
-        border-radius var(--md-sys-motion-spring-fast-spatial),
-        background-color var(--md-sys-motion-spring-fast-effects),
-        color var(--md-sys-motion-spring-fast-effects),
-        border-color var(--md-sys-motion-spring-fast-effects);
-    }
-
-    .filter-chip[aria-pressed="true"] {
-      background-color: var(--md-sys-color-secondary-container);
-      color: var(--md-sys-color-on-secondary-container);
-      border-color: transparent;
-      border-radius: var(--md-sys-shape-full);
-    }
-
-    .filter-chip:active {
-      transform: scale(0.97);
-    }
-
-    /* E-23 Mobile Pane Switcher (Hidden >=840px) */
+    /* Mobile Switcher */
     .mobile-tabs {
       display: none;
-      padding: 8px 12px;
-      background-color: var(--md-sys-color-surface-container-low);
-      border-bottom: 1px solid var(--md-sys-color-outline-variant);
+      padding: 6px 12px;
       gap: 8px;
+      background-color: var(--md-canvas);
       flex-shrink: 0;
     }
-
     .mobile-tab-btn {
       flex: 1;
-      min-height: 44px;
-      border-radius: var(--md-sys-shape-full);
-      border: 1px solid var(--md-sys-color-outline-variant);
-      background-color: var(--md-sys-color-surface-container-high);
-      color: var(--md-sys-color-on-surface-variant);
-      font-family: var(--md-sys-typescale-display);
+      min-height: 48px;
+      border-radius: var(--md-shape-full);
+      border: 1px solid var(--md-outline-subtle);
+      background-color: var(--md-surface-low);
+      color: var(--md-on-surface-variant);
+      font-family: var(--md-typescale-display);
       font-size: 0.85rem;
       font-weight: 600;
       cursor: pointer;
@@ -603,45 +381,38 @@
         background-color var(--md-sys-motion-spring-fast-effects),
         color var(--md-sys-motion-spring-fast-effects);
     }
-
     .mobile-tab-btn[aria-selected="true"] {
-      background-color: var(--md-sys-color-secondary-container);
-      color: var(--md-sys-color-on-secondary-container);
+      background-color: var(--md-primary);
+      color: var(--md-on-primary);
       border-color: transparent;
     }
 
-    /* Main Split Supporting-Pane Workspace (68% / 32%) */
+    /* Main Split Workspace (64% / 36%) */
     .workspace-grid {
       display: grid;
-      grid-template-columns: minmax(0, 68%) minmax(0, 32%);
-      flex: 1;
+      grid-template-columns: minmax(0, 64fr) minmax(0, 36fr);
+      gap: 12px;
+      padding: 0 12px;
       min-height: 0;
       overflow: hidden;
     }
 
+    /* Left Pane: Synced PDF Reader */
     .pdf-pane {
+      position: relative;
       display: flex;
       flex-direction: column;
       min-height: 0;
-      background-color: var(--md-sys-color-surface-container-lowest);
-      border-right: 1px solid var(--md-sys-color-outline-variant);
-    }
-
-    .pdf-toolbar {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 8px;
-      padding: 8px 14px;
-      background-color: var(--md-sys-color-surface-container-low);
-      border-bottom: 1px solid var(--md-sys-color-outline-variant);
-      flex-shrink: 0;
+      background-color: var(--md-surface-low);
+      border: 1px solid var(--md-outline-subtle);
+      border-radius: var(--md-shape-xl);
+      overflow: hidden;
     }
 
     .pdf-scroll {
       flex: 1;
       overflow: auto;
-      padding: 18px;
+      padding: 20px 20px 88px 20px;
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -650,9 +421,9 @@
 
     .pdf-page-frame {
       position: relative;
-      background-color: var(--md-sys-color-surface-container);
-      border-radius: var(--md-sys-shape-small);
-      box-shadow: 0 6px 24px rgba(0, 0, 0, 0.35);
+      background-color: var(--md-surface);
+      border-radius: var(--md-shape-sm);
+      box-shadow: var(--md-shadow-elevated);
       overflow: hidden;
       flex-shrink: 0;
     }
@@ -661,6 +432,15 @@
       display: block;
       width: 100%;
       height: 100%;
+      transition: filter var(--md-sys-motion-spring-fast-effects);
+    }
+
+    /* CRITICAL: Paper Mode Filters strictly on <canvas>, NEVER on .chunk-overlay-layer */
+    .paper-sepia .pdf-page-canvas {
+      filter: sepia(0.28) brightness(0.94);
+    }
+    .paper-dark .pdf-page-canvas {
+      filter: invert(0.88) hue-rotate(180deg) contrast(0.95);
     }
 
     .chunk-overlay-layer {
@@ -670,55 +450,154 @@
 
     .chunk-box {
       position: absolute;
-      border-radius: var(--md-sys-shape-extra-small);
+      border-radius: var(--md-shape-xs);
       border: 1.5px solid transparent;
       background-color: transparent;
       transition:
         background-color var(--md-sys-motion-spring-fast-effects),
         border-color var(--md-sys-motion-spring-fast-effects);
     }
-
     .chunk-box[data-covered="true"] {
       cursor: pointer;
     }
-
     @media (hover: hover) and (pointer: fine) {
       .chunk-box[data-covered="true"]:hover {
-        background-color: rgba(250, 204, 21, 0.14);
-        border-color: rgba(245, 158, 11, 0.45);
+        background-color: var(--md-pdf-hover-fill);
+        border-color: var(--md-pdf-hover-border);
       }
       .chunk-box[data-covered="false"]:hover {
-        background-color: rgba(226, 226, 233, 0.08);
-        border-color: var(--md-sys-color-outline-variant);
+        background-color: var(--md-state-hover);
+        border-color: var(--md-outline-subtle);
+      }
+    }
+    .chunk-box[data-active="true"] {
+      background-color: var(--md-pdf-highlight-fill);
+      border-color: var(--md-pdf-highlight-border);
+    }
+
+    /* Floating M3 Expressive PDF Toolbar */
+    .pdf-floating-toolbar {
+      position: absolute;
+      bottom: 18px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 5px 8px;
+      background-color: var(--md-surface-high);
+      border: 1px solid var(--md-outline-subtle);
+      border-radius: var(--md-shape-full);
+      box-shadow: var(--md-shadow-elevated);
+      z-index: 15;
+      max-width: calc(100% - 24px);
+    }
+
+    .toolbar-divider {
+      width: 1px;
+      height: 20px;
+      background-color: var(--md-outline-subtle);
+      margin: 0 4px;
+      flex-shrink: 0;
+    }
+
+    .toolbar-pill-btn {
+      min-height: 32px;
+      padding: 0 11px;
+      border-radius: var(--md-shape-full);
+      border: none;
+      background: transparent;
+      color: var(--md-on-surface);
+      font-family: var(--md-typescale-display);
+      font-size: 0.78rem;
+      font-weight: 600;
+      cursor: pointer;
+      white-space: nowrap;
+      transition:
+        transform var(--md-sys-motion-spring-fast-spatial),
+        background-color var(--md-sys-motion-spring-fast-effects);
+    }
+    .toolbar-pill-btn:active {
+      transform: scale(0.95);
+    }
+    @media (hover: hover) and (pointer: fine) {
+      .toolbar-pill-btn:hover {
+        background-color: var(--md-state-hover);
       }
     }
 
-    .chunk-box[data-active="true"] {
-      background-color: var(--md-sys-color-pdf-highlight-fill);
-      border-color: var(--md-sys-color-pdf-highlight-border);
+    .paper-mode-group {
+      display: inline-flex;
+      align-items: center;
+      gap: 2px;
     }
 
-    /* E-21 Supporting Pane (32%) */
+    .paper-btn {
+      width: 32px;
+      height: 32px;
+      border-radius: var(--md-shape-full);
+      border: none;
+      background: transparent;
+      color: var(--md-on-surface-variant);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition:
+        transform var(--md-sys-motion-spring-fast-spatial),
+        background-color var(--md-sys-motion-spring-fast-effects),
+        color var(--md-sys-motion-spring-fast-effects);
+    }
+    .paper-btn[aria-pressed="true"] {
+      background-color: var(--md-primary);
+      color: var(--md-on-primary);
+    }
+    .paper-btn:active {
+      transform: scale(0.94);
+    }
+
+    /* Right Pane: Lecture Transcript */
     .dialogue-pane {
       display: flex;
       flex-direction: column;
       min-height: 0;
-      background-color: var(--md-sys-color-surface-container-low);
+      background-color: var(--md-surface-low);
+      border: 1px solid var(--md-outline-subtle);
+      border-radius: var(--md-shape-xl);
+      overflow: hidden;
     }
 
     .dialogue-header {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 10px 16px;
-      border-bottom: 1px solid var(--md-sys-color-outline-variant);
+      gap: 10px;
+      padding: 14px 16px 12px;
+      border-bottom: 1px solid var(--md-outline-subtle);
       flex-shrink: 0;
+    }
+
+    .dialogue-title {
+      font-family: var(--md-typescale-display);
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--md-on-surface);
+    }
+
+    .dialogue-meta-pill {
+      padding: 4px 11px;
+      border-radius: var(--md-shape-full);
+      background-color: var(--md-surface);
+      border: 1px solid var(--md-outline-subtle);
+      color: var(--md-on-surface-variant);
+      font-size: 0.75rem;
+      font-weight: 600;
     }
 
     .dialogue-scroll {
       flex: 1;
       overflow-y: auto;
-      padding: 14px;
+      padding: 12px 14px;
       display: flex;
       flex-direction: column;
       gap: 10px;
@@ -728,26 +607,26 @@
       width: 100%;
       text-align: left;
       padding: 14px 16px;
-      border-radius: var(--md-sys-shape-large-increased);
-      border: 1px solid var(--md-sys-color-outline-variant);
-      background-color: var(--md-sys-color-surface-container);
-      color: var(--md-sys-color-on-surface);
+      border-radius: var(--md-shape-lg-inc);
+      border: 1px solid var(--md-outline-subtle);
+      background-color: var(--md-surface);
+      color: var(--md-on-surface);
       cursor: pointer;
       transition:
         background-color var(--md-sys-motion-spring-default-effects),
-        border-color var(--md-sys-motion-spring-default-effects);
+        border-color var(--md-sys-motion-spring-default-effects),
+        box-shadow var(--md-sys-motion-spring-default-effects);
     }
-
     @media (hover: hover) and (pointer: fine) {
       .dialogue-card:hover {
-        background-color: var(--md-sys-color-surface-container-high);
+        background-color: var(--md-surface-high);
       }
     }
-
     .dialogue-card[data-active="true"] {
-      background-color: var(--md-sys-color-primary-container);
-      color: var(--md-sys-color-on-primary-container);
-      border-color: var(--md-sys-color-primary);
+      background-color: var(--md-surface-high);
+      border-color: var(--md-primary-border-active);
+      box-shadow: inset 0 0 0 999px var(--md-active-tint);
+      color: var(--md-on-surface);
     }
 
     .dialogue-card-meta {
@@ -758,25 +637,63 @@
       margin-bottom: 8px;
     }
 
+    .speaker-cluster {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+
     .speaker-pill {
       display: inline-flex;
       align-items: center;
-      gap: 6px;
-      padding: 2px 10px;
-      border-radius: var(--md-sys-shape-full);
-      font-family: var(--md-sys-typescale-display);
+      padding: 3px 11px;
+      border-radius: var(--md-shape-full);
+      font-family: var(--md-typescale-display);
       font-size: 0.74rem;
       font-weight: 600;
     }
-
     .speaker-prof {
-      background-color: var(--md-sys-color-secondary-container);
-      color: var(--md-sys-color-on-secondary-container);
+      background-color: var(--md-professor-bg);
+      color: var(--md-professor-fg);
+    }
+    .speaker-student {
+      background-color: var(--md-student-bg);
+      color: var(--md-student-fg);
     }
 
-    .speaker-student {
-      background-color: var(--md-sys-color-tertiary-container);
-      color: var(--md-sys-color-on-tertiary-container);
+    .active-wave-icon {
+      display: none;
+      color: var(--md-primary);
+    }
+    .dialogue-card[data-active="true"] .active-wave-icon {
+      display: inline-flex;
+    }
+
+    @keyframes wavePulse {
+      0%, 100% { transform: scaleY(0.5); }
+      50% { transform: scaleY(1); }
+    }
+    .wave-bar {
+      transform-origin: center;
+      animation: wavePulse 900ms infinite alternate;
+    }
+    .wave-bar-2 {
+      animation-delay: 220ms;
+    }
+    .wave-bar-3 {
+      animation-delay: 440ms;
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .wave-bar {
+        animation: none;
+      }
+    }
+
+    .chunk-ref-tag {
+      font-size: 0.74rem;
+      color: var(--md-on-surface-variant);
+      white-space: nowrap;
+      flex-shrink: 0;
     }
 
     .dialogue-body {
@@ -784,85 +701,643 @@
       line-height: 1.65;
       max-width: 65ch;
       margin: 0;
+      color: var(--md-on-surface);
     }
 
     .exam-note-box {
       margin-top: 10px;
-      padding: 8px 12px;
-      border-radius: var(--md-sys-shape-medium);
-      border: 1px solid var(--md-sys-color-outline-variant);
-      background-color: var(--md-sys-color-surface-container-high);
-      color: var(--md-sys-color-primary-fixed);
+      padding: 9px 12px;
+      border-radius: 14px;
+      background-color: var(--md-exam-note-bg);
+      color: var(--md-exam-note-fg);
       font-size: 0.82rem;
       line-height: 1.5;
     }
 
-    .dialogue-card[data-active="true"] .exam-note-box {
-      background-color: var(--md-sys-color-surface-container);
-      border-color: var(--md-sys-color-primary);
-    }
-
     .empty-state-card {
       margin: auto;
-      max-width: 460px;
+      max-width: 440px;
       padding: 24px;
-      border-radius: var(--md-sys-shape-large-increased);
-      border: 1px solid var(--md-sys-color-outline-variant);
-      background-color: var(--md-sys-color-surface-container);
+      border-radius: var(--md-shape-lg-inc);
+      border: 1px solid var(--md-outline-subtle);
+      background-color: var(--md-surface);
       display: flex;
       flex-direction: column;
       gap: 12px;
     }
 
-    /* E-22 Snackbar Stack */
+    /* Bottom Floating Audio Player Dock */
+    .player-dock {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin: 10px 12px 12px;
+      padding: 8px 16px 8px 10px;
+      background-color: var(--md-dock);
+      border: 1px solid var(--md-outline-subtle);
+      border-radius: var(--md-shape-full);
+      box-shadow: var(--md-shadow-elevated);
+      flex-shrink: 0;
+      z-index: 20;
+    }
+
+    .transport-cluster {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      flex-shrink: 0;
+    }
+
+    .play-circle-btn {
+      width: 48px;
+      height: 48px;
+      border-radius: var(--md-shape-full);
+      border: none;
+      background-color: var(--md-primary);
+      color: var(--md-on-primary);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition:
+        transform var(--md-sys-motion-spring-fast-spatial),
+        border-radius var(--md-sys-motion-spring-fast-spatial),
+        opacity var(--md-sys-motion-spring-fast-effects);
+    }
+    .play-circle-btn[data-playing="true"] {
+      border-radius: var(--md-shape-lg);
+    }
+    .play-circle-btn:not(:disabled):active {
+      transform: scale(0.94);
+    }
+    .play-circle-btn:disabled {
+      opacity: 0.42;
+      cursor: not-allowed;
+    }
+
+    .transport-tonal-btn {
+      width: 38px;
+      height: 38px;
+      border-radius: var(--md-shape-full);
+      border: 1px solid var(--md-outline-subtle);
+      background-color: var(--md-surface-high);
+      color: var(--md-on-surface);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition:
+        transform var(--md-sys-motion-spring-fast-spatial),
+        border-radius var(--md-sys-motion-spring-fast-spatial),
+        background-color var(--md-sys-motion-spring-fast-effects);
+    }
+    .transport-tonal-btn:disabled {
+      opacity: 0.4;
+      cursor: not-allowed;
+    }
+    .transport-tonal-btn:not(:disabled):active {
+      transform: scale(0.94);
+      border-radius: var(--md-shape-sm);
+    }
+
+    /* Connected Speed Button Group */
+    .connected-group {
+      display: inline-flex;
+      align-items: center;
+      gap: 3px;
+      padding: 3px;
+      background-color: var(--md-surface-low);
+      border: 1px solid var(--md-outline-subtle);
+      border-radius: var(--md-shape-full);
+      flex-shrink: 0;
+    }
+
+    .speed-pill {
+      min-height: 32px;
+      padding: 0 10px;
+      border: none;
+      border-radius: var(--md-shape-full);
+      background-color: transparent;
+      color: var(--md-on-surface-variant);
+      font-family: var(--md-typescale-mono);
+      font-size: 0.76rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition:
+        transform var(--md-sys-motion-spring-fast-spatial),
+        border-radius var(--md-sys-motion-spring-fast-spatial),
+        background-color var(--md-sys-motion-spring-fast-effects),
+        color var(--md-sys-motion-spring-fast-effects);
+    }
+    .speed-pill[aria-pressed="true"] {
+      background-color: var(--md-primary);
+      color: var(--md-on-primary);
+      border-radius: var(--md-shape-sm);
+    }
+    .speed-pill:active {
+      transform: scale(0.95);
+    }
+
+    /* Wavy Amber Progress Scrubber */
+    .scrubber-wrap {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      flex: 1;
+      min-width: 180px;
+    }
+
+    .wavy-scrubber-box {
+      position: relative;
+      flex: 1;
+      height: 28px;
+      display: flex;
+      align-items: center;
+    }
+
+    .wavy-scrubber-svg {
+      width: 100%;
+      height: 20px;
+      display: block;
+      pointer-events: none;
+    }
+
+    .scrubber-range-overlay {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      opacity: 0;
+      cursor: pointer;
+      margin: 0;
+    }
+    .scrubber-range-overlay:disabled {
+      cursor: not-allowed;
+    }
+
+    .playback-readout {
+      font-size: 0.78rem;
+      color: var(--md-on-surface-variant);
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    /* M3 Expressive Auto-Scroll Switch */
+    .switch-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      min-height: 36px;
+      padding: 0 4px 0 10px;
+      border: none;
+      background: transparent;
+      color: var(--md-on-surface);
+      font-family: var(--md-typescale-display);
+      font-size: 0.8rem;
+      font-weight: 600;
+      cursor: pointer;
+      flex-shrink: 0;
+    }
+    .switch-track {
+      width: 44px;
+      height: 26px;
+      border-radius: var(--md-shape-full);
+      background-color: var(--md-surface-highest);
+      border: 1px solid var(--md-outline-subtle);
+      padding: 3px;
+      display: inline-flex;
+      align-items: center;
+      transition: background-color var(--md-sys-motion-spring-fast-effects);
+    }
+    .switch-btn[aria-pressed="true"] .switch-track {
+      background-color: var(--md-primary);
+      border-color: transparent;
+    }
+    .switch-thumb {
+      width: 18px;
+      height: 18px;
+      border-radius: var(--md-shape-full);
+      background-color: var(--md-on-surface-variant);
+      transform: translateX(0);
+      transition:
+        transform var(--md-sys-motion-spring-fast-spatial),
+        background-color var(--md-sys-motion-spring-fast-effects);
+    }
+    .switch-btn[aria-pressed="true"] .switch-thumb {
+      transform: translateX(18px);
+      background-color: var(--md-on-primary);
+    }
+
+    /* Right-Side "Script Studio" Modal Side Sheet */
+    .sheet-scrim {
+      position: fixed;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: calc(64% + 6px);
+      background-color: var(--md-scrim);
+      z-index: 35;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity var(--md-sys-motion-spring-default-effects);
+    }
+    .sheet-scrim.open {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .script-sheet {
+      position: fixed;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      width: clamp(400px, 40vw, 520px);
+      max-width: 100vw;
+      background-color: var(--md-sheet);
+      border-left: 1px solid var(--md-outline-subtle);
+      border-radius: var(--md-shape-xl-inc) 0 0 var(--md-shape-xl-inc);
+      box-shadow: var(--md-shadow-sheet);
+      z-index: 40;
+      display: flex;
+      flex-direction: column;
+      transform: translateX(104%);
+      opacity: 0;
+      pointer-events: none;
+      transition:
+        transform var(--md-sys-motion-spring-default-spatial),
+        opacity var(--md-sys-motion-spring-default-effects);
+    }
+    .script-sheet.open {
+      transform: translateX(0);
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .sheet-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      padding: 18px 20px 14px;
+      border-bottom: 1px solid var(--md-outline-subtle);
+      flex-shrink: 0;
+    }
+
+    .sheet-title {
+      font-family: var(--md-typescale-display);
+      font-size: 1.25rem;
+      font-weight: 700;
+      margin: 0;
+    }
+
+    .vision-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 10px;
+      border-radius: var(--md-shape-full);
+      background-color: var(--md-surface-high);
+      border: 1px solid var(--md-outline-subtle);
+      color: var(--md-on-surface-variant);
+      font-size: 0.72rem;
+      font-weight: 600;
+      white-space: nowrap;
+    }
+    .vision-pill[data-available="true"] {
+      background-color: var(--md-student-bg);
+      color: var(--md-mint);
+    }
+
+    .sheet-body {
+      flex: 1;
+      overflow-y: auto;
+      padding: 16px 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .section-label {
+      font-family: var(--md-typescale-display);
+      font-size: 0.78rem;
+      font-weight: 600;
+      color: var(--md-on-surface-variant);
+      margin-bottom: 6px;
+      display: block;
+    }
+
+    .pacing-group {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 3px;
+      padding: 4px;
+      background-color: var(--md-surface-low);
+      border: 1px solid var(--md-outline-subtle);
+      border-radius: var(--md-shape-full);
+    }
+
+    .pacing-btn {
+      min-height: 36px;
+      padding: 0 6px;
+      border: none;
+      border-radius: var(--md-shape-full);
+      background: transparent;
+      color: var(--md-on-surface-variant);
+      font-family: var(--md-typescale-display);
+      font-size: 0.76rem;
+      font-weight: 600;
+      cursor: pointer;
+      white-space: nowrap;
+      transition:
+        transform var(--md-sys-motion-spring-fast-spatial),
+        border-radius var(--md-sys-motion-spring-fast-spatial),
+        background-color var(--md-sys-motion-spring-fast-effects),
+        color var(--md-sys-motion-spring-fast-effects);
+    }
+    .pacing-btn[aria-pressed="true"] {
+      background-color: var(--md-primary);
+      color: var(--md-on-primary);
+      border-radius: var(--md-shape-md);
+    }
+
+    .chip-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 10px;
+    }
+
+    .filter-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      min-height: 36px;
+      padding: 0 13px;
+      border-radius: var(--md-shape-sm);
+      border: 1px solid var(--md-outline-subtle);
+      background-color: var(--md-surface-low);
+      color: var(--md-on-surface-variant);
+      font-family: var(--md-typescale-display);
+      font-size: 0.78rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition:
+        transform var(--md-sys-motion-spring-fast-spatial),
+        border-radius var(--md-sys-motion-spring-fast-spatial),
+        background-color var(--md-sys-motion-spring-fast-effects),
+        color var(--md-sys-motion-spring-fast-effects);
+    }
+    .filter-chip[aria-pressed="true"] {
+      background-color: var(--md-mint);
+      color: var(--md-on-mint);
+      border-color: transparent;
+      border-radius: var(--md-shape-full);
+    }
+    .filter-chip .chip-check {
+      display: none;
+    }
+    .filter-chip[aria-pressed="true"] .chip-check {
+      display: inline-flex;
+    }
+
+    .voice-row {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+    }
+
+    .m3-select {
+      flex: 1;
+      min-width: 0;
+      min-height: 40px;
+      padding: 0 12px;
+      border-radius: var(--md-shape-md);
+      border: 1px solid var(--md-outline-subtle);
+      background-color: var(--md-surface-high);
+      color: var(--md-on-surface);
+      font-family: var(--md-typescale-body);
+      font-size: 0.84rem;
+    }
+
+    /* Smart Batch Coverage Card */
+    .coverage-card {
+      padding: 14px 16px;
+      border-radius: var(--md-shape-lg-inc);
+      background-color: var(--md-surface-low);
+      border: 1px solid var(--md-outline-subtle);
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .complete-badge {
+      padding: 5px 10px;
+      border-radius: var(--md-shape-full);
+      background-color: var(--md-student-bg);
+      color: var(--md-mint);
+      font-size: 0.74rem;
+      font-weight: 600;
+      align-self: flex-start;
+    }
+
+    .page-inputs-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+
+    .field-group {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .m3-input {
+      width: 100%;
+      min-height: 40px;
+      padding: 6px 12px;
+      border-radius: var(--md-shape-md);
+      border: 1px solid var(--md-outline-subtle);
+      background-color: var(--md-surface-high);
+      color: var(--md-on-surface);
+      font-family: var(--md-typescale-mono);
+      font-variant-numeric: tabular-nums;
+      font-size: 0.86rem;
+    }
+
+    .m3-textarea {
+      width: 100%;
+      min-height: 112px;
+      padding: 12px;
+      border-radius: var(--md-shape-lg-inc);
+      border: 1px solid var(--md-outline-subtle);
+      background-color: var(--md-well);
+      color: var(--md-on-surface);
+      font-family: var(--md-typescale-mono);
+      font-size: 0.78rem;
+      line-height: 1.5;
+      resize: vertical;
+    }
+
+    .linear-track {
+      position: relative;
+      height: 8px;
+      width: 100%;
+      background-color: var(--md-surface-highest);
+      border-radius: var(--md-shape-full);
+      overflow: hidden;
+    }
+    .linear-fill {
+      position: absolute;
+      inset: 0;
+      background-color: var(--md-primary);
+      border-radius: var(--md-shape-full);
+      transform-origin: left center;
+      transform: scaleX(0);
+      transition: transform var(--md-sys-motion-spring-default-spatial);
+    }
+
+    .alert-banner {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 10px;
+      padding: 10px 12px;
+      border-radius: var(--md-shape-lg);
+      border: 1px solid var(--md-outline-subtle);
+      font-size: 0.8rem;
+      line-height: 1.45;
+      transition: opacity var(--md-sys-motion-spring-fast-effects);
+    }
+    .alert-error {
+      background-color: var(--md-error-container);
+      color: var(--md-on-error-container);
+    }
+    .alert-warning {
+      background-color: var(--md-primary-container);
+      color: var(--md-on-primary-container);
+    }
+
+    .sheet-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      padding: 14px 20px;
+      border-top: 1px solid var(--md-outline-subtle);
+      background-color: var(--md-sheet);
+      flex-shrink: 0;
+      position: relative;
+    }
+
+    /* M3 Expressive Split Button */
+    .split-btn-wrap {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      gap: 2px;
+    }
+    .split-main-btn {
+      border-radius: var(--md-shape-full) var(--md-shape-xs) var(--md-shape-xs) var(--md-shape-full);
+      padding: 0 16px;
+    }
+    .split-chevron-btn {
+      min-width: 38px;
+      padding: 0 10px;
+      border-radius: var(--md-shape-xs) var(--md-shape-full) var(--md-shape-full) var(--md-shape-xs);
+    }
+
+    .split-menu {
+      position: absolute;
+      bottom: calc(100% + 8px);
+      right: 0;
+      min-width: 230px;
+      padding: 6px;
+      background-color: var(--md-surface-high);
+      border: 1px solid var(--md-outline-subtle);
+      border-radius: var(--md-shape-lg);
+      box-shadow: var(--md-shadow-elevated);
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      z-index: 45;
+      transform-origin: bottom right;
+      transition:
+        transform var(--md-sys-motion-spring-fast-spatial),
+        opacity var(--md-sys-motion-spring-fast-effects);
+    }
+    .split-menu-item {
+      width: 100%;
+      text-align: left;
+      padding: 10px 12px;
+      border-radius: var(--md-shape-md);
+      border: none;
+      background: transparent;
+      color: var(--md-on-surface);
+      font-family: var(--md-typescale-body);
+      font-size: 0.82rem;
+      font-weight: 500;
+      cursor: pointer;
+    }
+    @media (hover: hover) and (pointer: fine) {
+      .split-menu-item:hover:not(:disabled) {
+        background-color: var(--md-state-hover);
+      }
+    }
+    .split-menu-item:disabled {
+      opacity: 0.4;
+      cursor: not-allowed;
+    }
+
+    /* Snackbar Stack */
     .snackbar-stack {
       position: fixed;
-      bottom: 18px;
-      right: 18px;
+      bottom: 84px;
+      right: 20px;
       display: flex;
       flex-direction: column;
       gap: 8px;
       z-index: 50;
       max-width: min(420px, calc(100vw - 32px));
     }
-
     .snackbar {
       display: flex;
       align-items: center;
       justify-content: space-between;
       gap: 12px;
       padding: 12px 16px;
-      border-radius: var(--md-sys-shape-medium);
-      background-color: var(--md-sys-color-inverse-surface);
-      color: var(--md-sys-color-on-inverse-surface);
-      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.36);
-      font-size: 0.86rem;
+      border-radius: var(--md-shape-md);
+      background-color: var(--md-inverse-surface);
+      color: var(--md-on-inverse-surface);
+      box-shadow: var(--md-shadow-elevated);
+      font-size: 0.84rem;
       opacity: 0;
       transform: translateY(8px) scale(0.96);
       transition:
         transform var(--md-sys-motion-spring-default-spatial),
         opacity var(--md-sys-motion-spring-fast-effects);
     }
-
     .snackbar.visible {
       opacity: 1;
       transform: translateY(0) scale(1);
     }
-
     .snackbar-action {
       border: none;
       background: transparent;
-      color: var(--md-sys-color-inverse-primary);
-      font-family: var(--md-sys-typescale-display);
+      color: var(--md-inverse-primary);
+      font-family: var(--md-typescale-display);
       font-weight: 700;
       font-size: 0.82rem;
       cursor: pointer;
       padding: 4px 8px;
-      border-radius: var(--md-sys-shape-full);
+      border-radius: var(--md-shape-full);
     }
 
-    /* Responsive Adaptive Window Size Classes */
-    @media (max-width: 839px) {
+    /* Responsive Breakpoints (< 900px) */
+    @media (max-width: 899px) {
+      .app-shell {
+        grid-template-rows: 56px auto minmax(0, 1fr) auto;
+      }
       .mobile-tabs {
         display: flex;
       }
@@ -873,32 +1348,45 @@
       .dialogue-pane[data-mobile-hidden="true"] {
         display: none;
       }
-      .pdf-pane {
-        border-right: none;
+      .session-pill-bar {
+        max-width: 44vw;
       }
-      .m3-btn, .m3-icon-btn, .play-pill, .filter-chip, .m3-select, .m3-input {
-        min-height: 48px;
+      .mode-badge {
+        display: none;
       }
-      .m3-icon-btn {
-        min-width: 48px;
+      .player-dock {
+        flex-wrap: wrap;
+        border-radius: var(--md-shape-xl);
+        padding: 10px 12px;
+        gap: 10px;
+      }
+      .scrubber-wrap {
+        order: -1;
+        width: 100%;
+        flex-basis: 100%;
+      }
+      .sheet-scrim {
+        left: 0;
       }
       .script-sheet {
-        top: 0;
         width: 100vw;
-        max-height: 100dvh;
-        border-radius: 0 0 var(--md-sys-shape-large) var(--md-sys-shape-large);
+        border-radius: var(--md-shape-xl-inc) 0 0 0;
+      }
+      .m3-btn, .m3-icon-btn, .play-circle-btn, .transport-tonal-btn, .filter-chip, .pacing-btn {
+        min-height: 48px;
       }
     }
 
     @media (max-height: 479px) {
-      .top-app-bar, .playback-bar {
-        min-height: 44px;
-        padding-top: 4px;
-        padding-bottom: 4px;
+      .top-app-bar {
+        height: 44px;
+      }
+      .player-dock {
+        margin: 6px 12px;
+        padding: 6px 12px;
       }
     }
 
-    /* Instant 0ms Keyboard Action Feedback */
     [data-instant="true"] {
       transition-duration: 0ms !important;
     }
@@ -910,207 +1398,63 @@
 </head>
 <body>
   <div class="app-shell">
-    <!-- E-01 Top App Bar -->
+    <!-- Top App Bar -->
     <header class="top-app-bar">
       <div class="brand-lockup">
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-          <rect x="2" y="9" width="3" height="6" rx="1.5" fill="var(--md-sys-color-primary)"/>
-          <rect x="7" y="5" width="3" height="14" rx="1.5" fill="var(--md-sys-color-primary)"/>
-          <rect x="12" y="3" width="3" height="18" rx="1.5" fill="var(--md-sys-color-secondary)"/>
-          <rect x="17" y="7" width="3" height="10" rx="1.5" fill="var(--md-sys-color-tertiary)"/>
-        </svg>
+        <div class="brand-icon-tile" aria-hidden="true">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+            <rect x="2" y="9" width="3" height="6" rx="1.5"/>
+            <rect x="7" y="5" width="3" height="14" rx="1.5"/>
+            <rect x="12" y="3" width="3" height="18" rx="1.5"/>
+            <rect x="17" y="7" width="3" height="10" rx="1.5"/>
+          </svg>
+        </div>
         <span class="brand-title">DeepExamCast</span>
       </div>
 
-      <div class="top-actions">
-        <select id="sessionSelect" class="m3-select" aria-label="Saved study sessions"></select>
+      <div class="session-pill-bar">
+        <select id="sessionSelect" class="session-select" aria-label="Saved study sessions"></select>
+        <span id="modeStatusBadge" class="mode-badge mono-num">Deep Dive · EN</span>
         <button id="deleteSessionBtn" class="m3-icon-btn m3-icon-btn-danger" type="button" title="Delete selected session" aria-label="Delete selected session" disabled>
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
             <path d="M3 6h18"/><path d="M8 6V4h8v2"/><path d="M19 6l-1 14H6L5 6"/>
           </svg>
         </button>
+      </div>
 
+      <div class="top-right-actions">
         <input id="pdfInput" type="file" accept="application/pdf" class="hidden-el">
         <button id="uploadBtn" class="m3-btn m3-btn-tonal" type="button">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
             <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/>
           </svg>
           <span id="uploadBtnLabel">Upload PDF</span>
         </button>
 
-        <button id="drawerToggleBtn" class="m3-btn m3-btn-amber-tonal" type="button" aria-expanded="false" aria-controls="scriptSheet">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-            <path d="M12 5v14"/><path d="M5 12h14"/>
+        <button id="drawerToggleBtn" class="m3-btn m3-btn-primary" type="button" aria-expanded="false" aria-controls="scriptSheet">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+            <path d="M12 2L14.6 9.4L22 12L14.6 14.6L12 22L9.4 14.6L2 12L9.4 9.4L12 2Z"/>
           </svg>
-          <span>Add / Generate Deep Script</span>
+          <span>Script Studio</span>
         </button>
       </div>
     </header>
 
-    <!-- E-07 Top-Anchored Script Sheet -->
-    <div id="scriptSheetScrim" class="sheet-scrim" aria-hidden="true"></div>
-    <section id="scriptSheet" class="script-sheet" aria-label="Add or generate deep script" aria-hidden="true">
-      <div class="sheet-grid">
-        <div class="sheet-row" style="justify-content: space-between;">
-          <div style="display:flex; gap:12px; flex-wrap:wrap; align-items:flex-end;">
-            <div class="field-group">
-              <label for="fromPageInput" class="field-label">From Page</label>
-              <input id="fromPageInput" class="m3-input" type="number" min="1" value="1" style="width:92px;">
-            </div>
-            <div class="field-group">
-              <label for="toPageInput" class="field-label">To Page</label>
-              <input id="toPageInput" class="m3-input" type="number" min="1" value="5" style="width:92px;">
-            </div>
-            <button id="copyPromptBtn" class="m3-btn m3-btn-amber-tonal" type="button">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                <rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
-              </svg>
-              <span>Copy Prompt for Gemini Pro</span>
-            </button>
-          </div>
-          <button id="closeSheetBtn" class="m3-icon-btn" type="button" aria-label="Close script drawer">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-              <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
-            </svg>
-          </button>
-        </div>
-
-        <!-- E-09 Coverage Meter -->
-        <div class="field-group" style="gap:6px;">
-          <div style="display:flex; justify-content:space-between; gap:8px; flex-wrap:wrap;">
-            <span id="coverageSummary" class="field-label mono-num">No PDF loaded</span>
-            <span id="partialSummary" class="field-label mono-num"></span>
-          </div>
-          <div class="linear-track">
-            <div id="coverageBarFill" class="linear-fill"></div>
-          </div>
-        </div>
-
-        <!-- E-11 JSON Paste -->
-        <div class="field-group">
-          <label for="jsonInput" class="field-label">Paste Gemini JSON Array</label>
-          <textarea id="jsonInput" class="m3-textarea" placeholder='[{"speaker":"HOST_A","text":"...","chunk_ids":["C1"],"exam_note":"..."}]'></textarea>
-        </div>
-
-        <!-- E-12 & E-13 Voice & Actions -->
-        <div class="sheet-row" style="justify-content: space-between;">
-          <div style="display:flex; gap:10px; flex-wrap:wrap; align-items:flex-end;">
-            <div class="field-group">
-              <label for="voicePairSelect" class="field-label">Voice Pair</label>
-              <select id="voicePairSelect" class="m3-select"></select>
-            </div>
-            <button id="resynthesizeBtn" class="m3-btn m3-btn-outlined" type="button" disabled>
-              Re-synthesize Voice
-            </button>
-          </div>
-
-          <div style="display:flex; gap:8px; flex-wrap:wrap;">
-            <button id="undoBtn" class="m3-btn m3-btn-outlined" type="button" disabled>Undo Last Batch</button>
-            <button id="appendBtn" class="m3-btn m3-btn-tonal" type="button" disabled>Append to Lecture</button>
-            <button id="replaceBtn" class="m3-btn m3-btn-primary" type="button" disabled>Replace &amp; Generate Audio</button>
-          </div>
-        </div>
-
-        <!-- E-14 Live Synthesis Progress -->
-        <div id="genProgressBox" class="field-group hidden-el" aria-live="polite" style="gap:6px;">
-          <span id="genProgressText" class="field-label mono-num">Synthesizing 0 / 0 clips...</span>
-          <div class="linear-track">
-            <div id="genProgressFill" class="linear-fill"></div>
-          </div>
-        </div>
-
-        <!-- E-15 Inline Alert Banner -->
-        <div id="drawerAlert" class="alert-banner alert-error hidden-el" role="alert">
-          <span id="drawerAlertText"></span>
-          <button id="dismissAlertBtn" class="m3-icon-btn" type="button" aria-label="Dismiss message">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-              <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
-            </svg>
-          </button>
-        </div>
-      </div>
-    </section>
-
-    <!-- E-16..E-19 Sticky Playback Bar -->
-    <nav class="playback-bar" aria-label="Lecture playback controls">
-      <div class="transport-cluster">
-        <button id="prevLineBtn" class="m3-icon-btn" type="button" title="Previous line (Left Arrow)" aria-label="Previous line" disabled>
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-            <polygon points="19 20 9 12 19 4 19 20"/><line x1="5" y1="19" x2="5" y2="5"/>
-          </svg>
-        </button>
-        <button id="playPauseBtn" class="play-pill" type="button" data-playing="false" disabled>
-          <svg id="playIcon" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-            <polygon points="6 4 20 12 6 20 6 4"/>
-          </svg>
-          <svg id="pauseIcon" class="hidden-el" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-            <rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/>
-          </svg>
-          <span id="playPauseLabel">Play</span>
-        </button>
-        <button id="nextLineBtn" class="m3-icon-btn" type="button" title="Next line (Right Arrow)" aria-label="Next line" disabled>
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-            <polygon points="5 4 15 12 5 20 5 4"/><line x1="19" y1="5" x2="19" y2="19"/>
-          </svg>
-        </button>
-        <button id="repeatLineBtn" class="m3-icon-btn" type="button" title="Repeat current line (R)" aria-label="Repeat current line" disabled>
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-            <polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"/>
-          </svg>
-        </button>
-      </div>
-
-      <div id="speedGroup" class="speed-group" role="group" aria-label="Playback speed">
-        <button class="speed-pill" type="button" data-rate="1" aria-pressed="true">1x</button>
-        <button class="speed-pill" type="button" data-rate="1.25" aria-pressed="false">1.25x</button>
-        <button class="speed-pill" type="button" data-rate="1.5" aria-pressed="false">1.5x</button>
-        <button class="speed-pill" type="button" data-rate="1.75" aria-pressed="false">1.75x</button>
-        <button class="speed-pill" type="button" data-rate="2" aria-pressed="false">2x</button>
-      </div>
-
-      <div class="scrubber-wrap">
-        <input id="lineScrubber" class="m3-slider" type="range" min="0" max="0" value="0" aria-label="Line progress scrubber" disabled>
-        <span id="playbackReadout" class="field-label mono-num" style="white-space:nowrap;">Line 0 / 0 · Page — / —</span>
-      </div>
-
-      <button id="autoScrollBtn" class="filter-chip" type="button" aria-pressed="true">
-        Auto-Scroll: ON
-      </button>
-    </nav>
-
-    <!-- E-23 Compact/Medium Mobile Pane Switcher -->
+    <!-- Mobile Pane Switcher (<900px) -->
     <div id="mobileTabs" class="mobile-tabs" role="tablist" aria-label="Workspace panes">
       <button id="tabPdfBtn" class="mobile-tab-btn" type="button" role="tab" aria-selected="true">PDF Viewer</button>
-      <button id="tabDialogueBtn" class="mobile-tab-btn" type="button" role="tab" aria-selected="false">Dialogue &amp; Notes</button>
+      <button id="tabDialogueBtn" class="mobile-tab-btn" type="button" role="tab" aria-selected="false">Lecture Transcript</button>
     </div>
 
-    <!-- Main Supporting-Pane Split View -->
+    <!-- Main Split Workspace -->
     <main class="workspace-grid">
-      <!-- E-20 Primary Pane (68%) -->
+      <!-- Left Pane: Synced PDF Reader -->
       <section id="pdfPane" class="pdf-pane" aria-label="Synced PDF viewer" data-mobile-hidden="false">
-        <div class="pdf-toolbar">
-          <div style="display:flex; align-items:center; gap:6px;">
-            <button id="zoomOutBtn" class="m3-icon-btn" type="button" title="Zoom out" aria-label="Zoom out">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true">
-                <line x1="5" y1="12" x2="19" y2="12"/>
-              </svg>
-            </button>
-            <span id="zoomLabel" class="field-label mono-num" style="min-width:48px; text-align:center;">100%</span>
-            <button id="zoomInBtn" class="m3-icon-btn" type="button" title="Zoom in" aria-label="Zoom in">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true">
-                <line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>
-              </svg>
-            </button>
-            <button id="zoomFitBtn" class="m3-btn m3-btn-outlined" type="button" style="min-height:32px; padding:0 12px; font-size:0.76rem;">Fit Width</button>
-          </div>
-          <span id="pdfPageReadout" class="field-label mono-num">No document</span>
-        </div>
-
         <div id="pdfScroll" class="pdf-scroll">
           <div id="pdfEmptyState" class="empty-state-card">
-            <h2 style="margin:0; font-family:var(--md-sys-typescale-display); font-size:1.15rem;">Upload an Exam Chapter PDF</h2>
-            <p style="margin:0; font-size:0.9rem; color:var(--md-sys-color-on-surface-variant); line-height:1.55;">
-              DeepExamCast extracts normalized paragraphs, builds zero-skimming Gemini prompts, and syncs neural two-host audio directly to every paragraph.
+            <h2 style="margin:0; font-family:var(--md-typescale-display); font-size:1.15rem;">Upload an Exam Chapter PDF</h2>
+            <p style="margin:0; font-size:0.9rem; color:var(--md-on-surface-variant); line-height:1.55;">
+              DeepExamCast cleans diagonal watermarks, detects tables &amp; figures, builds zero-skimming Gemini prompts, and syncs neural two-host audio directly to every paragraph.
             </p>
             <div>
               <button id="emptyUploadCta" class="m3-btn m3-btn-primary" type="button">Choose PDF File</button>
@@ -1118,24 +1462,61 @@
           </div>
           <div id="pdfPagesContainer" class="hidden-el" style="display:flex; flex-direction:column; align-items:center; gap:18px; width:100%;"></div>
         </div>
+
+        <!-- Floating M3 Expressive PDF Toolbar -->
+        <div class="pdf-floating-toolbar" role="toolbar" aria-label="PDF viewer controls">
+          <button id="zoomOutBtn" class="m3-icon-btn" type="button" title="Zoom out" aria-label="Zoom out" style="min-width:32px; min-height:32px;">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+              <line x1="5" y1="12" x2="19" y2="12"/>
+            </svg>
+          </button>
+          <span id="zoomLabel" class="mono-num" style="font-size:0.78rem; min-width:44px; text-align:center;">100%</span>
+          <button id="zoomInBtn" class="m3-icon-btn" type="button" title="Zoom in" aria-label="Zoom in" style="min-width:32px; min-height:32px;">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+              <line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>
+            </svg>
+          </button>
+          <span class="toolbar-divider" aria-hidden="true"></span>
+          <button id="zoomFitBtn" class="toolbar-pill-btn" type="button">Fit</button>
+          <span class="toolbar-divider" aria-hidden="true"></span>
+          <span id="pdfPageReadout" class="mono-num" style="font-size:0.78rem; color:var(--md-on-surface-variant); padding:0 6px; white-space:nowrap;">No document</span>
+          <span class="toolbar-divider" aria-hidden="true"></span>
+          <div id="paperModeGroup" class="paper-mode-group" role="group" aria-label="PDF paper mode">
+            <button class="paper-btn" type="button" data-paper="light" aria-pressed="true" title="Light Paper" aria-label="Light Paper">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/>
+              </svg>
+            </button>
+            <button class="paper-btn" type="button" data-paper="sepia" aria-pressed="false" title="Sepia Paper" aria-label="Sepia Paper">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <rect x="3" y="3" width="18" height="18" rx="3"/><path d="M3 21L21 3"/>
+              </svg>
+            </button>
+            <button class="paper-btn" type="button" data-paper="dark" aria-pressed="false" title="Dark Paper" aria-label="Dark Paper">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+              </svg>
+            </button>
+          </div>
+        </div>
       </section>
 
-      <!-- E-21 Supporting Pane (32%) -->
-      <aside id="dialoguePane" class="dialogue-pane" aria-label="Live dialogue and exam notes" data-mobile-hidden="true">
+      <!-- Right Pane: Lecture Transcript -->
+      <aside id="dialoguePane" class="dialogue-pane" aria-label="Lecture transcript" data-mobile-hidden="true">
         <div class="dialogue-header">
-          <span style="font-family:var(--md-sys-typescale-display); font-size:0.9rem; font-weight:600;">Dialogue &amp; Exam Notes</span>
-          <span id="dialogueMeta" class="field-label mono-num">0 turns</span>
+          <span class="dialogue-title">Lecture Transcript</span>
+          <span id="dialogueMeta" class="dialogue-meta-pill mono-num">0 turns</span>
         </div>
         <div id="dialogueScroll" class="dialogue-scroll">
           <div id="dialogueEmptyState" class="empty-state-card">
-            <h3 style="margin:0; font-family:var(--md-sys-typescale-display); font-size:1rem;">3-Step Study Workflow</h3>
-            <p style="margin:0; font-size:0.86rem; color:var(--md-sys-color-on-surface-variant); line-height:1.55;">
+            <h3 style="margin:0; font-family:var(--md-typescale-display); font-size:1rem;">3-Step Study Workflow</h3>
+            <p style="margin:0; font-size:0.86rem; color:var(--md-on-surface-variant); line-height:1.55;">
               1. Upload your chapter PDF.
             </p>
-            <p style="margin:0; font-size:0.86rem; color:var(--md-sys-color-on-surface-variant); line-height:1.55;">
-              2. Copy the 5-page prompt into Gemini Web.
+            <p style="margin:0; font-size:0.86rem; color:var(--md-on-surface-variant); line-height:1.55;">
+              2. Open Script Studio, pick Pacing &amp; Language, and copy the prompt into Gemini Pro.
             </p>
-            <p style="margin:0; font-size:0.86rem; color:var(--md-sys-color-on-surface-variant); line-height:1.55;">
+            <p style="margin:0; font-size:0.86rem; color:var(--md-on-surface-variant); line-height:1.55;">
               3. Paste Gemini's JSON array and generate cached neural audio.
             </p>
           </div>
@@ -1144,7 +1525,200 @@
       </aside>
     </main>
 
-    <!-- E-22 Snackbar Stack -->
+    <!-- Bottom Floating Audio Player Dock -->
+    <nav class="player-dock" aria-label="Lecture playback controls">
+      <div class="transport-cluster">
+        <button id="playPauseBtn" class="play-circle-btn" type="button" data-playing="false" aria-label="Play or pause" disabled>
+          <svg id="playIcon" width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+            <polygon points="7 4 20 12 7 20 7 4"/>
+          </svg>
+          <svg id="pauseIcon" class="hidden-el" width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+            <rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/>
+          </svg>
+        </button>
+        <button id="prevLineBtn" class="transport-tonal-btn" type="button" title="Previous line (Left Arrow)" aria-label="Previous line" disabled>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polygon points="19 20 9 12 19 4 19 20"/><line x1="5" y1="19" x2="5" y2="5"/>
+          </svg>
+        </button>
+        <button id="nextLineBtn" class="transport-tonal-btn" type="button" title="Next line (Right Arrow)" aria-label="Next line" disabled>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polygon points="5 4 15 12 5 20 5 4"/><line x1="19" y1="5" x2="19" y2="19"/>
+          </svg>
+        </button>
+        <button id="repeatLineBtn" class="transport-tonal-btn" type="button" title="Repeat current line (R)" aria-label="Repeat current line" disabled>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"/>
+          </svg>
+        </button>
+      </div>
+
+      <div id="speedGroup" class="connected-group" role="group" aria-label="Playback speed">
+        <button class="speed-pill" type="button" data-rate="1" aria-pressed="true">1x</button>
+        <button class="speed-pill" type="button" data-rate="1.25" aria-pressed="false">1.25x</button>
+        <button class="speed-pill" type="button" data-rate="1.5" aria-pressed="false">1.5x</button>
+        <button class="speed-pill" type="button" data-rate="1.75" aria-pressed="false">1.75x</button>
+        <button class="speed-pill" type="button" data-rate="2" aria-pressed="false">2x</button>
+      </div>
+
+      <div class="scrubber-wrap">
+        <div class="wavy-scrubber-box">
+          <svg id="wavyScrubberSvg" class="wavy-scrubber-svg" preserveAspectRatio="none" aria-hidden="true"></svg>
+          <input id="lineScrubber" class="scrubber-range-overlay" type="range" min="0" max="0" value="0" aria-label="Line progress scrubber" disabled>
+        </div>
+        <span id="playbackReadout" class="playback-readout mono-num">Line 0 / 0</span>
+      </div>
+
+      <button id="autoScrollBtn" class="switch-btn" type="button" aria-pressed="true">
+        <span>Auto-Scroll</span>
+        <span class="switch-track" aria-hidden="true"><span class="switch-thumb"></span></span>
+      </button>
+    </nav>
+
+    <!-- Right-Side "Script Studio" Modal Side Sheet -->
+    <div id="scriptSheetScrim" class="sheet-scrim" aria-hidden="true"></div>
+    <aside id="scriptSheet" class="script-sheet" aria-label="Script Studio" aria-hidden="true">
+      <div class="sheet-header">
+        <h2 class="sheet-title">Script Studio</h2>
+        <div style="display:flex; align-items:center; gap:6px;">
+          <span id="visionStatusPill" class="vision-pill" data-available="false">Text Mode</span>
+          <button id="reparseBtn" class="m3-icon-btn" type="button" title="Re-parse PDF chunks" aria-label="Re-parse PDF chunks" disabled>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/>
+            </svg>
+          </button>
+          <button id="closeSheetBtn" class="m3-icon-btn" type="button" aria-label="Close Script Studio">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+            </svg>
+          </button>
+        </div>
+      </div>
+
+      <div class="sheet-body">
+        <!-- Study Pacing -->
+        <div>
+          <span class="section-label">Study Pacing</span>
+          <div id="pacingGroup" class="pacing-group" role="group" aria-label="Study pacing mode">
+            <button class="pacing-btn" type="button" data-pacing="deep_dive" aria-pressed="true">Deep Dive</button>
+            <button class="pacing-btn" type="button" data-pacing="revision" aria-pressed="false">Revision</button>
+            <button class="pacing-btn" type="button" data-pacing="exam_drill" aria-pressed="false">Viva Q&amp;A</button>
+            <button class="pacing-btn" type="button" data-pacing="eli5" aria-pressed="false">ELI5</button>
+          </div>
+        </div>
+
+        <!-- Language & Voices -->
+        <div>
+          <span class="section-label">Language &amp; Voices</span>
+          <div id="languageGroup" class="chip-row" role="group" aria-label="Lecture language">
+            <button class="filter-chip" type="button" data-lang="en" aria-pressed="true">
+              <svg class="chip-check" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
+              <span>English</span>
+            </button>
+            <button class="filter-chip" type="button" data-lang="hi" aria-pressed="false">
+              <svg class="chip-check" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
+              <span>Hindi (Hinglish)</span>
+            </button>
+            <button class="filter-chip" type="button" data-lang="ml" aria-pressed="false">
+              <svg class="chip-check" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
+              <span>Malayalam (Manglish)</span>
+            </button>
+          </div>
+          <div class="voice-row">
+            <select id="voicePairSelect" class="m3-select" aria-label="Voice pair"></select>
+            <button id="resynthesizeBtn" class="m3-btn m3-btn-tonal" type="button" disabled style="min-height:40px; padding:0 12px; font-size:0.78rem;">
+              Re-synthesize Voice
+            </button>
+          </div>
+        </div>
+
+        <!-- Smart Batch Coverage Card -->
+        <div class="coverage-card">
+          <div style="display:flex; align-items:center; justify-content:space-between; gap:8px;">
+            <span class="section-label" style="margin:0;">Smart Batch Coverage</span>
+            <span id="chapterCompleteBadge" class="complete-badge hidden-el">Chapter Complete — Pick pages to regenerate</span>
+          </div>
+
+          <div class="page-inputs-row">
+            <div class="field-group">
+              <label for="fromPageInput" class="section-label" style="margin:0;">From Page</label>
+              <input id="fromPageInput" class="m3-input" type="number" min="1" value="1">
+            </div>
+            <div class="field-group">
+              <label for="toPageInput" class="section-label" style="margin:0;">To Page</label>
+              <input id="toPageInput" class="m3-input" type="number" min="1" value="4">
+            </div>
+          </div>
+
+          <svg id="coverageWavySvg" style="width:100%; height:18px; display:block;" preserveAspectRatio="none" aria-hidden="true"></svg>
+
+          <div style="display:flex; justify-content:space-between; gap:8px; flex-wrap:wrap; font-size:0.76rem; color:var(--md-on-surface-variant);">
+            <span id="coverageSummary" class="mono-num">No PDF loaded</span>
+            <span id="partialSummary" class="mono-num"></span>
+          </div>
+
+          <button id="copyPromptBtn" class="m3-btn m3-btn-tonal" type="button" style="width:100%;" disabled>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+            </svg>
+            <span>Copy Prompt for Gemini Pro</span>
+          </button>
+        </div>
+
+        <!-- JSON Paste Box -->
+        <div>
+          <label for="jsonInput" class="section-label">JSON Paste</label>
+          <textarea id="jsonInput" class="m3-textarea" placeholder='[{"speaker":"HOST_A","text":"...","chunk_ids":["C1"],"exam_note":"..."}]'></textarea>
+        </div>
+
+        <!-- Live Synthesis Progress -->
+        <div id="genProgressBox" class="field-group hidden-el" aria-live="polite" style="gap:6px;">
+          <span id="genProgressText" class="mono-num" style="font-size:0.78rem; color:var(--md-on-surface-variant);">Synthesizing 0 / 0 clips...</span>
+          <div class="linear-track">
+            <div id="genProgressFill" class="linear-fill"></div>
+          </div>
+        </div>
+
+        <!-- Inline Error / Warning Banner -->
+        <div id="drawerAlert" class="alert-banner alert-error hidden-el" role="alert">
+          <span id="drawerAlertText"></span>
+          <button id="dismissAlertBtn" class="m3-icon-btn" type="button" aria-label="Dismiss message" style="min-width:28px; min-height:28px;">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+              <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+            </svg>
+          </button>
+        </div>
+      </div>
+
+      <!-- Bottom Action Footer -->
+      <div class="sheet-footer">
+        <div style="display:flex; gap:8px;">
+          <button id="undoBtn" class="m3-btn m3-btn-tonal" type="button" disabled style="padding:0 12px;">Undo</button>
+          <button id="appendBtn" class="m3-btn m3-btn-tonal" type="button" disabled style="padding:0 14px;">Append</button>
+        </div>
+
+        <div class="split-btn-wrap">
+          <button id="generateMainBtn" class="m3-btn m3-btn-primary split-main-btn" type="button" disabled>
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+              <path d="M12 2L14.6 9.4L22 12L14.6 14.6L12 22L9.4 14.6L2 12L9.4 9.4L12 2Z"/>
+            </svg>
+            <span>Generate Audio</span>
+          </button>
+          <button id="splitMenuToggleBtn" class="m3-btn m3-btn-primary split-chevron-btn" type="button" aria-expanded="false" aria-haspopup="menu" aria-label="More generation actions" disabled>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <polyline points="6 9 12 15 18 9"/>
+            </svg>
+          </button>
+
+          <div id="splitActionMenu" class="split-menu hidden-el" role="menu">
+            <button id="replaceBtn" class="split-menu-item" type="button" role="menuitem" disabled>Replace Entire Lecture</button>
+            <button id="splitResynthesizeBtn" class="split-menu-item" type="button" role="menuitem" disabled>Re-synthesize Existing Audio</button>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Snackbar Stack -->
     <div id="snackbarStack" class="snackbar-stack" aria-live="polite"></div>
   </div>
 
@@ -1154,6 +1728,13 @@
     const LOCAL_PDF_URL = "/static/vendor/pdf.min.mjs";
     const LOCAL_WORKER_URL = "/static/vendor/pdf.worker.min.mjs";
 
+    const PACING_LABELS = {
+      deep_dive: "Deep Dive",
+      revision: "Revision",
+      exam_drill: "Viva Q&A",
+      eli5: "ELI5",
+    };
+
     const state = {
       sessions: [],
       voicePairs: [],
@@ -1162,17 +1743,25 @@
       chunkFirstLine: new Map(),
       currentLineIndex: 0,
       lastKnownPage: null,
+      readoutSource: "playback",
       isPlaying: false,
       playbackRate: 1.0,
       autoScroll: true,
+      pacing: "deep_dive",
+      language: "en",
+      paperMode: localStorage.getItem("dec.paperMode") || "light",
+      visionAvailable: false,
+      manualPageEdit: false,
       playbackToken: 0,
       decksUnlocked: false,
       drawerOpen: false,
+      splitMenuOpen: false,
       lastCopiedRange: null,
       zoomScale: 1.0,
       pdfDoc: null,
       pageSlots: [],
       visiblePages: new Set(),
+      pageRatios: new Map(),
       observer: null,
       generating: false,
       patchTimer: null,
@@ -1191,6 +1780,7 @@
 
     const el = {
       sessionSelect: document.getElementById("sessionSelect"),
+      modeStatusBadge: document.getElementById("modeStatusBadge"),
       deleteSessionBtn: document.getElementById("deleteSessionBtn"),
       pdfInput: document.getElementById("pdfInput"),
       uploadBtn: document.getElementById("uploadBtn"),
@@ -1199,33 +1789,42 @@
       drawerToggleBtn: document.getElementById("drawerToggleBtn"),
       scriptSheetScrim: document.getElementById("scriptSheetScrim"),
       scriptSheet: document.getElementById("scriptSheet"),
+      visionStatusPill: document.getElementById("visionStatusPill"),
+      reparseBtn: document.getElementById("reparseBtn"),
       closeSheetBtn: document.getElementById("closeSheetBtn"),
-      fromPageInput: document.getElementById("fromPageInput"),
-      toPageInput: document.getElementById("toPageInput"),
-      copyPromptBtn: document.getElementById("copyPromptBtn"),
-      coverageSummary: document.getElementById("coverageSummary"),
-      partialSummary: document.getElementById("partialSummary"),
-      coverageBarFill: document.getElementById("coverageBarFill"),
-      jsonInput: document.getElementById("jsonInput"),
+      pacingGroup: document.getElementById("pacingGroup"),
+      languageGroup: document.getElementById("languageGroup"),
       voicePairSelect: document.getElementById("voicePairSelect"),
       resynthesizeBtn: document.getElementById("resynthesizeBtn"),
-      undoBtn: document.getElementById("undoBtn"),
-      appendBtn: document.getElementById("appendBtn"),
-      replaceBtn: document.getElementById("replaceBtn"),
+      chapterCompleteBadge: document.getElementById("chapterCompleteBadge"),
+      fromPageInput: document.getElementById("fromPageInput"),
+      toPageInput: document.getElementById("toPageInput"),
+      coverageWavySvg: document.getElementById("coverageWavySvg"),
+      coverageSummary: document.getElementById("coverageSummary"),
+      partialSummary: document.getElementById("partialSummary"),
+      copyPromptBtn: document.getElementById("copyPromptBtn"),
+      jsonInput: document.getElementById("jsonInput"),
       genProgressBox: document.getElementById("genProgressBox"),
       genProgressText: document.getElementById("genProgressText"),
       genProgressFill: document.getElementById("genProgressFill"),
       drawerAlert: document.getElementById("drawerAlert"),
       drawerAlertText: document.getElementById("drawerAlertText"),
       dismissAlertBtn: document.getElementById("dismissAlertBtn"),
+      undoBtn: document.getElementById("undoBtn"),
+      appendBtn: document.getElementById("appendBtn"),
+      generateMainBtn: document.getElementById("generateMainBtn"),
+      splitMenuToggleBtn: document.getElementById("splitMenuToggleBtn"),
+      splitActionMenu: document.getElementById("splitActionMenu"),
+      replaceBtn: document.getElementById("replaceBtn"),
+      splitResynthesizeBtn: document.getElementById("splitResynthesizeBtn"),
       prevLineBtn: document.getElementById("prevLineBtn"),
       playPauseBtn: document.getElementById("playPauseBtn"),
       playIcon: document.getElementById("playIcon"),
       pauseIcon: document.getElementById("pauseIcon"),
-      playPauseLabel: document.getElementById("playPauseLabel"),
       nextLineBtn: document.getElementById("nextLineBtn"),
       repeatLineBtn: document.getElementById("repeatLineBtn"),
       speedGroup: document.getElementById("speedGroup"),
+      wavyScrubberSvg: document.getElementById("wavyScrubberSvg"),
       lineScrubber: document.getElementById("lineScrubber"),
       playbackReadout: document.getElementById("playbackReadout"),
       autoScrollBtn: document.getElementById("autoScrollBtn"),
@@ -1239,6 +1838,7 @@
       zoomInBtn: document.getElementById("zoomInBtn"),
       zoomFitBtn: document.getElementById("zoomFitBtn"),
       pdfPageReadout: document.getElementById("pdfPageReadout"),
+      paperModeGroup: document.getElementById("paperModeGroup"),
       pdfScroll: document.getElementById("pdfScroll"),
       pdfEmptyState: document.getElementById("pdfEmptyState"),
       pdfPagesContainer: document.getElementById("pdfPagesContainer"),
@@ -1248,6 +1848,103 @@
       dialogueList: document.getElementById("dialogueList"),
       snackbarStack: document.getElementById("snackbarStack"),
     };
+
+    const SVG_NS = "http://www.w3.org/2000/svg";
+    const reducedMotionQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
+
+    function formatChunkIds(ids) {
+      if (!Array.isArray(ids) || !ids.length) return "";
+      const parsed = [];
+      for (const raw of ids) {
+        const m = /^C(\d+)$/i.exec(String(raw).trim());
+        if (m) parsed.push({ num: Number(m[1]), raw: `C${m[1]}` });
+        else parsed.push({ num: null, raw: String(raw).trim() });
+      }
+      const ranges = [];
+      let i = 0;
+      while (i < parsed.length) {
+        if (parsed[i].num === null) {
+          ranges.push(parsed[i].raw);
+          i += 1;
+          continue;
+        }
+        const start = parsed[i].num;
+        let end = start;
+        while (i + 1 < parsed.length && parsed[i + 1].num === end + 1) {
+          end = parsed[i + 1].num;
+          i += 1;
+        }
+        ranges.push(start === end ? `C${start}` : `C${start}–C${end}`);
+        i += 1;
+      }
+      if (ranges.length <= 3) return ranges.join(", ");
+      return `${ranges.slice(0, 3).join(", ")} +${ranges.length - 3}`;
+    }
+
+    function drawWavyTrack(svgEl, ratio, { showThumb = true } = {}) {
+      if (!svgEl) return;
+      const w = Math.max(80, svgEl.clientWidth || 240);
+      const h = Math.max(16, svgEl.clientHeight || 20);
+      const cy = h / 2;
+      const pad = showThumb ? 7 : 2;
+      const trackW = Math.max(10, w - pad * 2);
+      const clamped = Math.max(0, Math.min(1, ratio || 0));
+      const splitX = pad + trackW * clamped;
+
+      svgEl.setAttribute("viewBox", `0 0 ${w} ${h}`);
+      svgEl.textContent = "";
+
+      const remLine = document.createElementNS(SVG_NS, "line");
+      remLine.setAttribute("x1", String(splitX));
+      remLine.setAttribute("y1", String(cy));
+      remLine.setAttribute("x2", String(w - pad));
+      remLine.setAttribute("y2", String(cy));
+      remLine.setAttribute("stroke", "var(--md-surface-highest)");
+      remLine.setAttribute("stroke-width", "3");
+      remLine.setAttribute("stroke-linecap", "round");
+      svgEl.appendChild(remLine);
+
+      if (clamped > 0.002) {
+        if (reducedMotionQuery.matches) {
+          const flat = document.createElementNS(SVG_NS, "line");
+          flat.setAttribute("x1", String(pad));
+          flat.setAttribute("y1", String(cy));
+          flat.setAttribute("x2", String(splitX));
+          flat.setAttribute("y2", String(cy));
+          flat.setAttribute("stroke", "var(--md-primary)");
+          flat.setAttribute("stroke-width", "3");
+          flat.setAttribute("stroke-linecap", "round");
+          svgEl.appendChild(flat);
+        } else {
+          const amp = 3.2;
+          const wavelength = 18;
+          const parts = [`M ${pad.toFixed(1)} ${cy.toFixed(1)}`];
+          for (let x = pad + 2; x <= splitX; x += 2) {
+            const y = cy + Math.sin(((x - pad) / wavelength) * Math.PI * 2) * amp;
+            parts.push(`L ${x.toFixed(1)} ${y.toFixed(1)}`);
+          }
+          const endY = cy + Math.sin(((splitX - pad) / wavelength) * Math.PI * 2) * amp;
+          parts.push(`L ${splitX.toFixed(1)} ${endY.toFixed(1)}`);
+          const path = document.createElementNS(SVG_NS, "path");
+          path.setAttribute("d", parts.join(" "));
+          path.setAttribute("fill", "none");
+          path.setAttribute("stroke", "var(--md-primary)");
+          path.setAttribute("stroke-width", "2.6");
+          path.setAttribute("stroke-linecap", "round");
+          path.setAttribute("stroke-linejoin", "round");
+          svgEl.appendChild(path);
+        }
+      }
+
+      if (showThumb) {
+        const thumb = document.createElementNS(SVG_NS, "circle");
+        thumb.setAttribute("cx", String(splitX));
+        thumb.setAttribute("cy", String(cy));
+        thumb.setAttribute("r", "5.5");
+        thumb.setAttribute("fill", "var(--md-primary)");
+        svgEl.appendChild(thumb);
+      }
+    }
 
     async function loadPdfJs() {
       if (pdfjsLibPromise) return pdfjsLibPromise;
@@ -1341,6 +2038,12 @@
       el.drawerAlertText.textContent = "";
     }
 
+    function setSplitMenuOpen(open) {
+      state.splitMenuOpen = open;
+      el.splitMenuToggleBtn.setAttribute("aria-expanded", String(open));
+      el.splitActionMenu.classList.toggle("hidden-el", !open);
+    }
+
     function setDrawerOpen(open) {
       state.drawerOpen = open;
       el.drawerToggleBtn.setAttribute("aria-expanded", String(open));
@@ -1348,6 +2051,8 @@
       el.scriptSheetScrim.setAttribute("aria-hidden", String(!open));
       el.scriptSheet.classList.toggle("open", open);
       el.scriptSheetScrim.classList.toggle("open", open);
+      if (!open) setSplitMenuOpen(false);
+      else requestAnimationFrame(() => updateCoverageUi());
     }
 
     function formatMinutes(sec) {
@@ -1373,17 +2078,47 @@
       return data;
     }
 
+    function updateModeStatusBadge() {
+      const pLabel = PACING_LABELS[state.pacing] || "Deep Dive";
+      el.modeStatusBadge.textContent = `${pLabel} · ${state.language.toUpperCase()}`;
+    }
+
+    function syncPacingAndLanguageUi() {
+      for (const btn of el.pacingGroup.querySelectorAll(".pacing-btn")) {
+        btn.setAttribute("aria-pressed", String(btn.dataset.pacing === state.pacing));
+      }
+      for (const chip of el.languageGroup.querySelectorAll(".filter-chip")) {
+        chip.setAttribute("aria-pressed", String(chip.dataset.lang === state.language));
+      }
+      updateModeStatusBadge();
+    }
+
+    function applyPaperMode(mode) {
+      state.paperMode = mode || "light";
+      localStorage.setItem("dec.paperMode", state.paperMode);
+      el.pdfPagesContainer.classList.remove("paper-sepia", "paper-dark");
+      if (state.paperMode === "sepia") el.pdfPagesContainer.classList.add("paper-sepia");
+      else if (state.paperMode === "dark") el.pdfPagesContainer.classList.add("paper-dark");
+      for (const btn of el.paperModeGroup.querySelectorAll(".paper-btn")) {
+        btn.setAttribute("aria-pressed", String(btn.dataset.paper === state.paperMode));
+      }
+    }
+
     function populateVoicePairs(pairs, selectedId) {
       state.voicePairs = pairs || state.voicePairs;
+      const filtered = state.voicePairs.filter((vp) => !vp.language || vp.language === state.language);
+      const list = filtered.length ? filtered : state.voicePairs;
       el.voicePairSelect.textContent = "";
-      for (const vp of state.voicePairs) {
+      for (const vp of list) {
         const opt = document.createElement("option");
         opt.value = vp.id;
         opt.textContent = vp.label;
         el.voicePairSelect.appendChild(opt);
       }
-      if (selectedId && state.voicePairs.some((v) => v.id === selectedId)) {
+      if (selectedId && list.some((v) => v.id === selectedId)) {
         el.voicePairSelect.value = selectedId;
+      } else if (list.length) {
+        el.voicePairSelect.value = list[0].id;
       }
     }
 
@@ -1413,7 +2148,7 @@
         opt.value = s.session_id;
         const dur = formatMinutes(s.estimated_total_sec);
         const durPart = dur ? ` · ${dur}` : "";
-        opt.textContent = `${s.title} — ${s.fully_covered_page_count}/${s.page_count} full pgs${durPart}`;
+        opt.textContent = `${s.title} — ${s.fully_covered_page_count}/${s.page_count} pgs${durPart}`;
         el.sessionSelect.appendChild(opt);
       }
       if (activeId) {
@@ -1422,19 +2157,20 @@
       el.deleteSessionBtn.disabled = !el.sessionSelect.value;
     }
 
-    function updateCoverageUi() {
+    function updateCoverageUi({ forceRange = false } = {}) {
       const session = state.currentSession;
       const cov = state.coverage;
       if (!session || !cov) {
         el.coverageSummary.textContent = "No PDF loaded";
         el.partialSummary.textContent = "";
-        el.coverageBarFill.style.transform = "scaleX(0)";
+        el.chapterCompleteBadge.classList.add("hidden-el");
+        drawWavyTrack(el.coverageWavySvg, 0, { showThumb: false });
         return;
       }
       const ratio = cov.total_chunks > 0 ? cov.covered_chunk_count / cov.total_chunks : 0;
-      el.coverageBarFill.style.transform = `scaleX(${Math.max(0, Math.min(1, ratio))})`;
+      drawWavyTrack(el.coverageWavySvg, ratio, { showThumb: true });
       el.coverageSummary.textContent =
-        `Covered: ${cov.covered_chunk_count}/${cov.total_chunks} chunks · ${cov.fully_covered_pages.length}/${session.page_count} full pages`;
+        `Covered: ${cov.fully_covered_pages.length} / ${session.page_count} pages · ${cov.covered_chunk_count} / ${cov.total_chunks} chunks`;
       if (cov.partial_pages.length > 0) {
         const preview = cov.partial_pages
           .slice(0, 3)
@@ -1445,10 +2181,19 @@
         el.partialSummary.textContent = "";
       }
 
+      el.chapterCompleteBadge.classList.toggle("hidden-el", !cov.is_complete);
       el.fromPageInput.max = String(Math.max(1, session.page_count));
       el.toPageInput.max = String(Math.max(1, session.page_count));
-      el.fromPageInput.value = String(cov.suggested_next_range.start_page);
-      el.toPageInput.value = String(cov.suggested_next_range.end_page);
+
+      if (forceRange || !state.manualPageEdit) {
+        if (cov.is_complete) {
+          el.fromPageInput.value = "1";
+          el.toPageInput.value = String(Math.min(4, Math.max(1, session.page_count)));
+        } else {
+          el.fromPageInput.value = String(cov.suggested_next_range.start_page);
+          el.toPageInput.value = String(cov.suggested_next_range.end_page);
+        }
+      }
     }
 
     function buildChunkMap(session) {
@@ -1470,9 +2215,13 @@
       const busy = state.generating;
 
       el.copyPromptBtn.disabled = !hasSession || busy;
+      el.reparseBtn.disabled = !hasSession || busy;
       el.appendBtn.disabled = !hasSession || busy;
+      el.generateMainBtn.disabled = !hasSession || busy;
+      el.splitMenuToggleBtn.disabled = !hasSession || busy;
       el.replaceBtn.disabled = !hasSession || busy;
       el.resynthesizeBtn.disabled = !hasSession || scriptLen === 0 || busy;
+      el.splitResynthesizeBtn.disabled = !hasSession || scriptLen === 0 || busy;
       el.undoBtn.disabled = !hasSession || batchLen === 0 || busy;
       el.deleteSessionBtn.disabled = !hasSession || busy;
 
@@ -1483,6 +2232,34 @@
       el.repeatLineBtn.disabled = !hasAudio;
       el.lineScrubber.disabled = !hasAudio;
       el.lineScrubber.max = String(Math.max(0, scriptLen - 1));
+    }
+
+    function createActiveWaveSvg() {
+      const wrap = document.createElement("span");
+      wrap.className = "active-wave-icon";
+      wrap.setAttribute("aria-hidden", "true");
+      const svg = document.createElementNS(SVG_NS, "svg");
+      svg.setAttribute("width", "14");
+      svg.setAttribute("height", "14");
+      svg.setAttribute("viewBox", "0 0 16 16");
+      svg.setAttribute("fill", "currentColor");
+      const specs = [
+        { x: "2", cls: "wave-bar" },
+        { x: "7", cls: "wave-bar wave-bar-2" },
+        { x: "12", cls: "wave-bar wave-bar-3" },
+      ];
+      for (const s of specs) {
+        const r = document.createElementNS(SVG_NS, "rect");
+        r.setAttribute("x", s.x);
+        r.setAttribute("y", "2");
+        r.setAttribute("width", "2.5");
+        r.setAttribute("height", "12");
+        r.setAttribute("rx", "1.25");
+        r.setAttribute("class", s.cls);
+        svg.appendChild(r);
+      }
+      wrap.appendChild(svg);
+      return wrap;
     }
 
     function renderDialogueList() {
@@ -1510,17 +2287,23 @@
         const meta = document.createElement("div");
         meta.className = "dialogue-card-meta";
 
+        const speakerCluster = document.createElement("span");
+        speakerCluster.className = "speaker-cluster";
+        speakerCluster.appendChild(createActiveWaveSvg());
+
         const badge = document.createElement("span");
         badge.className = `speaker-pill ${line.speaker === "HOST_A" ? "speaker-prof" : "speaker-student"}`;
         badge.textContent = line.speaker === "HOST_A" ? "Professor" : "Student";
-        meta.appendChild(badge);
+        speakerCluster.appendChild(badge);
+        meta.appendChild(speakerCluster);
 
         const refTag = document.createElement("span");
-        refTag.className = "field-label mono-num";
+        refTag.className = "chunk-ref-tag mono-num";
         const firstCid = line.chunk_ids[0];
         const pg = firstCid ? chunkPageMap.get(firstCid) : null;
-        if (pg && line.chunk_ids.length) {
-          refTag.textContent = `Pg ${pg} · ${line.chunk_ids.join(", ")}`;
+        const compactIds = formatChunkIds(line.chunk_ids);
+        if (pg && compactIds) {
+          refTag.textContent = `Pg ${pg} · ${compactIds}`;
         } else {
           refTag.textContent = `Turn ${line.index + 1}`;
         }
@@ -1562,23 +2345,50 @@
 
     function updateAutoScrollUi() {
       el.autoScrollBtn.setAttribute("aria-pressed", String(state.autoScroll));
-      el.autoScrollBtn.textContent = state.autoScroll ? "Auto-Scroll: ON" : "Auto-Scroll: OFF";
     }
 
     function updatePlayPauseUi() {
       el.playPauseBtn.dataset.playing = String(state.isPlaying);
       el.playIcon.classList.toggle("hidden-el", state.isPlaying);
       el.pauseIcon.classList.toggle("hidden-el", !state.isPlaying);
-      el.playPauseLabel.textContent = state.isPlaying ? "Pause" : "Play";
+    }
+
+    function getBestVisiblePage() {
+      if (!state.pageRatios.size) {
+        const visible = Array.from(state.visiblePages);
+        return visible.length ? Math.min(...visible) : 1;
+      }
+      let bestPage = 1;
+      let bestRatio = -1;
+      for (const [pg, ratio] of state.pageRatios.entries()) {
+        if (ratio > bestRatio) {
+          bestRatio = ratio;
+          bestPage = pg;
+        }
+      }
+      return bestPage;
+    }
+
+    function updatePdfPageReadout() {
+      const session = state.currentSession;
+      if (!session || !state.pageSlots.length) {
+        el.pdfPageReadout.textContent = session ? `Page 1 / ${session.page_count}` : "No document";
+        return;
+      }
+      const total = state.pageSlots.length;
+      const pg = state.readoutSource === "playback" && state.lastKnownPage
+        ? state.lastKnownPage
+        : getBestVisiblePage();
+      el.pdfPageReadout.textContent = `Page ${pg} / ${total}`;
     }
 
     function updatePlaybackReadout() {
       const session = state.currentSession;
       if (!session || session.script.length === 0) {
-        el.playbackReadout.textContent = session
-          ? `Line 0 / 0 · Page — / ${session.page_count}`
-          : "Line 0 / 0 · Page — / —";
+        el.playbackReadout.textContent = "Line 0 / 0";
         el.lineScrubber.value = "0";
+        drawWavyTrack(el.wavyScrubberSvg, 0, { showThumb: false });
+        updatePdfPageReadout();
         return;
       }
 
@@ -1593,14 +2403,16 @@
         }
       }
 
-      const pgLabel = state.lastKnownPage ? String(state.lastKnownPage) : "—";
       const remSec = session.script
         .slice(idx)
         .reduce((acc, item) => acc + (item.duration_sec || 0), 0) / state.playbackRate;
       const remPart = remSec > 0 ? ` · ~${Math.max(1, Math.round(remSec / 60))}m left` : "";
-      el.playbackReadout.textContent =
-        `Line ${idx + 1} / ${session.script.length} · Page ${pgLabel} / ${session.page_count}${remPart}`;
+      el.playbackReadout.textContent = `Line ${idx + 1} / ${session.script.length}${remPart}`;
       el.lineScrubber.value = String(idx);
+
+      const ratio = session.script.length > 1 ? idx / (session.script.length - 1) : 1;
+      drawWavyTrack(el.wavyScrubberSvg, ratio, { showThumb: true });
+      updatePdfPageReadout();
     }
 
     function syncVisualLine(index, { scroll = true } = {}) {
@@ -1630,6 +2442,7 @@
       if (scroll && state.autoScroll && firstActiveBox && activeSet.size > 0) {
         firstActiveBox.scrollIntoView({ behavior: "smooth", block: "center" });
       }
+      state.readoutSource = "playback";
       updatePlaybackReadout();
     }
 
@@ -1642,13 +2455,21 @@
         last_line_index: state.currentLineIndex,
         playback_rate: state.playbackRate,
         auto_scroll: state.autoScroll,
+        pacing: state.pacing,
+        language: state.language,
       };
-      state.patchTimer = setTimeout(() => {
-        fetch(`/api/sessions/${encodeURIComponent(sid)}/state`, {
-          method: "PATCH",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(payload),
-        }).catch(() => {});
+      state.patchTimer = setTimeout(async () => {
+        try {
+          const res = await apiJson(`/api/sessions/${encodeURIComponent(sid)}/state`, {
+            method: "PATCH",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(payload),
+          });
+          if (res && res.coverage && state.currentSession && state.currentSession.session_id === sid) {
+            state.coverage = res.coverage;
+            updateCoverageUi();
+          }
+        } catch (_err) {}
       }, 450);
     }
 
@@ -1869,6 +2690,7 @@
       }
       state.pageSlots = [];
       state.visiblePages.clear();
+      state.pageRatios.clear();
       state.pdfDoc = null;
       el.pdfPagesContainer.textContent = "";
     }
@@ -1932,7 +2754,7 @@
       const visible = Array.from(state.visiblePages);
       const minVis = visible.length ? Math.min(...visible) : 1;
       const maxVis = visible.length ? Math.max(...visible) : 1;
-      el.pdfPageReadout.textContent = `Page ${minVis} / ${state.pageSlots.length}`;
+      updatePdfPageReadout();
 
       const renderLo = Math.max(1, minVis - 4);
       const renderHi = Math.min(state.pageSlots.length, maxVis + 4);
@@ -2069,17 +2891,23 @@
         (entries) => {
           for (const entry of entries) {
             const p = Number(entry.target.dataset.pageNum);
-            if (entry.isIntersecting) state.visiblePages.add(p);
-            else state.visiblePages.delete(p);
+            if (entry.isIntersecting) {
+              state.visiblePages.add(p);
+              state.pageRatios.set(p, entry.intersectionRatio);
+            } else {
+              state.visiblePages.delete(p);
+              state.pageRatios.delete(p);
+            }
           }
           refreshPdfRenderWindow();
         },
-        { root: el.pdfScroll, rootMargin: "200px 0px" }
+        { root: el.pdfScroll, rootMargin: "200px 0px", threshold: [0, 0.25, 0.5, 0.75, 1.0] }
       );
       for (const slot of state.pageSlots) {
         state.observer.observe(slot.frameEl);
       }
       state.visiblePages.add(1);
+      state.pageRatios.set(1, 1.0);
       refreshPdfRenderWindow();
       syncVisualLine(state.currentLineIndex, { scroll: false });
     }
@@ -2110,6 +2938,12 @@
 
       state.currentSession = payload.session;
       state.coverage = payload.coverage;
+      state.manualPageEdit = false;
+
+      state.pacing = payload.session.state.pacing || "deep_dive";
+      state.language = payload.session.state.language || "en";
+      syncPacingAndLanguageUi();
+
       if (payload.voice_pairs) {
         populateVoicePairs(payload.voice_pairs, payload.session.state.voice_pair_id);
       } else {
@@ -2123,7 +2957,7 @@
       buildChunkMap(state.currentSession);
       applyRateToBoth(payload.session.state.playback_rate || 1.0);
       updateAutoScrollUi();
-      updateCoverageUi();
+      updateCoverageUi({ forceRange: true });
       renderDialogueList();
       updateActionButtons();
       refreshChunkOverlayStates();
@@ -2164,6 +2998,20 @@
       populateSessionSelect(sessionId);
     }
 
+    async function refreshVisionStatus() {
+      try {
+        const st = await apiJson("/api/vision/status");
+        state.visionAvailable = Boolean(st && st.available);
+        el.visionStatusPill.dataset.available = String(state.visionAvailable);
+        el.visionStatusPill.textContent = state.visionAvailable ? "Vision OCR: Ready" : "Text Mode";
+        el.visionStatusPill.title = `${st.model} @ ${st.url}`;
+      } catch (_err) {
+        state.visionAvailable = false;
+        el.visionStatusPill.dataset.available = "false";
+        el.visionStatusPill.textContent = "Text Mode";
+      }
+    }
+
     async function handleUploadFile(file) {
       if (!file) return;
       hideDrawerAlert();
@@ -2171,6 +3019,7 @@
       el.uploadBtnLabel.textContent = "Parsing PDF...";
       const fd = new FormData();
       fd.append("file", file);
+      fd.append("use_vision", "true");
       try {
         const payload = await apiJson("/api/upload", { method: "POST", body: fd });
         await refreshSessionList(payload.session.session_id);
@@ -2178,13 +3027,38 @@
         if (payload.warnings && payload.warnings.length) {
           showDrawerAlert(payload.warnings.join(" "), "warning");
         }
-        showSnackbar(`Loaded "${payload.session.title}" (${payload.session.page_count} pages).`);
+        const visTag = payload.vision_used ? " · Vision OCR enriched" : "";
+        showSnackbar(`Loaded "${payload.session.title}" (${payload.session.page_count} pages${visTag}).`);
       } catch (err) {
         showSnackbar(err.message);
       } finally {
         el.uploadBtn.disabled = false;
         el.uploadBtnLabel.textContent = "Upload PDF";
         el.pdfInput.value = "";
+      }
+    }
+
+    async function handleReparse() {
+      const session = state.currentSession;
+      if (!session || state.generating) return;
+      hideDrawerAlert();
+      el.reparseBtn.disabled = true;
+      try {
+        const payload = await apiJson(`/api/sessions/${encodeURIComponent(session.session_id)}/reparse`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ use_vision: true }),
+        });
+        applySessionData(payload, { reloadPdf: true });
+        await refreshSessionList(payload.session.session_id);
+        if (payload.warnings && payload.warnings.length) {
+          showDrawerAlert(payload.warnings.join(" "), "warning");
+        }
+        showSnackbar(`Re-parsed ${payload.session.chunks.length} chunks.`);
+      } catch (err) {
+        showDrawerAlert(err.message, "error");
+      } finally {
+        updateActionButtons();
       }
     }
 
@@ -2195,8 +3069,14 @@
       const sp = Math.max(1, Number(el.fromPageInput.value || 1));
       const ep = Math.max(sp, Number(el.toPageInput.value || sp));
       try {
+        const qs = new URLSearchParams({
+          start_page: String(sp),
+          end_page: String(ep),
+          pacing: state.pacing,
+          language: state.language,
+        });
         const res = await apiJson(
-          `/api/sessions/${encodeURIComponent(session.session_id)}/prompt?start_page=${sp}&end_page=${ep}`
+          `/api/sessions/${encodeURIComponent(session.session_id)}/prompt?${qs.toString()}`
         );
         state.lastCopiedRange = { start_page: res.start_page, end_page: res.end_page };
         if (navigator.clipboard && navigator.clipboard.writeText) {
@@ -2210,7 +3090,7 @@
           tmp.remove();
         }
         const [cStart, cEnd] = res.chunk_id_range;
-        showSnackbar(`Copied! Pages ${res.start_page}–${res.end_page} (${cStart}–${cEnd}).`);
+        showSnackbar(`Copied ${PACING_LABELS[state.pacing] || state.pacing} (${state.language.toUpperCase()}) prompt: Pages ${res.start_page}–${res.end_page} (${cStart}–${cEnd}).`);
       } catch (err) {
         showDrawerAlert(err.message, "error");
       }
@@ -2245,6 +3125,7 @@
       const session = state.currentSession;
       if (!session) return;
       hideDrawerAlert();
+      setSplitMenuOpen(false);
 
       if (mode === "replace" && session.script.length > 0) {
         const ok = window.confirm(
@@ -2278,6 +3159,8 @@
             mode,
             start_page: sp > 0 ? sp : null,
             end_page: ep >= sp && sp > 0 ? ep : null,
+            pacing: state.pacing,
+            language: state.language,
           }),
         });
         el.jsonInput.value = "";
@@ -2305,6 +3188,7 @@
       const session = state.currentSession;
       if (!session || !session.script.length) return;
       hideDrawerAlert();
+      setSplitMenuOpen(false);
       const voices = getSelectedVoices();
       state.generating = true;
       updateActionButtons();
@@ -2379,12 +3263,49 @@
     el.closeSheetBtn.addEventListener("click", () => setDrawerOpen(false));
     el.scriptSheetScrim.addEventListener("click", () => setDrawerOpen(false));
     el.dismissAlertBtn.addEventListener("click", hideDrawerAlert);
+    el.reparseBtn.addEventListener("click", handleReparse);
+
+    el.pacingGroup.addEventListener("click", (evt) => {
+      const btn = evt.target.closest(".pacing-btn");
+      if (!btn) return;
+      state.pacing = btn.dataset.pacing;
+      state.manualPageEdit = false;
+      syncPacingAndLanguageUi();
+      scheduleStatePatch();
+    });
+
+    el.languageGroup.addEventListener("click", (evt) => {
+      const chip = evt.target.closest(".filter-chip");
+      if (!chip) return;
+      state.language = chip.dataset.lang;
+      syncPacingAndLanguageUi();
+      populateVoicePairs(state.voicePairs, el.voicePairSelect.value);
+      scheduleStatePatch();
+    });
+
+    el.fromPageInput.addEventListener("input", () => { state.manualPageEdit = true; });
+    el.toPageInput.addEventListener("input", () => { state.manualPageEdit = true; });
 
     el.copyPromptBtn.addEventListener("click", handleCopyPrompt);
     el.appendBtn.addEventListener("click", () => handleGenerate("append"));
+    el.generateMainBtn.addEventListener("click", () => {
+      const hasScript = Boolean(state.currentSession && state.currentSession.script.length > 0);
+      handleGenerate(hasScript ? "append" : "replace");
+    });
+    el.splitMenuToggleBtn.addEventListener("click", (evt) => {
+      evt.stopPropagation();
+      setSplitMenuOpen(!state.splitMenuOpen);
+    });
     el.replaceBtn.addEventListener("click", () => handleGenerate("replace"));
+    el.splitResynthesizeBtn.addEventListener("click", handleResynthesize);
     el.undoBtn.addEventListener("click", handleUndo);
     el.resynthesizeBtn.addEventListener("click", handleResynthesize);
+
+    document.addEventListener("click", (evt) => {
+      if (state.splitMenuOpen && !evt.target.closest(".split-btn-wrap")) {
+        setSplitMenuOpen(false);
+      }
+    });
 
     el.playPauseBtn.addEventListener("click", () => togglePlayPause({ instant: false }));
     el.prevLineBtn.addEventListener("click", () => jumpToLine(state.currentLineIndex - 1, { autoplay: true }));
@@ -2416,8 +3337,27 @@
       applyZoom(availableW / state.pageSlots[0].baseWidth);
     });
 
+    el.paperModeGroup.addEventListener("click", (evt) => {
+      const btn = evt.target.closest(".paper-btn");
+      if (!btn) return;
+      applyPaperMode(btn.dataset.paper);
+    });
+
+    for (const evtName of ["wheel", "pointerdown", "touchstart"]) {
+      el.pdfScroll.addEventListener(evtName, () => {
+        state.readoutSource = "browse";
+        updatePdfPageReadout();
+      }, { passive: true });
+    }
+
     el.tabPdfBtn.addEventListener("click", () => setMobileTab("pdf"));
     el.tabDialogueBtn.addEventListener("click", () => setMobileTab("dialogue"));
+
+    const resizeObserver = new ResizeObserver(() => {
+      updatePlaybackReadout();
+      if (state.drawerOpen) updateCoverageUi();
+    });
+    resizeObserver.observe(el.wavyScrubberSvg);
 
     document.addEventListener("keydown", (evt) => {
       if (evt.ctrlKey || evt.altKey || evt.metaKey) return;
@@ -2426,12 +3366,21 @@
         activeEl &&
         (["INPUT", "TEXTAREA", "SELECT"].includes(activeEl.tagName) || activeEl.isContentEditable)
       ) {
-        if (evt.key === "Escape" && state.drawerOpen) setDrawerOpen(false);
+        if (evt.key === "Escape") {
+          if (state.splitMenuOpen) setSplitMenuOpen(false);
+          else if (state.drawerOpen) setDrawerOpen(false);
+        }
         return;
       }
-      if (evt.key === "Escape" && state.drawerOpen) {
-        setDrawerOpen(false);
-        return;
+      if (evt.key === "Escape") {
+        if (state.splitMenuOpen) {
+          setSplitMenuOpen(false);
+          return;
+        }
+        if (state.drawerOpen) {
+          setDrawerOpen(false);
+          return;
+        }
       }
       if (!state.currentSession || !state.currentSession.script.length) return;
       if (evt.code === "Space") {
@@ -2450,8 +3399,11 @@
     });
 
     async function bootstrap() {
+      applyPaperMode(state.paperMode);
+      syncPacingAndLanguageUi();
+      drawWavyTrack(el.wavyScrubberSvg, 0, { showThumb: false });
       try {
-        const voices = await apiJson("/api/voices");
+        const [voices] = await Promise.all([apiJson("/api/voices"), refreshVisionStatus()]);
         populateVoicePairs(voices.voice_pairs || [], "us_natural");
         await refreshSessionList(null);
         if (state.sessions.length) {

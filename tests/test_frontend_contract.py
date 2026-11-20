@@ -65,12 +65,33 @@ def test_frontend_file_served_and_security_contracts():
         "dialoguePane",
         "snackbarStack",
         "mobileTabs",
+        # v3 additions
+        "modeStatusBadge",
+        "pacingGroup",
+        "languageGroup",
+        "paperModeGroup",
+        "visionStatusPill",
+        "reparseBtn",
+        "wavyScrubberSvg",
+        "coverageWavySvg",
+        "chapterCompleteBadge",
+        "generateMainBtn",
+        "splitMenuToggleBtn",
+        "splitActionMenu",
+        "splitResynthesizeBtn",
+        "pdfPageReadout",
+        "zoomLabel",
     ]:
         assert f'id="{elem_id}"' in html, f"Missing element id={elem_id}"
 
-    # Zero side-stripe >1px borders, gradient text, or emojis
+    # Zero side-stripe >1px borders, gradient text, or Tailwind CDN
     assert not re.search(r"border-(?:left|right)\s*:\s*[2-9]px", html)
     assert "background-clip: text" not in html
+    assert "cdn.tailwindcss.com" not in html
+    assert "Plus Jakarta Sans" in html
+    assert "function formatChunkIds" in html
+    assert ".paper-dark .pdf-page-canvas" in html and ".paper-dark .chunk" not in html
+    assert "/api/vision/status" in html and "/reparse" in html
 
 
 def test_frontend_passes_deterministic_m3_code_audit(tmp_path: Path):
@@ -93,6 +114,21 @@ def test_frontend_passes_deterministic_m3_code_audit(tmp_path: Path):
         check=False,
     )
     assert proc.returncode == 0, f"audit_m3_spec.py failed:\n{proc.stdout}\n{proc.stderr}"
+    report = json.loads(proc.stdout)
+    assert report["passed"] is True
+    assert report["errors"] == []
+    assert report["warnings"] == []
+
+
+def test_m3_spec_passes_deterministic_audit():
+    spec_path = Path("docs/superpowers/specs/2026-11-20-deepexamcast-m3-ui-spec.md")
+    proc = subprocess.run(
+        [sys.executable, str(AUDIT_SCRIPT), "--spec", str(spec_path)],
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+    assert proc.returncode == 0, f"audit_m3_spec.py --spec failed:\n{proc.stdout}\n{proc.stderr}"
     report = json.loads(proc.stdout)
     assert report["passed"] is True
     assert report["errors"] == []
