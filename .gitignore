@@ -1,0 +1,15 @@
+# Runtime cached sessions (PDFs, scripts, generated audio)
+sessions/
+
+# Python virtual environments & caches
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# OS / editor artifacts
+.DS_Store
+Thumbs.db
