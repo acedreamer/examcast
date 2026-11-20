@@ -126,6 +126,7 @@ def parse_gemini_script(raw_json: str, valid_chunk_ids: set[str]) -> ParsedScrip
         if not isinstance(raw_text, str):
             raise ScriptParseError(f"Item {idx} is missing required string field 'text'.")
         spoken_text = _strip_markdown(raw_text)
+        # Unicode isalnum() check — never use ASCII-only regex so Devanagari & Malayalam pass cleanly
         if not spoken_text or not any(ch.isalnum() for ch in spoken_text):
             raise ScriptParseError(
                 f"Item {idx} has no speakable alphanumeric text after cleanup (got {raw_text!r})."

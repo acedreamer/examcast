@@ -1,14 +1,14 @@
-"""Deep-dive Gemini Web prompt builder for page-range chunk batches."""
+"""Profile-driven Gemini Web prompt builder for page-range chunk batches."""
 
 from __future__ import annotations
 
 from pydantic import BaseModel
 
-from deepexamcast.models import Chunk, ScriptLine
+from deepexamcast.models import Chunk, LanguageCode, PacingMode, ScriptLine
 
 
 class PromptBuildError(ValueError):
-    """Raised when page range is invalid or contains no extractable text chunks."""
+    """Raised when page range, pacing, or language is invalid or no chunks exist."""
 
 
 class PromptResult(BaseModel):
@@ -18,6 +18,86 @@ class PromptResult(BaseModel):
     chunk_count: int
     chunk_id_range: list[str]
     char_count: int
+    pacing: PacingMode = "deep_dive"
+    language: LanguageCode = "en"
+
+
+PACING_PROFILES: dict[str, dict] = {
+    "deep_dive": {
+        "label": "Deep Dive (Scratch to Finish)",
+        "turns_per_page": (6, 8),
+        "words_per_page": (190, 230),
+        "instructions": (
+            "PACING PROFILE — DEEP DIVE (THEORY MASTERY):\n"
+            "- Quantitative Target for this batch: {turn_lo}–{turn_hi} dialogue turns and {word_lo}–{word_hi} spoken words (~75–90 seconds/page at 150 wpm).\n"
+            "- STRICT ANTI-MEGA-BUNDLING RULE: NEVER bundle more than 2–3 closely related chunks into a single turn. "
+            "Every distinct concept, heading, definition, mechanism, formula, table, or diagram MUST receive its own 2–4 turn teaching exchange.\n"
+            "- TURN CADENCE: HOST_A (Professor) teaching turns MUST be rich, unhurried 3–5 natural spoken sentences (50–85 words); "
+            "HOST_B (Student) turns MUST be sharp 1–3 sentences (20–40 words) asking genuine conceptual/exam questions rather than empty agreements.\n"
+            "- MANDATORY 5-BEAT THEORY MASTERY STRUCTURE (for every core topic):\n"
+            "  1. Intuition / Why It Exists (build the mental model before jargon).\n"
+            "  2. Deconstructed Formal Definition & Mechanism (exact syllabus keywords explained clearly).\n"
+            "  3. Concrete Real-World Analogy or Walkthrough (for [TABLE], [CHART], or [FIGURE] chunks, explicitly narrate what the comparisons, axes, or diagram flow show).\n"
+            "  4. Student Confusion Check & Edge Cases (HOST_B asks about common exam traps, distinctions, or limitations).\n"
+            "  5. Exam Takeaway Anchor (crisp memory hook + structured exam_note with exact university exam keywords/formulas)."
+        ),
+    },
+    "revision": {
+        "label": "Revision (Exam Night Sprint)",
+        "turns_per_page": (3, 4),
+        "words_per_page": (90, 120),
+        "instructions": (
+            "PACING PROFILE — EXAM NIGHT SPRINT (HIGH-YIELD REVISION):\n"
+            "- Quantitative Target for this batch: {turn_lo}–{turn_hi} dialogue turns and {word_lo}–{word_hi} spoken words (~35–45 seconds/page).\n"
+            "- Cover every single chunk ID rapidly with zero skimming. Punch straight to exact definitions, syllabus keywords, side-by-side comparisons, and mnemonics.\n"
+            "- Include a crisp, high-yield exam_note on nearly every turn for rapid last-minute scanning."
+        ),
+    },
+    "exam_drill": {
+        "label": "Viva Q&A (Exam Drill)",
+        "turns_per_page": (4, 6),
+        "words_per_page": None,
+        "instructions": (
+            "PACING PROFILE — VIVA / Q&A GRILL:\n"
+            "- Quantitative Target for this batch: {turn_lo}–{turn_hi} dialogue turns.\n"
+            "- For every topic/chunk group, HOST_B or HOST_A poses a likely 3-mark or 7-mark university exam / viva question, "
+            "gives a brief rhetorical beat, and lays out the exact point-by-point marking-scheme answer to score full marks."
+        ),
+    },
+    "eli5": {
+        "label": "ELI5 (Intuition First)",
+        "turns_per_page": (5, 7),
+        "words_per_page": (150, 190),
+        "instructions": (
+            "PACING PROFILE — INTUITION FIRST (ELI5):\n"
+            "- Quantitative Target for this batch: {turn_lo}–{turn_hi} dialogue turns and {word_lo}–{word_hi} spoken words.\n"
+            "- Strip jargon first using vivid everyday analogies and concrete mental pictures before linking each idea back to formal exam terminology."
+        ),
+    },
+}
+
+LANGUAGE_PROFILES: dict[str, str] = {
+    "en": (
+        "LANGUAGE & AUDIO STYLE (ENGLISH): Natural spoken English. Keep zero markdown symbols (*, #, _, `) inside spoken \"text\". "
+        "Spell out all math symbols and notation as natural spoken English (e.g., \"x squared\", \"equals\", \"greater than or equal to\", \"O of n log n\")."
+    ),
+    "hi": (
+        "LANGUAGE & AUDIO STYLE (HINDI / HINGLISH): Write natural conversational Indian classroom Hindi in Devanagari script "
+        "(avoid overly stiff Sanskritized news phrasing). Keep standard CS/engineering technical terms natural in context. "
+        "Keep zero markdown symbols inside spoken \"text\". IMPORTANT: Keep \"exam_note\" in crisp English keywords/formulas for written university exam recall."
+    ),
+    "ml": (
+        "LANGUAGE & AUDIO STYLE (MALAYALAM / MANGLISH): Write natural conversational classroom Malayalam in Malayalam script "
+        "(warm professor-student tone, NOT stiff formal newsreader Malayalam), weaving standard English CS/engineering technical terms naturally. "
+        "Keep zero markdown symbols inside spoken \"text\". IMPORTANT: Keep \"exam_note\" in crisp English keywords/formulas for written university exam recall."
+    ),
+}
+
+
+def _format_chunk_line(c: Chunk) -> str:
+    if c.chunk_type == "text":
+        return f"[{c.id}] (Page {c.page}): {c.text}"
+    return f"[{c.id}] (Page {c.page}) [{c.chunk_type.upper()}]: {c.text}"
 
 
 def build_prompt(
@@ -26,8 +106,15 @@ def build_prompt(
     start_page: int,
     end_page: int,
     recent_lines: list[ScriptLine] | None = None,
+    pacing: PacingMode = "deep_dive",
+    language: LanguageCode = "en",
 ) -> PromptResult:
     """Build a ready-to-paste Gemini prompt covering chunks in [start_page, end_page]."""
+    if pacing not in PACING_PROFILES:
+        raise PromptBuildError(f"Unsupported pacing profile: {pacing!r}.")
+    if language not in LANGUAGE_PROFILES:
+        raise PromptBuildError(f"Unsupported language code: {language!r}.")
+
     if start_page < 1 or end_page < start_page or end_page > page_count:
         raise PromptBuildError(
             f"Invalid page range {start_page}..{end_page} for document with {page_count} page(s)."
@@ -42,7 +129,20 @@ def build_prompt(
     c_start = selected[0].id
     c_end = selected[-1].id
     char_count = sum(len(c.text) for c in selected)
-    chunk_lines = "\n".join(f"[{c.id}] (Page {c.page}): {c.text}" for c in selected)
+    chunk_lines = "\n".join(_format_chunk_line(c) for c in selected)
+
+    num_pages = end_page - start_page + 1
+    profile = PACING_PROFILES[pacing]
+    t_lo, t_hi = profile["turns_per_page"]
+    w_range = profile["words_per_page"]
+    w_lo, w_hi = w_range if w_range is not None else (0, 0)
+    pacing_block = profile["instructions"].format(
+        turn_lo=num_pages * t_lo,
+        turn_hi=num_pages * t_hi,
+        word_lo=num_pages * w_lo,
+        word_hi=num_pages * w_hi,
+    )
+    language_block = LANGUAGE_PROFILES[language]
 
     continuity_block = ""
     if recent_lines and start_page > 1:
@@ -57,16 +157,14 @@ def build_prompt(
     prompt = (
         f"You are scripting an in-depth, exam-prep study podcast between an enthusiastic, crystal-clear "
         f"Professor (HOST_A) and a sharp, curious Exam Student (HOST_B).\n"
-        f"Study source covers Pages {start_page}–{end_page} ({len(selected)} chunks: {c_start} through {c_end}).\n\n"
+        f"Study source covers Pages {start_page}–{end_page} ({num_pages} page(s), {len(selected)} chunks: {c_start} through {c_end}).\n\n"
         f"CRITICAL RULES — FOLLOW EVERY SINGLE ONE:\n"
-        f"1. ZERO SKIMMING: Cover EVERY single chunk ID in exact sequential order from {c_start} to {c_end} without skipping any ID. "
-        f"Explain every definition, mechanism, formula, exception/edge case, and likely exam question thoroughly using intuitive analogies and memory hooks.\n"
-        f"2. CONVERSATIONAL AUDIO STYLE: Keep each spoken turn natural and engaging (1–3 sentences per turn). "
-        f"Use NO markdown symbols (*, #, _, `) inside spoken \"text\". Spell out all math symbols and notation as natural spoken English "
-        f"(e.g., \"x squared\", \"equals\", \"greater than or equal to\", \"O of n log n\").\n"
-        f"3. EXACT TRACEABILITY: Every turn must reference the chunk ID(s) it explains in \"chunk_ids\". "
-        f"Add an optional concise 1-line formula, distinction, or exam trap in \"exam_note\" when helpful (omit or set null otherwise).\n"
-        f"4. STRICTLY VALID JSON ONLY: Output ONLY a raw JSON array (no intro prose, no outro prose) matching this exact schema:\n"
+        f"1. ZERO SKIMMING: Cover EVERY single chunk ID in exact sequential order from {c_start} to {c_end} without skipping any ID.\n"
+        f"2. {language_block}\n"
+        f"3. {pacing_block}\n"
+        f"4. EXACT TRACEABILITY: Every turn must reference the chunk ID(s) it explains in \"chunk_ids\". "
+        f"Add a concise 1-line formula, distinction, or exam trap in \"exam_note\" when helpful (omit or set null otherwise).\n"
+        f"5. STRICTLY VALID JSON ONLY: Output ONLY a raw JSON array (no intro prose, no outro prose) matching this exact schema:\n"
         f"[\n"
         f"  {{\n"
         f'    "speaker": "HOST_A",\n'
@@ -87,4 +185,6 @@ def build_prompt(
         chunk_count=len(selected),
         chunk_id_range=[c_start, c_end],
         char_count=char_count,
+        pacing=pacing,
+        language=language,
     )

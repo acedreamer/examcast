@@ -12,10 +12,12 @@ import shutil
 import uuid
 
 from deepexamcast.models import (
+    PACING_BATCH_LIMITS,
     BatchRecord,
     Chunk,
     CoverageInfo,
     GenerateProgress,
+    PacingMode,
     PageCoverage,
     PageInfo,
     ScriptLine,
@@ -30,9 +32,7 @@ AUDIO_FILE_RE = re.compile(r"^[0-9a-f]{32}\.mp3$")
 _NON_SLUG_RE = re.compile(r"[^a-z0-9_-]+")
 _MULTI_DASH_RE = re.compile(r"-{2,}")
 
-MAX_BATCH_CHUNKS = 28
-MAX_BATCH_CHARS = 12000
-MAX_BATCH_PAGES = 5
+MAX_BATCH_CHUNKS, MAX_BATCH_CHARS, MAX_BATCH_PAGES = PACING_BATCH_LIMITS["deep_dive"]
 
 
 class SessionNotFoundError(KeyError):
@@ -77,8 +77,12 @@ def _atomic_write_text(path: Path, text: str) -> None:
         raise
 
 
-def compute_coverage(session: SessionData) -> CoverageInfo:
-    """Compute chunk-level coverage and budgeted next-batch range from session.script."""
+def compute_coverage(session: SessionData, pacing: PacingMode | None = None) -> CoverageInfo:
+    """Compute chunk-level coverage and pacing-budgeted next-batch range from session.script."""
+    effective_pacing = pacing or session.state.pacing or "deep_dive"
+    max_chunks, max_chars, max_pages = PACING_BATCH_LIMITS.get(
+        effective_pacing, PACING_BATCH_LIMITS["deep_dive"]
+    )
     valid_ids = {c.id for c in session.chunks}
     covered_set = {
         cid
@@ -130,7 +134,7 @@ def compute_coverage(session: SessionData) -> CoverageInfo:
             break
 
     max_page = max(1, session.page_count)
-    end_limit = min(start_page + MAX_BATCH_PAGES - 1, max_page)
+    end_limit = min(start_page + max_pages - 1, max_page)
     first_chunks = chunks_by_page.get(start_page, [])
     cum_chunks = len(first_chunks)
     cum_chars = sum(len(c.text) for c in first_chunks)
@@ -140,7 +144,7 @@ def compute_coverage(session: SessionData) -> CoverageInfo:
         q_chunks = chunks_by_page.get(q, [])
         q_count = len(q_chunks)
         q_chars = sum(len(c.text) for c in q_chunks)
-        if cum_chunks + q_count <= MAX_BATCH_CHUNKS and cum_chars + q_chars <= MAX_BATCH_CHARS:
+        if cum_chunks + q_count <= max_chunks and cum_chars + q_chars <= max_chars:
             end_page = q
             cum_chunks += q_count
             cum_chars += q_chars
@@ -148,6 +152,7 @@ def compute_coverage(session: SessionData) -> CoverageInfo:
             break
 
     estimated_total_sec = round(sum(line.duration_sec for line in session.script), 2)
+    is_complete = bool(session.chunks) and len(covered_chunk_ids) >= len(session.chunks)
 
     return CoverageInfo(
         total_chunks=len(session.chunks),
@@ -163,6 +168,7 @@ def compute_coverage(session: SessionData) -> CoverageInfo:
             char_count=cum_chars,
         ),
         estimated_total_sec=estimated_total_sec,
+        is_complete=is_complete,
     )
 
 

@@ -70,3 +70,19 @@ def test_invalid_or_empty_json_raises_informative_error():
         parse_gemini_script("[]", {"C1"})
     with pytest.raises(ScriptParseError, match="line"):
         parse_gemini_script('[{"speaker": "HOST_A", "text": "unclosed"', {"C1"})
+
+
+def test_pure_devanagari_and_malayalam_lines_are_speakable():
+    res = parse_gemini_script(
+        json.dumps(
+            [
+                {"speaker": "HOST_A", "text": "नमस्ते दोस्तों, आज हम खोज एल्गोरिदम समझेंगे।", "chunk_ids": ["C1"]},
+                {"speaker": "HOST_B", "text": "നമസ്കാരം, ഇന്ന് നമ്മൾ സെർച്ച് അൽഗോരിതം പഠിക്കാം. അവൻ, അൾ", "chunk_ids": ["C1"]},
+            ],
+            ensure_ascii=False,
+        ),
+        {"C1"},
+    )
+    assert len(res.items) == 2
+    with pytest.raises(ScriptParseError, match="speakable"):
+        parse_gemini_script('[{"speaker": "HOST_A", "text": "। ॥ — …", "chunk_ids": ["C1"]}]', {"C1"})

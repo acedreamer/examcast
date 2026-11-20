@@ -113,3 +113,34 @@ def test_multistep_undo_snapshots_retained_and_pruned_at_3(tmp_path: Path):
 
     retained = store.collect_retained_audio_filenames(session)
     assert len(retained) == 3
+
+
+def test_pacing_budgets_and_is_complete(tmp_path: Path):
+    store = SessionStore(tmp_path)
+    pages = [PageInfo(page=p, width=600, height=800, chunk_count=7) for p in range(1, 9)]
+    chunks = [
+        Chunk(id=f"C{i}", page=1 + (i - 1) // 7, bbox=[0.1, 0.1, 0.9, 0.2], text="X" * 300)
+        for i in range(1, 57)
+    ]
+    s = store.create_session("budget.pdf", b"%PDF-1.4", pages, chunks)
+    dd = compute_coverage(s).suggested_next_range
+    assert dd.chunk_count <= 20 and dd.char_count <= 9000 and dd.end_page - dd.start_page + 1 <= 4
+    rv = compute_coverage(s, pacing="revision").suggested_next_range
+    assert rv.chunk_count <= 32 and rv.end_page - rv.start_page + 1 <= 5
+    assert rv.end_page > dd.end_page
+    assert compute_coverage(s).is_complete is False
+
+    # Mark all chunks covered -> is_complete True
+    h = compute_audio_hash("v", "all")
+    s.script = [
+        ScriptLine(
+            index=0,
+            speaker="HOST_A",
+            text="all",
+            chunk_ids=[c.id for c in chunks],
+            voice="v",
+            audio_hash=h,
+            audio_file=f"{h}.mp3",
+        )
+    ]
+    assert compute_coverage(s).is_complete is True

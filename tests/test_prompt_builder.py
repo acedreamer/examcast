@@ -63,3 +63,42 @@ def test_build_prompt_validation_errors():
         build_prompt(_sample_chunks(), page_count=6, start_page=1, end_page=9)
     with pytest.raises(PromptBuildError, match="No extractable text chunks"):
         build_prompt(_sample_chunks(), page_count=6, start_page=4, end_page=5)
+
+
+def test_deep_dive_injects_budgets_anti_bundling_and_five_beats():
+    chunks = [
+        Chunk(id=f"C{i}", page=1 + (i - 1) // 3, bbox=[0.1, 0.1, 0.9, 0.2], text=f"Concept {i}")
+        for i in range(1, 13)
+    ]
+    chunks[4] = chunks[4].model_copy(update={"chunk_type": "table", "text": "| a | b |"})
+    r = build_prompt(chunks, page_count=4, start_page=1, end_page=4)
+    assert r.pacing == "deep_dive"
+    assert "24–32 dialogue turns" in r.prompt          # 6*4 – 8*4
+    assert "760–920 spoken words" in r.prompt          # 190*4 – 230*4
+    assert "NEVER bundle more than 2–3" in r.prompt
+    for beat in ("Intuition", "Formal Definition", "Analogy", "Confusion Check", "Exam Takeaway"):
+        assert beat in r.prompt
+    assert "[C5] (Page 2) [TABLE]: | a | b |" in r.prompt
+    assert "[C1] (Page 1): Concept 1" in r.prompt
+
+
+def test_pacing_profiles_render_distinct_instructions():
+    prompts = {
+        p: build_prompt(_sample_chunks(), 6, 2, 3, pacing=p).prompt
+        for p in ("deep_dive", "revision", "exam_drill", "eli5")
+    }
+    assert "EXAM NIGHT SPRINT" in prompts["revision"] and "6–8 dialogue turns" in prompts["revision"]
+    assert "VIVA" in prompts["exam_drill"] and "7-mark" in prompts["exam_drill"]
+    assert "INTUITION FIRST" in prompts["eli5"]
+    assert len(set(prompts.values())) == 4
+    for p in prompts.values():
+        assert "ZERO SKIMMING" in p
+    with pytest.raises(PromptBuildError):
+        build_prompt(_sample_chunks(), 6, 2, 3, pacing="speedrun")
+
+
+def test_hindi_and_malayalam_language_rules():
+    hi = build_prompt(_sample_chunks(), 6, 2, 3, language="hi").prompt
+    ml = build_prompt(_sample_chunks(), 6, 2, 3, language="ml").prompt
+    assert "Devanagari" in hi and "exam_note" in hi and "English" in hi
+    assert "Malayalam script" in ml and "exam_note" in ml and "English" in ml
