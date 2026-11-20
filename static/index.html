@@ -1,0 +1,2471 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DeepExamCast — Synced Exam Audio Lecture Studio</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&family=Sora:wght@500;600;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <style data-m3-tokens>
+    :root {
+      /* Material 3 Expressive — Nocturnal Study-Lamp Dark Theme */
+      --md-sys-color-primary: #F5C84C;
+      --md-sys-color-on-primary: #3D2E00;
+      --md-sys-color-primary-container: #574300;
+      --md-sys-color-on-primary-container: #FFE08A;
+      --md-sys-color-primary-fixed: #FFE08A;
+      --md-sys-color-primary-fixed-dim: #F5C84C;
+      --md-sys-color-on-primary-fixed: #241A00;
+      --md-sys-color-on-primary-fixed-variant: #574300;
+
+      --md-sys-color-secondary: #ADC6FF;
+      --md-sys-color-on-secondary: #102F60;
+      --md-sys-color-secondary-container: #2B4678;
+      --md-sys-color-on-secondary-container: #D8E2FF;
+
+      --md-sys-color-tertiary: #80D5C8;
+      --md-sys-color-on-tertiary: #003731;
+      --md-sys-color-tertiary-container: #005048;
+      --md-sys-color-on-tertiary-container: #9DF2E4;
+
+      --md-sys-color-surface: #111318;
+      --md-sys-color-surface-dim: #0D1015;
+      --md-sys-color-surface-bright: #37393E;
+      --md-sys-color-surface-container-lowest: #0C0E13;
+      --md-sys-color-surface-container-low: #171A20;
+      --md-sys-color-surface-container: #1C1F26;
+      --md-sys-color-surface-container-high: #262A33;
+      --md-sys-color-surface-container-highest: #313540;
+      --md-sys-color-on-surface: #E2E2E9;
+      --md-sys-color-on-surface-variant: #C4C6D0;
+      --md-sys-color-outline: #8E9099;
+      --md-sys-color-outline-variant: #44474F;
+
+      --md-sys-color-inverse-surface: #E2E2E9;
+      --md-sys-color-on-inverse-surface: #2E3036;
+      --md-sys-color-inverse-primary: #745B00;
+
+      --md-sys-color-error: #FFB4AB;
+      --md-sys-color-on-error: #690005;
+      --md-sys-color-error-container: #93000A;
+      --md-sys-color-on-error-container: #FFDAD6;
+      --md-sys-color-scrim: rgba(0, 0, 0, 0.56);
+
+      /* PDF Highlight Tokens */
+      --md-sys-color-pdf-highlight-fill: rgba(250, 204, 21, 0.35);
+      --md-sys-color-pdf-highlight-border: rgba(245, 158, 11, 0.85);
+      --md-sys-color-state-hover: rgba(226, 226, 233, 0.08);
+      --md-sys-color-state-focus: rgba(226, 226, 233, 0.12);
+      --md-sys-color-state-pressed: rgba(226, 226, 233, 0.12);
+
+      /* Typography */
+      --md-sys-typescale-display: 'Sora', system-ui, -apple-system, sans-serif;
+      --md-sys-typescale-body: 'Figtree', system-ui, -apple-system, sans-serif;
+      --md-sys-typescale-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, monospace;
+
+      /* Shape Scale */
+      --md-sys-shape-extra-small: 4px;
+      --md-sys-shape-small: 8px;
+      --md-sys-shape-medium: 12px;
+      --md-sys-shape-large: 16px;
+      --md-sys-shape-large-increased: 20px;
+      --md-sys-shape-extra-large: 28px;
+      --md-sys-shape-full: 9999px;
+
+      /* Compiled Material 3 (Expressive) GPU-Compositor Springs */
+      --md-sys-motion-spring-fast-spatial-duration: 359ms;
+      --md-sys-motion-spring-fast-spatial-easing: linear(0, 0.0442, 0.1537, 0.2988, 0.4562, 0.6089, 0.7458, 0.8604, 0.9503, 1.0158, 1.0593, 1.0841, 1.0941, 1.0931, 1.0846, 1.0719, 1.0572, 1.0424, 1.0287, 1.017, 1.0076, 1.0006, 0.9957, 0.9927, 0.9913, 0.991, 0.9916, 0.9927, 0.994, 0.9955, 0.9968, 0.998, 1);
+      --md-sys-motion-spring-fast-spatial: 359ms linear(0, 0.0442, 0.1537, 0.2988, 0.4562, 0.6089, 0.7458, 0.8604, 0.9503, 1.0158, 1.0593, 1.0841, 1.0941, 1.0931, 1.0846, 1.0719, 1.0572, 1.0424, 1.0287, 1.017, 1.0076, 1.0006, 0.9957, 0.9927, 0.9913, 0.991, 0.9916, 0.9927, 0.994, 0.9955, 0.9968, 0.998, 1);
+      --md-sys-motion-spring-default-spatial-duration: 434ms;
+      --md-sys-motion-spring-default-spatial-easing: linear(0, 0.0303, 0.1051, 0.2049, 0.3152, 0.4263, 0.5316, 0.6271, 0.7108, 0.7821, 0.8411, 0.8887, 0.9262, 0.955, 0.9764, 0.9917, 1.0023, 1.009, 1.0129, 1.0148, 1.0151, 1.0145, 1.0133, 1.0117, 1.0101, 1.0084, 1.0068, 1.0054, 1.0042, 1.0031, 1.0023, 1.0016, 1);
+      --md-sys-motion-spring-default-spatial: 434ms linear(0, 0.0303, 0.1051, 0.2049, 0.3152, 0.4263, 0.5316, 0.6271, 0.7108, 0.7821, 0.8411, 0.8887, 0.9262, 0.955, 0.9764, 0.9917, 1.0023, 1.009, 1.0129, 1.0148, 1.0151, 1.0145, 1.0133, 1.0117, 1.0101, 1.0084, 1.0068, 1.0054, 1.0042, 1.0031, 1.0023, 1.0016, 1);
+      --md-sys-motion-spring-fast-effects-duration: 149ms;
+      --md-sys-motion-spring-fast-effects-easing: linear(0, 0.0341, 0.1134, 0.2133, 0.3185, 0.4202, 0.5136, 0.5965, 0.6683, 0.7294, 0.7806, 0.8232, 0.8581, 0.8866, 0.9098, 0.9284, 0.9434, 0.9553, 0.9648, 0.9724, 0.9783, 0.9831, 0.9868, 0.9897, 0.992, 0.9937, 0.9951, 0.9962, 0.9971, 0.9977, 0.9982, 0.9986, 1);
+      --md-sys-motion-spring-fast-effects: 149ms linear(0, 0.0341, 0.1134, 0.2133, 0.3185, 0.4202, 0.5136, 0.5965, 0.6683, 0.7294, 0.7806, 0.8232, 0.8581, 0.8866, 0.9098, 0.9284, 0.9434, 0.9553, 0.9648, 0.9724, 0.9783, 0.9831, 0.9868, 0.9897, 0.992, 0.9937, 0.9951, 0.9962, 0.9971, 0.9977, 0.9982, 0.9986, 1);
+      --md-sys-motion-spring-default-effects-duration: 230ms;
+      --md-sys-motion-spring-default-effects-easing: linear(0, 0.0342, 0.1137, 0.2138, 0.3192, 0.421, 0.5145, 0.5974, 0.6691, 0.7302, 0.7814, 0.8238, 0.8587, 0.8872, 0.9102, 0.9288, 0.9437, 0.9556, 0.9651, 0.9726, 0.9785, 0.9832, 0.9869, 0.9898, 0.992, 0.9938, 0.9952, 0.9963, 0.9971, 0.9978, 0.9983, 0.9987, 1);
+      --md-sys-motion-spring-default-effects: 230ms linear(0, 0.0342, 0.1137, 0.2138, 0.3192, 0.421, 0.5145, 0.5974, 0.6691, 0.7302, 0.7814, 0.8238, 0.8587, 0.8872, 0.9102, 0.9288, 0.9437, 0.9556, 0.9651, 0.9726, 0.9785, 0.9832, 0.9869, 0.9898, 0.992, 0.9938, 0.9952, 0.9963, 0.9971, 0.9978, 0.9983, 0.9987, 1);
+      --md-sys-motion-spring-slow-effects-duration: 326ms;
+      --md-sys-motion-spring-slow-effects-easing: linear(0, 0.0343, 0.1142, 0.2145, 0.3202, 0.4221, 0.5157, 0.5986, 0.6703, 0.7313, 0.7824, 0.8248, 0.8596, 0.8879, 0.9109, 0.9294, 0.9442, 0.956, 0.9654, 0.9729, 0.9788, 0.9834, 0.987, 0.9899, 0.9921, 0.9939, 0.9953, 0.9963, 0.9972, 0.9978, 0.9983, 0.9987, 1);
+      --md-sys-motion-spring-slow-effects: 326ms linear(0, 0.0343, 0.1142, 0.2145, 0.3202, 0.4221, 0.5157, 0.5986, 0.6703, 0.7313, 0.7824, 0.8248, 0.8596, 0.8879, 0.9109, 0.9294, 0.9442, 0.956, 0.9654, 0.9729, 0.9788, 0.9834, 0.987, 0.9899, 0.9921, 0.9939, 0.9953, 0.9963, 0.9972, 0.9978, 0.9983, 0.9987, 1);
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      :root {
+        --md-sys-motion-spring-fast-spatial-duration: 150ms;
+        --md-sys-motion-spring-fast-spatial-easing: ease-out;
+        --md-sys-motion-spring-fast-spatial: 150ms ease-out;
+        --md-sys-motion-spring-default-spatial-duration: 150ms;
+        --md-sys-motion-spring-default-spatial-easing: ease-out;
+        --md-sys-motion-spring-default-spatial: 150ms ease-out;
+        --md-sys-motion-spring-fast-effects-duration: 150ms;
+        --md-sys-motion-spring-fast-effects-easing: ease-out;
+        --md-sys-motion-spring-fast-effects: 150ms ease-out;
+        --md-sys-motion-spring-default-effects-duration: 150ms;
+        --md-sys-motion-spring-default-effects-easing: ease-out;
+        --md-sys-motion-spring-default-effects: 150ms ease-out;
+        --md-sys-motion-spring-slow-effects-duration: 150ms;
+        --md-sys-motion-spring-slow-effects-easing: ease-out;
+        --md-sys-motion-spring-slow-effects: 150ms ease-out;
+      }
+    }
+  </style>
+
+  <style data-m3-components>
+    *, *::before, *::after {
+      box-sizing: border-box;
+    }
+
+    html, body {
+      margin: 0;
+      padding: 0;
+      height: 100dvh;
+      overflow: hidden;
+      background-color: var(--md-sys-color-surface);
+      color: var(--md-sys-color-on-surface);
+      font-family: var(--md-sys-typescale-body);
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .app-shell {
+      display: flex;
+      flex-direction: column;
+      height: 100dvh;
+      width: 100%;
+      position: relative;
+      background-color: var(--md-sys-color-surface);
+    }
+
+    /* Accessible Focus Ring */
+    button:focus-visible,
+    select:focus-visible,
+    input:focus-visible,
+    textarea:focus-visible,
+    [tabindex]:focus-visible {
+      outline: 3px solid var(--md-sys-color-secondary);
+      outline-offset: 2px;
+    }
+
+    /* E-01 Top App Bar */
+    .top-app-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      min-height: 64px;
+      padding: 8px 16px;
+      background-color: var(--md-sys-color-surface-container);
+      border-bottom: 1px solid var(--md-sys-color-outline-variant);
+      flex-shrink: 0;
+      z-index: 30;
+    }
+
+    .brand-lockup {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-shrink: 0;
+    }
+
+    .brand-title {
+      font-family: var(--md-sys-typescale-display);
+      font-size: 1.05rem;
+      font-weight: 600;
+      letter-spacing: -0.02em;
+      color: var(--md-sys-color-on-surface);
+    }
+
+    .top-actions {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+      flex: 1;
+      min-width: 0;
+    }
+
+    /* M3 Controls & Expressive Morphing */
+    .m3-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      min-height: 40px;
+      padding: 0 16px;
+      border-radius: var(--md-sys-shape-full);
+      border: 1px solid transparent;
+      font-family: var(--md-sys-typescale-display);
+      font-size: 0.84rem;
+      font-weight: 600;
+      cursor: pointer;
+      user-select: none;
+      white-space: nowrap;
+      transition:
+        transform var(--md-sys-motion-spring-fast-spatial),
+        border-radius var(--md-sys-motion-spring-fast-spatial),
+        background-color var(--md-sys-motion-spring-fast-effects),
+        color var(--md-sys-motion-spring-fast-effects),
+        border-color var(--md-sys-motion-spring-fast-effects),
+        opacity var(--md-sys-motion-spring-fast-effects);
+    }
+
+    .m3-btn:disabled {
+      opacity: 0.42;
+      cursor: not-allowed;
+    }
+
+    .m3-btn:not(:disabled):active {
+      transform: scale(0.97);
+      border-radius: var(--md-sys-shape-medium);
+    }
+
+    .m3-btn-primary {
+      background-color: var(--md-sys-color-primary);
+      color: var(--md-sys-color-on-primary);
+    }
+
+    .m3-btn-tonal {
+      background-color: var(--md-sys-color-secondary-container);
+      color: var(--md-sys-color-on-secondary-container);
+    }
+
+    .m3-btn-amber-tonal {
+      background-color: var(--md-sys-color-primary-container);
+      color: var(--md-sys-color-on-primary-container);
+      border-color: var(--md-sys-color-outline-variant);
+    }
+
+    .m3-btn-outlined {
+      background-color: transparent;
+      color: var(--md-sys-color-on-surface);
+      border-color: var(--md-sys-color-outline);
+    }
+
+    .m3-icon-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 40px;
+      min-height: 40px;
+      border-radius: var(--md-sys-shape-full);
+      border: 1px solid transparent;
+      background-color: transparent;
+      color: var(--md-sys-color-on-surface-variant);
+      cursor: pointer;
+      transition:
+        transform var(--md-sys-motion-spring-fast-spatial),
+        border-radius var(--md-sys-motion-spring-fast-spatial),
+        background-color var(--md-sys-motion-spring-fast-effects),
+        color var(--md-sys-motion-spring-fast-effects);
+    }
+
+    .m3-icon-btn:not(:disabled):active {
+      transform: scale(0.95);
+      border-radius: var(--md-sys-shape-small);
+    }
+
+    .m3-icon-btn:disabled {
+      opacity: 0.4;
+      cursor: not-allowed;
+    }
+
+    @media (hover: hover) and (pointer: fine) {
+      .m3-btn:not(:disabled):hover {
+        filter: brightness(1.06);
+      }
+      .m3-icon-btn:not(:disabled):hover {
+        background-color: var(--md-sys-color-state-hover);
+        color: var(--md-sys-color-on-surface);
+      }
+      .m3-icon-btn-danger:not(:disabled):hover {
+        color: var(--md-sys-color-error);
+      }
+    }
+
+    .m3-select, .m3-input, .m3-textarea {
+      background-color: var(--md-sys-color-surface-container-high);
+      color: var(--md-sys-color-on-surface);
+      border: 1px solid var(--md-sys-color-outline-variant);
+      border-radius: var(--md-sys-shape-medium);
+      padding: 8px 12px;
+      font-family: var(--md-sys-typescale-body);
+      font-size: 0.875rem;
+      transition: border-color var(--md-sys-motion-spring-fast-effects);
+    }
+
+    .m3-select {
+      min-height: 40px;
+      max-width: 280px;
+    }
+
+    .m3-input {
+      min-height: 40px;
+      font-family: var(--md-sys-typescale-mono);
+      font-variant-numeric: tabular-nums;
+      background-color: var(--md-sys-color-surface-container-highest);
+    }
+
+    .m3-textarea {
+      width: 100%;
+      min-height: 120px;
+      resize: vertical;
+      background-color: var(--md-sys-color-surface-container-lowest);
+      font-family: var(--md-sys-typescale-mono);
+      font-size: 0.8rem;
+      line-height: 1.5;
+    }
+
+    .mono-num {
+      font-family: var(--md-sys-typescale-mono);
+      font-variant-numeric: tabular-nums;
+    }
+
+    /* E-07 Top-Anchored Script Sheet (GPU Compositor Only, Zero Layout Reflow) */
+    .sheet-scrim {
+      position: fixed;
+      inset: 0;
+      background-color: var(--md-sys-color-scrim);
+      z-index: 35;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity var(--md-sys-motion-spring-default-effects);
+    }
+
+    .sheet-scrim.open {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .script-sheet {
+      position: fixed;
+      top: 64px;
+      left: 50%;
+      width: min(960px, calc(100vw - 24px));
+      max-height: calc(100dvh - 88px);
+      overflow-y: auto;
+      background-color: var(--md-sys-color-surface-container-high);
+      border: 1px solid var(--md-sys-color-outline-variant);
+      border-top: none;
+      border-radius: 0 0 var(--md-sys-shape-extra-large) var(--md-sys-shape-extra-large);
+      padding: 20px;
+      z-index: 40;
+      box-shadow: 0 18px 44px rgba(0, 0, 0, 0.48);
+      transform: translate3d(-50%, -14px, 0) scale(0.98);
+      opacity: 0;
+      pointer-events: none;
+      transition:
+        transform var(--md-sys-motion-spring-default-spatial),
+        opacity var(--md-sys-motion-spring-default-effects);
+    }
+
+    .script-sheet.open {
+      transform: translate3d(-50%, 0, 0) scale(1);
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .sheet-grid {
+      display: grid;
+      gap: 16px;
+    }
+
+    .sheet-row {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: flex-end;
+      gap: 12px;
+    }
+
+    .field-group {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .field-label {
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: var(--md-sys-color-on-surface-variant);
+      letter-spacing: 0.02em;
+    }
+
+    .linear-track {
+      position: relative;
+      height: 8px;
+      width: 100%;
+      background-color: var(--md-sys-color-surface-container-highest);
+      border-radius: var(--md-sys-shape-full);
+      overflow: hidden;
+    }
+
+    .linear-fill {
+      position: absolute;
+      inset: 0;
+      background-color: var(--md-sys-color-primary);
+      border-radius: var(--md-sys-shape-full);
+      transform-origin: left center;
+      transform: scaleX(0);
+      transition: transform var(--md-sys-motion-spring-default-spatial);
+    }
+
+    .alert-banner {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 12px 14px;
+      border-radius: var(--md-sys-shape-large);
+      border: 1px solid var(--md-sys-color-outline-variant);
+      font-size: 0.85rem;
+      line-height: 1.45;
+      transition: opacity var(--md-sys-motion-spring-default-effects);
+    }
+
+    .alert-error {
+      background-color: var(--md-sys-color-error-container);
+      color: var(--md-sys-color-on-error-container);
+    }
+
+    .alert-warning {
+      background-color: var(--md-sys-color-primary-container);
+      color: var(--md-sys-color-on-primary-container);
+    }
+
+    /* E-16..E-19 Sticky Playback Bar */
+    .playback-bar {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+      padding: 8px 16px;
+      background-color: var(--md-sys-color-surface-container);
+      border-bottom: 1px solid var(--md-sys-color-outline-variant);
+      flex-shrink: 0;
+      z-index: 25;
+    }
+
+    .transport-cluster {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .play-pill {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      min-width: 96px;
+      min-height: 40px;
+      padding: 0 18px;
+      border-radius: var(--md-sys-shape-full);
+      border: none;
+      background-color: var(--md-sys-color-primary);
+      color: var(--md-sys-color-on-primary);
+      font-family: var(--md-sys-typescale-display);
+      font-size: 0.86rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition:
+        transform var(--md-sys-motion-spring-fast-spatial),
+        border-radius var(--md-sys-motion-spring-fast-spatial),
+        opacity var(--md-sys-motion-spring-fast-effects);
+    }
+
+    .play-pill[data-playing="true"] {
+      border-radius: var(--md-sys-shape-medium);
+    }
+
+    .play-pill:not(:disabled):active {
+      transform: scale(0.96);
+      border-radius: var(--md-sys-shape-medium);
+    }
+
+    .play-pill:disabled {
+      opacity: 0.42;
+      cursor: not-allowed;
+    }
+
+    .speed-group {
+      display: inline-flex;
+      align-items: center;
+      gap: 3px;
+      padding: 3px;
+      background-color: var(--md-sys-color-surface-container-low);
+      border-radius: var(--md-sys-shape-full);
+      border: 1px solid var(--md-sys-color-outline-variant);
+    }
+
+    .speed-pill {
+      min-height: 34px;
+      padding: 0 10px;
+      border: none;
+      border-radius: var(--md-sys-shape-full);
+      background-color: transparent;
+      color: var(--md-sys-color-on-surface-variant);
+      font-family: var(--md-sys-typescale-mono);
+      font-size: 0.78rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition:
+        transform var(--md-sys-motion-spring-fast-spatial),
+        border-radius var(--md-sys-motion-spring-fast-spatial),
+        background-color var(--md-sys-motion-spring-fast-effects),
+        color var(--md-sys-motion-spring-fast-effects);
+    }
+
+    .speed-pill[aria-pressed="true"] {
+      background-color: var(--md-sys-color-primary-container);
+      color: var(--md-sys-color-on-primary-container);
+      border-radius: var(--md-sys-shape-small);
+    }
+
+    .speed-pill:active {
+      transform: scale(0.95);
+    }
+
+    .scrubber-wrap {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex: 1;
+      min-width: 200px;
+    }
+
+    .m3-slider {
+      flex: 1;
+      min-width: 110px;
+      accent-color: var(--md-sys-color-primary);
+      cursor: pointer;
+      height: 28px;
+    }
+
+    .filter-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      min-height: 36px;
+      padding: 0 14px;
+      border-radius: var(--md-sys-shape-small);
+      border: 1px solid var(--md-sys-color-outline);
+      background-color: transparent;
+      color: var(--md-sys-color-on-surface-variant);
+      font-family: var(--md-sys-typescale-display);
+      font-size: 0.8rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition:
+        transform var(--md-sys-motion-spring-fast-spatial),
+        border-radius var(--md-sys-motion-spring-fast-spatial),
+        background-color var(--md-sys-motion-spring-fast-effects),
+        color var(--md-sys-motion-spring-fast-effects),
+        border-color var(--md-sys-motion-spring-fast-effects);
+    }
+
+    .filter-chip[aria-pressed="true"] {
+      background-color: var(--md-sys-color-secondary-container);
+      color: var(--md-sys-color-on-secondary-container);
+      border-color: transparent;
+      border-radius: var(--md-sys-shape-full);
+    }
+
+    .filter-chip:active {
+      transform: scale(0.97);
+    }
+
+    /* E-23 Mobile Pane Switcher (Hidden >=840px) */
+    .mobile-tabs {
+      display: none;
+      padding: 8px 12px;
+      background-color: var(--md-sys-color-surface-container-low);
+      border-bottom: 1px solid var(--md-sys-color-outline-variant);
+      gap: 8px;
+      flex-shrink: 0;
+    }
+
+    .mobile-tab-btn {
+      flex: 1;
+      min-height: 44px;
+      border-radius: var(--md-sys-shape-full);
+      border: 1px solid var(--md-sys-color-outline-variant);
+      background-color: var(--md-sys-color-surface-container-high);
+      color: var(--md-sys-color-on-surface-variant);
+      font-family: var(--md-sys-typescale-display);
+      font-size: 0.85rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition:
+        transform var(--md-sys-motion-spring-fast-spatial),
+        background-color var(--md-sys-motion-spring-fast-effects),
+        color var(--md-sys-motion-spring-fast-effects);
+    }
+
+    .mobile-tab-btn[aria-selected="true"] {
+      background-color: var(--md-sys-color-secondary-container);
+      color: var(--md-sys-color-on-secondary-container);
+      border-color: transparent;
+    }
+
+    /* Main Split Supporting-Pane Workspace (68% / 32%) */
+    .workspace-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 68%) minmax(0, 32%);
+      flex: 1;
+      min-height: 0;
+      overflow: hidden;
+    }
+
+    .pdf-pane {
+      display: flex;
+      flex-direction: column;
+      min-height: 0;
+      background-color: var(--md-sys-color-surface-container-lowest);
+      border-right: 1px solid var(--md-sys-color-outline-variant);
+    }
+
+    .pdf-toolbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      padding: 8px 14px;
+      background-color: var(--md-sys-color-surface-container-low);
+      border-bottom: 1px solid var(--md-sys-color-outline-variant);
+      flex-shrink: 0;
+    }
+
+    .pdf-scroll {
+      flex: 1;
+      overflow: auto;
+      padding: 18px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 18px;
+    }
+
+    .pdf-page-frame {
+      position: relative;
+      background-color: var(--md-sys-color-surface-container);
+      border-radius: var(--md-sys-shape-small);
+      box-shadow: 0 6px 24px rgba(0, 0, 0, 0.35);
+      overflow: hidden;
+      flex-shrink: 0;
+    }
+
+    .pdf-page-canvas {
+      display: block;
+      width: 100%;
+      height: 100%;
+    }
+
+    .chunk-overlay-layer {
+      position: absolute;
+      inset: 0;
+    }
+
+    .chunk-box {
+      position: absolute;
+      border-radius: var(--md-sys-shape-extra-small);
+      border: 1.5px solid transparent;
+      background-color: transparent;
+      transition:
+        background-color var(--md-sys-motion-spring-fast-effects),
+        border-color var(--md-sys-motion-spring-fast-effects);
+    }
+
+    .chunk-box[data-covered="true"] {
+      cursor: pointer;
+    }
+
+    @media (hover: hover) and (pointer: fine) {
+      .chunk-box[data-covered="true"]:hover {
+        background-color: rgba(250, 204, 21, 0.14);
+        border-color: rgba(245, 158, 11, 0.45);
+      }
+      .chunk-box[data-covered="false"]:hover {
+        background-color: rgba(226, 226, 233, 0.08);
+        border-color: var(--md-sys-color-outline-variant);
+      }
+    }
+
+    .chunk-box[data-active="true"] {
+      background-color: var(--md-sys-color-pdf-highlight-fill);
+      border-color: var(--md-sys-color-pdf-highlight-border);
+    }
+
+    /* E-21 Supporting Pane (32%) */
+    .dialogue-pane {
+      display: flex;
+      flex-direction: column;
+      min-height: 0;
+      background-color: var(--md-sys-color-surface-container-low);
+    }
+
+    .dialogue-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 16px;
+      border-bottom: 1px solid var(--md-sys-color-outline-variant);
+      flex-shrink: 0;
+    }
+
+    .dialogue-scroll {
+      flex: 1;
+      overflow-y: auto;
+      padding: 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .dialogue-card {
+      width: 100%;
+      text-align: left;
+      padding: 14px 16px;
+      border-radius: var(--md-sys-shape-large-increased);
+      border: 1px solid var(--md-sys-color-outline-variant);
+      background-color: var(--md-sys-color-surface-container);
+      color: var(--md-sys-color-on-surface);
+      cursor: pointer;
+      transition:
+        background-color var(--md-sys-motion-spring-default-effects),
+        border-color var(--md-sys-motion-spring-default-effects);
+    }
+
+    @media (hover: hover) and (pointer: fine) {
+      .dialogue-card:hover {
+        background-color: var(--md-sys-color-surface-container-high);
+      }
+    }
+
+    .dialogue-card[data-active="true"] {
+      background-color: var(--md-sys-color-primary-container);
+      color: var(--md-sys-color-on-primary-container);
+      border-color: var(--md-sys-color-primary);
+    }
+
+    .dialogue-card-meta {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      margin-bottom: 8px;
+    }
+
+    .speaker-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 2px 10px;
+      border-radius: var(--md-sys-shape-full);
+      font-family: var(--md-sys-typescale-display);
+      font-size: 0.74rem;
+      font-weight: 600;
+    }
+
+    .speaker-prof {
+      background-color: var(--md-sys-color-secondary-container);
+      color: var(--md-sys-color-on-secondary-container);
+    }
+
+    .speaker-student {
+      background-color: var(--md-sys-color-tertiary-container);
+      color: var(--md-sys-color-on-tertiary-container);
+    }
+
+    .dialogue-body {
+      font-size: 0.9375rem;
+      line-height: 1.65;
+      max-width: 65ch;
+      margin: 0;
+    }
+
+    .exam-note-box {
+      margin-top: 10px;
+      padding: 8px 12px;
+      border-radius: var(--md-sys-shape-medium);
+      border: 1px solid var(--md-sys-color-outline-variant);
+      background-color: var(--md-sys-color-surface-container-high);
+      color: var(--md-sys-color-primary-fixed);
+      font-size: 0.82rem;
+      line-height: 1.5;
+    }
+
+    .dialogue-card[data-active="true"] .exam-note-box {
+      background-color: var(--md-sys-color-surface-container);
+      border-color: var(--md-sys-color-primary);
+    }
+
+    .empty-state-card {
+      margin: auto;
+      max-width: 460px;
+      padding: 24px;
+      border-radius: var(--md-sys-shape-large-increased);
+      border: 1px solid var(--md-sys-color-outline-variant);
+      background-color: var(--md-sys-color-surface-container);
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    /* E-22 Snackbar Stack */
+    .snackbar-stack {
+      position: fixed;
+      bottom: 18px;
+      right: 18px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      z-index: 50;
+      max-width: min(420px, calc(100vw - 32px));
+    }
+
+    .snackbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 12px 16px;
+      border-radius: var(--md-sys-shape-medium);
+      background-color: var(--md-sys-color-inverse-surface);
+      color: var(--md-sys-color-on-inverse-surface);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.36);
+      font-size: 0.86rem;
+      opacity: 0;
+      transform: translateY(8px) scale(0.96);
+      transition:
+        transform var(--md-sys-motion-spring-default-spatial),
+        opacity var(--md-sys-motion-spring-fast-effects);
+    }
+
+    .snackbar.visible {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+
+    .snackbar-action {
+      border: none;
+      background: transparent;
+      color: var(--md-sys-color-inverse-primary);
+      font-family: var(--md-sys-typescale-display);
+      font-weight: 700;
+      font-size: 0.82rem;
+      cursor: pointer;
+      padding: 4px 8px;
+      border-radius: var(--md-sys-shape-full);
+    }
+
+    /* Responsive Adaptive Window Size Classes */
+    @media (max-width: 839px) {
+      .mobile-tabs {
+        display: flex;
+      }
+      .workspace-grid {
+        grid-template-columns: minmax(0, 1fr);
+      }
+      .pdf-pane[data-mobile-hidden="true"],
+      .dialogue-pane[data-mobile-hidden="true"] {
+        display: none;
+      }
+      .pdf-pane {
+        border-right: none;
+      }
+      .m3-btn, .m3-icon-btn, .play-pill, .filter-chip, .m3-select, .m3-input {
+        min-height: 48px;
+      }
+      .m3-icon-btn {
+        min-width: 48px;
+      }
+      .script-sheet {
+        top: 0;
+        width: 100vw;
+        max-height: 100dvh;
+        border-radius: 0 0 var(--md-sys-shape-large) var(--md-sys-shape-large);
+      }
+    }
+
+    @media (max-height: 479px) {
+      .top-app-bar, .playback-bar {
+        min-height: 44px;
+        padding-top: 4px;
+        padding-bottom: 4px;
+      }
+    }
+
+    /* Instant 0ms Keyboard Action Feedback */
+    [data-instant="true"] {
+      transition-duration: 0ms !important;
+    }
+
+    .hidden-el {
+      display: none !important;
+    }
+  </style>
+</head>
+<body>
+  <div class="app-shell">
+    <!-- E-01 Top App Bar -->
+    <header class="top-app-bar">
+      <div class="brand-lockup">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <rect x="2" y="9" width="3" height="6" rx="1.5" fill="var(--md-sys-color-primary)"/>
+          <rect x="7" y="5" width="3" height="14" rx="1.5" fill="var(--md-sys-color-primary)"/>
+          <rect x="12" y="3" width="3" height="18" rx="1.5" fill="var(--md-sys-color-secondary)"/>
+          <rect x="17" y="7" width="3" height="10" rx="1.5" fill="var(--md-sys-color-tertiary)"/>
+        </svg>
+        <span class="brand-title">DeepExamCast</span>
+      </div>
+
+      <div class="top-actions">
+        <select id="sessionSelect" class="m3-select" aria-label="Saved study sessions"></select>
+        <button id="deleteSessionBtn" class="m3-icon-btn m3-icon-btn-danger" type="button" title="Delete selected session" aria-label="Delete selected session" disabled>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M3 6h18"/><path d="M8 6V4h8v2"/><path d="M19 6l-1 14H6L5 6"/>
+          </svg>
+        </button>
+
+        <input id="pdfInput" type="file" accept="application/pdf" class="hidden-el">
+        <button id="uploadBtn" class="m3-btn m3-btn-tonal" type="button">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/>
+          </svg>
+          <span id="uploadBtnLabel">Upload PDF</span>
+        </button>
+
+        <button id="drawerToggleBtn" class="m3-btn m3-btn-amber-tonal" type="button" aria-expanded="false" aria-controls="scriptSheet">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M12 5v14"/><path d="M5 12h14"/>
+          </svg>
+          <span>Add / Generate Deep Script</span>
+        </button>
+      </div>
+    </header>
+
+    <!-- E-07 Top-Anchored Script Sheet -->
+    <div id="scriptSheetScrim" class="sheet-scrim" aria-hidden="true"></div>
+    <section id="scriptSheet" class="script-sheet" aria-label="Add or generate deep script" aria-hidden="true">
+      <div class="sheet-grid">
+        <div class="sheet-row" style="justify-content: space-between;">
+          <div style="display:flex; gap:12px; flex-wrap:wrap; align-items:flex-end;">
+            <div class="field-group">
+              <label for="fromPageInput" class="field-label">From Page</label>
+              <input id="fromPageInput" class="m3-input" type="number" min="1" value="1" style="width:92px;">
+            </div>
+            <div class="field-group">
+              <label for="toPageInput" class="field-label">To Page</label>
+              <input id="toPageInput" class="m3-input" type="number" min="1" value="5" style="width:92px;">
+            </div>
+            <button id="copyPromptBtn" class="m3-btn m3-btn-amber-tonal" type="button">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+              </svg>
+              <span>Copy Prompt for Gemini Pro</span>
+            </button>
+          </div>
+          <button id="closeSheetBtn" class="m3-icon-btn" type="button" aria-label="Close script drawer">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+            </svg>
+          </button>
+        </div>
+
+        <!-- E-09 Coverage Meter -->
+        <div class="field-group" style="gap:6px;">
+          <div style="display:flex; justify-content:space-between; gap:8px; flex-wrap:wrap;">
+            <span id="coverageSummary" class="field-label mono-num">No PDF loaded</span>
+            <span id="partialSummary" class="field-label mono-num"></span>
+          </div>
+          <div class="linear-track">
+            <div id="coverageBarFill" class="linear-fill"></div>
+          </div>
+        </div>
+
+        <!-- E-11 JSON Paste -->
+        <div class="field-group">
+          <label for="jsonInput" class="field-label">Paste Gemini JSON Array</label>
+          <textarea id="jsonInput" class="m3-textarea" placeholder='[{"speaker":"HOST_A","text":"...","chunk_ids":["C1"],"exam_note":"..."}]'></textarea>
+        </div>
+
+        <!-- E-12 & E-13 Voice & Actions -->
+        <div class="sheet-row" style="justify-content: space-between;">
+          <div style="display:flex; gap:10px; flex-wrap:wrap; align-items:flex-end;">
+            <div class="field-group">
+              <label for="voicePairSelect" class="field-label">Voice Pair</label>
+              <select id="voicePairSelect" class="m3-select"></select>
+            </div>
+            <button id="resynthesizeBtn" class="m3-btn m3-btn-outlined" type="button" disabled>
+              Re-synthesize Voice
+            </button>
+          </div>
+
+          <div style="display:flex; gap:8px; flex-wrap:wrap;">
+            <button id="undoBtn" class="m3-btn m3-btn-outlined" type="button" disabled>Undo Last Batch</button>
+            <button id="appendBtn" class="m3-btn m3-btn-tonal" type="button" disabled>Append to Lecture</button>
+            <button id="replaceBtn" class="m3-btn m3-btn-primary" type="button" disabled>Replace &amp; Generate Audio</button>
+          </div>
+        </div>
+
+        <!-- E-14 Live Synthesis Progress -->
+        <div id="genProgressBox" class="field-group hidden-el" aria-live="polite" style="gap:6px;">
+          <span id="genProgressText" class="field-label mono-num">Synthesizing 0 / 0 clips...</span>
+          <div class="linear-track">
+            <div id="genProgressFill" class="linear-fill"></div>
+          </div>
+        </div>
+
+        <!-- E-15 Inline Alert Banner -->
+        <div id="drawerAlert" class="alert-banner alert-error hidden-el" role="alert">
+          <span id="drawerAlertText"></span>
+          <button id="dismissAlertBtn" class="m3-icon-btn" type="button" aria-label="Dismiss message">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+            </svg>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- E-16..E-19 Sticky Playback Bar -->
+    <nav class="playback-bar" aria-label="Lecture playback controls">
+      <div class="transport-cluster">
+        <button id="prevLineBtn" class="m3-icon-btn" type="button" title="Previous line (Left Arrow)" aria-label="Previous line" disabled>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polygon points="19 20 9 12 19 4 19 20"/><line x1="5" y1="19" x2="5" y2="5"/>
+          </svg>
+        </button>
+        <button id="playPauseBtn" class="play-pill" type="button" data-playing="false" disabled>
+          <svg id="playIcon" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+            <polygon points="6 4 20 12 6 20 6 4"/>
+          </svg>
+          <svg id="pauseIcon" class="hidden-el" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+            <rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/>
+          </svg>
+          <span id="playPauseLabel">Play</span>
+        </button>
+        <button id="nextLineBtn" class="m3-icon-btn" type="button" title="Next line (Right Arrow)" aria-label="Next line" disabled>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polygon points="5 4 15 12 5 20 5 4"/><line x1="19" y1="5" x2="19" y2="19"/>
+          </svg>
+        </button>
+        <button id="repeatLineBtn" class="m3-icon-btn" type="button" title="Repeat current line (R)" aria-label="Repeat current line" disabled>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"/>
+          </svg>
+        </button>
+      </div>
+
+      <div id="speedGroup" class="speed-group" role="group" aria-label="Playback speed">
+        <button class="speed-pill" type="button" data-rate="1" aria-pressed="true">1x</button>
+        <button class="speed-pill" type="button" data-rate="1.25" aria-pressed="false">1.25x</button>
+        <button class="speed-pill" type="button" data-rate="1.5" aria-pressed="false">1.5x</button>
+        <button class="speed-pill" type="button" data-rate="1.75" aria-pressed="false">1.75x</button>
+        <button class="speed-pill" type="button" data-rate="2" aria-pressed="false">2x</button>
+      </div>
+
+      <div class="scrubber-wrap">
+        <input id="lineScrubber" class="m3-slider" type="range" min="0" max="0" value="0" aria-label="Line progress scrubber" disabled>
+        <span id="playbackReadout" class="field-label mono-num" style="white-space:nowrap;">Line 0 / 0 · Page — / —</span>
+      </div>
+
+      <button id="autoScrollBtn" class="filter-chip" type="button" aria-pressed="true">
+        Auto-Scroll: ON
+      </button>
+    </nav>
+
+    <!-- E-23 Compact/Medium Mobile Pane Switcher -->
+    <div id="mobileTabs" class="mobile-tabs" role="tablist" aria-label="Workspace panes">
+      <button id="tabPdfBtn" class="mobile-tab-btn" type="button" role="tab" aria-selected="true">PDF Viewer</button>
+      <button id="tabDialogueBtn" class="mobile-tab-btn" type="button" role="tab" aria-selected="false">Dialogue &amp; Notes</button>
+    </div>
+
+    <!-- Main Supporting-Pane Split View -->
+    <main class="workspace-grid">
+      <!-- E-20 Primary Pane (68%) -->
+      <section id="pdfPane" class="pdf-pane" aria-label="Synced PDF viewer" data-mobile-hidden="false">
+        <div class="pdf-toolbar">
+          <div style="display:flex; align-items:center; gap:6px;">
+            <button id="zoomOutBtn" class="m3-icon-btn" type="button" title="Zoom out" aria-label="Zoom out">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true">
+                <line x1="5" y1="12" x2="19" y2="12"/>
+              </svg>
+            </button>
+            <span id="zoomLabel" class="field-label mono-num" style="min-width:48px; text-align:center;">100%</span>
+            <button id="zoomInBtn" class="m3-icon-btn" type="button" title="Zoom in" aria-label="Zoom in">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true">
+                <line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>
+              </svg>
+            </button>
+            <button id="zoomFitBtn" class="m3-btn m3-btn-outlined" type="button" style="min-height:32px; padding:0 12px; font-size:0.76rem;">Fit Width</button>
+          </div>
+          <span id="pdfPageReadout" class="field-label mono-num">No document</span>
+        </div>
+
+        <div id="pdfScroll" class="pdf-scroll">
+          <div id="pdfEmptyState" class="empty-state-card">
+            <h2 style="margin:0; font-family:var(--md-sys-typescale-display); font-size:1.15rem;">Upload an Exam Chapter PDF</h2>
+            <p style="margin:0; font-size:0.9rem; color:var(--md-sys-color-on-surface-variant); line-height:1.55;">
+              DeepExamCast extracts normalized paragraphs, builds zero-skimming Gemini prompts, and syncs neural two-host audio directly to every paragraph.
+            </p>
+            <div>
+              <button id="emptyUploadCta" class="m3-btn m3-btn-primary" type="button">Choose PDF File</button>
+            </div>
+          </div>
+          <div id="pdfPagesContainer" class="hidden-el" style="display:flex; flex-direction:column; align-items:center; gap:18px; width:100%;"></div>
+        </div>
+      </section>
+
+      <!-- E-21 Supporting Pane (32%) -->
+      <aside id="dialoguePane" class="dialogue-pane" aria-label="Live dialogue and exam notes" data-mobile-hidden="true">
+        <div class="dialogue-header">
+          <span style="font-family:var(--md-sys-typescale-display); font-size:0.9rem; font-weight:600;">Dialogue &amp; Exam Notes</span>
+          <span id="dialogueMeta" class="field-label mono-num">0 turns</span>
+        </div>
+        <div id="dialogueScroll" class="dialogue-scroll">
+          <div id="dialogueEmptyState" class="empty-state-card">
+            <h3 style="margin:0; font-family:var(--md-sys-typescale-display); font-size:1rem;">3-Step Study Workflow</h3>
+            <p style="margin:0; font-size:0.86rem; color:var(--md-sys-color-on-surface-variant); line-height:1.55;">
+              1. Upload your chapter PDF.
+            </p>
+            <p style="margin:0; font-size:0.86rem; color:var(--md-sys-color-on-surface-variant); line-height:1.55;">
+              2. Copy the 5-page prompt into Gemini Web.
+            </p>
+            <p style="margin:0; font-size:0.86rem; color:var(--md-sys-color-on-surface-variant); line-height:1.55;">
+              3. Paste Gemini's JSON array and generate cached neural audio.
+            </p>
+          </div>
+          <div id="dialogueList" style="display:flex; flex-direction:column; gap:10px;"></div>
+        </div>
+      </aside>
+    </main>
+
+    <!-- E-22 Snackbar Stack -->
+    <div id="snackbarStack" class="snackbar-stack" aria-live="polite"></div>
+  </div>
+
+  <script type="module" data-m3-app>
+    const CDN_PDF_URL = "https://cdn.jsdelivr.net/npm/pdfjs-dist@4.10.38/build/pdf.min.mjs";
+    const CDN_WORKER_URL = "https://cdn.jsdelivr.net/npm/pdfjs-dist@4.10.38/build/pdf.worker.min.mjs";
+    const LOCAL_PDF_URL = "/static/vendor/pdf.min.mjs";
+    const LOCAL_WORKER_URL = "/static/vendor/pdf.worker.min.mjs";
+
+    const state = {
+      sessions: [],
+      voicePairs: [],
+      currentSession: null,
+      coverage: null,
+      chunkFirstLine: new Map(),
+      currentLineIndex: 0,
+      lastKnownPage: null,
+      isPlaying: false,
+      playbackRate: 1.0,
+      autoScroll: true,
+      playbackToken: 0,
+      decksUnlocked: false,
+      drawerOpen: false,
+      lastCopiedRange: null,
+      zoomScale: 1.0,
+      pdfDoc: null,
+      pageSlots: [],
+      visiblePages: new Set(),
+      observer: null,
+      generating: false,
+      patchTimer: null,
+      statusTimer: null,
+      activeTab: "pdf",
+    };
+
+    const deckA = new Audio();
+    const deckB = new Audio();
+    deckA.preload = "auto";
+    deckB.preload = "auto";
+    let activeDeck = deckA;
+    let standbyDeck = deckB;
+    let breathTimer = null;
+    let pdfjsLibPromise = null;
+
+    const el = {
+      sessionSelect: document.getElementById("sessionSelect"),
+      deleteSessionBtn: document.getElementById("deleteSessionBtn"),
+      pdfInput: document.getElementById("pdfInput"),
+      uploadBtn: document.getElementById("uploadBtn"),
+      uploadBtnLabel: document.getElementById("uploadBtnLabel"),
+      emptyUploadCta: document.getElementById("emptyUploadCta"),
+      drawerToggleBtn: document.getElementById("drawerToggleBtn"),
+      scriptSheetScrim: document.getElementById("scriptSheetScrim"),
+      scriptSheet: document.getElementById("scriptSheet"),
+      closeSheetBtn: document.getElementById("closeSheetBtn"),
+      fromPageInput: document.getElementById("fromPageInput"),
+      toPageInput: document.getElementById("toPageInput"),
+      copyPromptBtn: document.getElementById("copyPromptBtn"),
+      coverageSummary: document.getElementById("coverageSummary"),
+      partialSummary: document.getElementById("partialSummary"),
+      coverageBarFill: document.getElementById("coverageBarFill"),
+      jsonInput: document.getElementById("jsonInput"),
+      voicePairSelect: document.getElementById("voicePairSelect"),
+      resynthesizeBtn: document.getElementById("resynthesizeBtn"),
+      undoBtn: document.getElementById("undoBtn"),
+      appendBtn: document.getElementById("appendBtn"),
+      replaceBtn: document.getElementById("replaceBtn"),
+      genProgressBox: document.getElementById("genProgressBox"),
+      genProgressText: document.getElementById("genProgressText"),
+      genProgressFill: document.getElementById("genProgressFill"),
+      drawerAlert: document.getElementById("drawerAlert"),
+      drawerAlertText: document.getElementById("drawerAlertText"),
+      dismissAlertBtn: document.getElementById("dismissAlertBtn"),
+      prevLineBtn: document.getElementById("prevLineBtn"),
+      playPauseBtn: document.getElementById("playPauseBtn"),
+      playIcon: document.getElementById("playIcon"),
+      pauseIcon: document.getElementById("pauseIcon"),
+      playPauseLabel: document.getElementById("playPauseLabel"),
+      nextLineBtn: document.getElementById("nextLineBtn"),
+      repeatLineBtn: document.getElementById("repeatLineBtn"),
+      speedGroup: document.getElementById("speedGroup"),
+      lineScrubber: document.getElementById("lineScrubber"),
+      playbackReadout: document.getElementById("playbackReadout"),
+      autoScrollBtn: document.getElementById("autoScrollBtn"),
+      mobileTabs: document.getElementById("mobileTabs"),
+      tabPdfBtn: document.getElementById("tabPdfBtn"),
+      tabDialogueBtn: document.getElementById("tabDialogueBtn"),
+      pdfPane: document.getElementById("pdfPane"),
+      dialoguePane: document.getElementById("dialoguePane"),
+      zoomOutBtn: document.getElementById("zoomOutBtn"),
+      zoomLabel: document.getElementById("zoomLabel"),
+      zoomInBtn: document.getElementById("zoomInBtn"),
+      zoomFitBtn: document.getElementById("zoomFitBtn"),
+      pdfPageReadout: document.getElementById("pdfPageReadout"),
+      pdfScroll: document.getElementById("pdfScroll"),
+      pdfEmptyState: document.getElementById("pdfEmptyState"),
+      pdfPagesContainer: document.getElementById("pdfPagesContainer"),
+      dialogueMeta: document.getElementById("dialogueMeta"),
+      dialogueScroll: document.getElementById("dialogueScroll"),
+      dialogueEmptyState: document.getElementById("dialogueEmptyState"),
+      dialogueList: document.getElementById("dialogueList"),
+      snackbarStack: document.getElementById("snackbarStack"),
+    };
+
+    async function loadPdfJs() {
+      if (pdfjsLibPromise) return pdfjsLibPromise;
+      pdfjsLibPromise = (async () => {
+        try {
+          const probe = await fetch(LOCAL_PDF_URL, { method: "HEAD" });
+          if (probe.ok) {
+            const lib = await import(LOCAL_PDF_URL);
+            lib.GlobalWorkerOptions.workerSrc = LOCAL_WORKER_URL;
+            return lib;
+          }
+        } catch (_err) {
+          // Local vendor files not present; fall back to CDN
+        }
+        const lib = await import(CDN_PDF_URL);
+        const blob = new Blob([`import "${CDN_WORKER_URL}";`], { type: "text/javascript" });
+        lib.GlobalWorkerOptions.workerSrc = URL.createObjectURL(blob);
+        return lib;
+      })();
+      return pdfjsLibPromise;
+    }
+
+    function showSnackbar(message, { actions = [], durationMs = 3600 } = {}) {
+      const bar = document.createElement("div");
+      bar.className = "snackbar";
+      const msgSpan = document.createElement("span");
+      msgSpan.textContent = message;
+      bar.appendChild(msgSpan);
+
+      const actionWrap = document.createElement("div");
+      actionWrap.style.display = "flex";
+      actionWrap.style.gap = "4px";
+      for (const act of actions) {
+        const btn = document.createElement("button");
+        btn.type = "button";
+        btn.className = "snackbar-action";
+        btn.textContent = act.label;
+        btn.addEventListener("click", () => {
+          dismiss();
+          act.onClick();
+        });
+        actionWrap.appendChild(btn);
+      }
+      if (actions.length) {
+        bar.appendChild(actionWrap);
+      }
+      el.snackbarStack.appendChild(bar);
+      requestAnimationFrame(() => bar.classList.add("visible"));
+
+      let timerId = null;
+      let remaining = durationMs;
+      let startedAt = Date.now();
+
+      function dismiss() {
+        document.removeEventListener("visibilitychange", onVisibility);
+        if (timerId) clearTimeout(timerId);
+        bar.classList.remove("visible");
+        setTimeout(() => bar.remove(), 180);
+      }
+
+      function schedule(ms) {
+        if (ms <= 0) return;
+        startedAt = Date.now();
+        timerId = setTimeout(dismiss, ms);
+      }
+
+      function onVisibility() {
+        if (durationMs <= 0) return;
+        if (document.hidden) {
+          remaining = Math.max(0, remaining - (Date.now() - startedAt));
+          if (timerId) clearTimeout(timerId);
+          timerId = null;
+        } else if (remaining > 0) {
+          schedule(remaining);
+        }
+      }
+
+      if (durationMs > 0) {
+        document.addEventListener("visibilitychange", onVisibility);
+        if (!document.hidden) schedule(remaining);
+      }
+    }
+
+    function showDrawerAlert(message, kind = "error") {
+      el.drawerAlertText.textContent = message;
+      el.drawerAlert.className = `alert-banner ${kind === "warning" ? "alert-warning" : "alert-error"}`;
+    }
+
+    function hideDrawerAlert() {
+      el.drawerAlert.className = "alert-banner alert-error hidden-el";
+      el.drawerAlertText.textContent = "";
+    }
+
+    function setDrawerOpen(open) {
+      state.drawerOpen = open;
+      el.drawerToggleBtn.setAttribute("aria-expanded", String(open));
+      el.scriptSheet.setAttribute("aria-hidden", String(!open));
+      el.scriptSheetScrim.setAttribute("aria-hidden", String(!open));
+      el.scriptSheet.classList.toggle("open", open);
+      el.scriptSheetScrim.classList.toggle("open", open);
+    }
+
+    function formatMinutes(sec) {
+      if (!sec || sec <= 0) return "";
+      const mins = Math.max(1, Math.round(sec / 60));
+      return `~${mins}m`;
+    }
+
+    async function apiJson(url, options = {}) {
+      const resp = await fetch(url, options);
+      let data = null;
+      try {
+        data = await resp.json();
+      } catch (_err) {
+        data = null;
+      }
+      if (!resp.ok) {
+        const msg = (data && data.detail) ? data.detail : `Request failed (${resp.status})`;
+        const err = new Error(msg);
+        err.status = resp.status;
+        throw err;
+      }
+      return data;
+    }
+
+    function populateVoicePairs(pairs, selectedId) {
+      state.voicePairs = pairs || state.voicePairs;
+      el.voicePairSelect.textContent = "";
+      for (const vp of state.voicePairs) {
+        const opt = document.createElement("option");
+        opt.value = vp.id;
+        opt.textContent = vp.label;
+        el.voicePairSelect.appendChild(opt);
+      }
+      if (selectedId && state.voicePairs.some((v) => v.id === selectedId)) {
+        el.voicePairSelect.value = selectedId;
+      }
+    }
+
+    function getSelectedVoices() {
+      const vp = state.voicePairs.find((p) => p.id === el.voicePairSelect.value) || state.voicePairs[0];
+      if (!vp) {
+        return {
+          host_a_voice: "en-US-AndrewMultilingualNeural",
+          host_b_voice: "en-US-AvaMultilingualNeural",
+        };
+      }
+      return { host_a_voice: vp.host_a_voice, host_b_voice: vp.host_b_voice };
+    }
+
+    function populateSessionSelect(activeId) {
+      el.sessionSelect.textContent = "";
+      if (!state.sessions.length) {
+        const opt = document.createElement("option");
+        opt.value = "";
+        opt.textContent = "No saved chapters yet";
+        el.sessionSelect.appendChild(opt);
+        el.deleteSessionBtn.disabled = true;
+        return;
+      }
+      for (const s of state.sessions) {
+        const opt = document.createElement("option");
+        opt.value = s.session_id;
+        const dur = formatMinutes(s.estimated_total_sec);
+        const durPart = dur ? ` · ${dur}` : "";
+        opt.textContent = `${s.title} — ${s.fully_covered_page_count}/${s.page_count} full pgs${durPart}`;
+        el.sessionSelect.appendChild(opt);
+      }
+      if (activeId) {
+        el.sessionSelect.value = activeId;
+      }
+      el.deleteSessionBtn.disabled = !el.sessionSelect.value;
+    }
+
+    function updateCoverageUi() {
+      const session = state.currentSession;
+      const cov = state.coverage;
+      if (!session || !cov) {
+        el.coverageSummary.textContent = "No PDF loaded";
+        el.partialSummary.textContent = "";
+        el.coverageBarFill.style.transform = "scaleX(0)";
+        return;
+      }
+      const ratio = cov.total_chunks > 0 ? cov.covered_chunk_count / cov.total_chunks : 0;
+      el.coverageBarFill.style.transform = `scaleX(${Math.max(0, Math.min(1, ratio))})`;
+      el.coverageSummary.textContent =
+        `Covered: ${cov.covered_chunk_count}/${cov.total_chunks} chunks · ${cov.fully_covered_pages.length}/${session.page_count} full pages`;
+      if (cov.partial_pages.length > 0) {
+        const preview = cov.partial_pages
+          .slice(0, 3)
+          .map((p) => `Pg ${p.page} (${p.covered_chunks}/${p.total_chunks})`)
+          .join(", ");
+        el.partialSummary.textContent = `Partial: ${preview}`;
+      } else {
+        el.partialSummary.textContent = "";
+      }
+
+      el.fromPageInput.max = String(Math.max(1, session.page_count));
+      el.toPageInput.max = String(Math.max(1, session.page_count));
+      el.fromPageInput.value = String(cov.suggested_next_range.start_page);
+      el.toPageInput.value = String(cov.suggested_next_range.end_page);
+    }
+
+    function buildChunkMap(session) {
+      state.chunkFirstLine.clear();
+      if (!session) return;
+      for (const line of session.script) {
+        for (const cid of line.chunk_ids) {
+          if (!state.chunkFirstLine.has(cid)) {
+            state.chunkFirstLine.set(cid, line.index);
+          }
+        }
+      }
+    }
+
+    function updateActionButtons() {
+      const hasSession = Boolean(state.currentSession);
+      const scriptLen = hasSession ? state.currentSession.script.length : 0;
+      const batchLen = hasSession ? state.currentSession.batches.length : 0;
+      const busy = state.generating;
+
+      el.copyPromptBtn.disabled = !hasSession || busy;
+      el.appendBtn.disabled = !hasSession || busy;
+      el.replaceBtn.disabled = !hasSession || busy;
+      el.resynthesizeBtn.disabled = !hasSession || scriptLen === 0 || busy;
+      el.undoBtn.disabled = !hasSession || batchLen === 0 || busy;
+      el.deleteSessionBtn.disabled = !hasSession || busy;
+
+      const hasAudio = scriptLen > 0;
+      el.playPauseBtn.disabled = !hasAudio;
+      el.prevLineBtn.disabled = !hasAudio;
+      el.nextLineBtn.disabled = !hasAudio;
+      el.repeatLineBtn.disabled = !hasAudio;
+      el.lineScrubber.disabled = !hasAudio;
+      el.lineScrubber.max = String(Math.max(0, scriptLen - 1));
+    }
+
+    function renderDialogueList() {
+      const session = state.currentSession;
+      el.dialogueList.textContent = "";
+      if (!session || session.script.length === 0) {
+        el.dialogueEmptyState.classList.remove("hidden-el");
+        el.dialogueMeta.textContent = "0 turns";
+        return;
+      }
+      el.dialogueEmptyState.classList.add("hidden-el");
+      const dur = formatMinutes(state.coverage ? state.coverage.estimated_total_sec : 0);
+      el.dialogueMeta.textContent = `${session.script.length} turns${dur ? ` · ${dur}` : ""}`;
+
+      const chunkPageMap = new Map(session.chunks.map((c) => [c.id, c.page]));
+      const frag = document.createDocumentFragment();
+
+      for (const line of session.script) {
+        const card = document.createElement("button");
+        card.type = "button";
+        card.className = "dialogue-card";
+        card.dataset.lineIndex = String(line.index);
+        card.dataset.active = String(line.index === state.currentLineIndex);
+
+        const meta = document.createElement("div");
+        meta.className = "dialogue-card-meta";
+
+        const badge = document.createElement("span");
+        badge.className = `speaker-pill ${line.speaker === "HOST_A" ? "speaker-prof" : "speaker-student"}`;
+        badge.textContent = line.speaker === "HOST_A" ? "Professor" : "Student";
+        meta.appendChild(badge);
+
+        const refTag = document.createElement("span");
+        refTag.className = "field-label mono-num";
+        const firstCid = line.chunk_ids[0];
+        const pg = firstCid ? chunkPageMap.get(firstCid) : null;
+        if (pg && line.chunk_ids.length) {
+          refTag.textContent = `Pg ${pg} · ${line.chunk_ids.join(", ")}`;
+        } else {
+          refTag.textContent = `Turn ${line.index + 1}`;
+        }
+        meta.appendChild(refTag);
+        card.appendChild(meta);
+
+        const body = document.createElement("p");
+        body.className = "dialogue-body";
+        body.textContent = line.text;
+        card.appendChild(body);
+
+        if (line.exam_note) {
+          const note = document.createElement("div");
+          note.className = "exam-note-box";
+          note.textContent = `Exam Note: ${line.exam_note}`;
+          card.appendChild(note);
+        }
+
+        card.addEventListener("click", () => {
+          jumpToLine(line.index, { autoplay: true, instant: false });
+        });
+        frag.appendChild(card);
+      }
+
+      el.dialogueList.appendChild(frag);
+    }
+
+    function applyRateToBoth(rate) {
+      state.playbackRate = rate;
+      deckA.defaultPlaybackRate = rate;
+      deckA.playbackRate = rate;
+      deckB.defaultPlaybackRate = rate;
+      deckB.playbackRate = rate;
+      for (const btn of el.speedGroup.querySelectorAll(".speed-pill")) {
+        btn.setAttribute("aria-pressed", String(Number(btn.dataset.rate) === rate));
+      }
+      updatePlaybackReadout();
+    }
+
+    function updateAutoScrollUi() {
+      el.autoScrollBtn.setAttribute("aria-pressed", String(state.autoScroll));
+      el.autoScrollBtn.textContent = state.autoScroll ? "Auto-Scroll: ON" : "Auto-Scroll: OFF";
+    }
+
+    function updatePlayPauseUi() {
+      el.playPauseBtn.dataset.playing = String(state.isPlaying);
+      el.playIcon.classList.toggle("hidden-el", state.isPlaying);
+      el.pauseIcon.classList.toggle("hidden-el", !state.isPlaying);
+      el.playPauseLabel.textContent = state.isPlaying ? "Pause" : "Play";
+    }
+
+    function updatePlaybackReadout() {
+      const session = state.currentSession;
+      if (!session || session.script.length === 0) {
+        el.playbackReadout.textContent = session
+          ? `Line 0 / 0 · Page — / ${session.page_count}`
+          : "Line 0 / 0 · Page — / —";
+        el.lineScrubber.value = "0";
+        return;
+      }
+
+      const idx = Math.max(0, Math.min(state.currentLineIndex, session.script.length - 1));
+      const line = session.script[idx];
+      const chunkMap = new Map(session.chunks.map((c) => [c.id, c.page]));
+      for (const cid of line.chunk_ids) {
+        const p = chunkMap.get(cid);
+        if (p) {
+          state.lastKnownPage = p;
+          break;
+        }
+      }
+
+      const pgLabel = state.lastKnownPage ? String(state.lastKnownPage) : "—";
+      const remSec = session.script
+        .slice(idx)
+        .reduce((acc, item) => acc + (item.duration_sec || 0), 0) / state.playbackRate;
+      const remPart = remSec > 0 ? ` · ~${Math.max(1, Math.round(remSec / 60))}m left` : "";
+      el.playbackReadout.textContent =
+        `Line ${idx + 1} / ${session.script.length} · Page ${pgLabel} / ${session.page_count}${remPart}`;
+      el.lineScrubber.value = String(idx);
+    }
+
+    function syncVisualLine(index, { scroll = true } = {}) {
+      const session = state.currentSession;
+      if (!session || !session.script.length) return;
+      const line = session.script[index];
+      const activeSet = new Set(line ? line.chunk_ids : []);
+
+      for (const card of el.dialogueList.querySelectorAll(".dialogue-card")) {
+        const isCurrent = Number(card.dataset.lineIndex) === index;
+        card.dataset.active = String(isCurrent);
+        if (isCurrent && scroll) {
+          card.scrollIntoView({ behavior: "smooth", block: "nearest" });
+        }
+      }
+
+      let firstActiveBox = null;
+      for (const box of el.pdfPagesContainer.querySelectorAll(".chunk-box")) {
+        const cid = box.dataset.chunkId;
+        const isActive = activeSet.has(cid);
+        box.dataset.active = String(isActive);
+        if (isActive && !firstActiveBox) {
+          firstActiveBox = box;
+        }
+      }
+
+      if (scroll && state.autoScroll && firstActiveBox && activeSet.size > 0) {
+        firstActiveBox.scrollIntoView({ behavior: "smooth", block: "center" });
+      }
+      updatePlaybackReadout();
+    }
+
+    function scheduleStatePatch() {
+      const session = state.currentSession;
+      if (!session) return;
+      if (state.patchTimer) clearTimeout(state.patchTimer);
+      const sid = session.session_id;
+      const payload = {
+        last_line_index: state.currentLineIndex,
+        playback_rate: state.playbackRate,
+        auto_scroll: state.autoScroll,
+      };
+      state.patchTimer = setTimeout(() => {
+        fetch(`/api/sessions/${encodeURIComponent(sid)}/state`, {
+          method: "PATCH",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload),
+        }).catch(() => {});
+      }, 450);
+    }
+
+    function audioUrlFor(session, line) {
+      return `/api/sessions/${encodeURIComponent(session.session_id)}/audio/${encodeURIComponent(line.audio_file)}`;
+    }
+
+    function unlockDecksOnGesture() {
+      if (state.decksUnlocked) return;
+      state.decksUnlocked = true;
+      standbyDeck.muted = true;
+      const p = standbyDeck.play();
+      if (p && typeof p.then === "function") {
+        p.then(() => {
+          standbyDeck.pause();
+          standbyDeck.currentTime = 0;
+          standbyDeck.muted = false;
+        }).catch(() => {
+          standbyDeck.muted = false;
+        });
+      } else {
+        standbyDeck.muted = false;
+      }
+    }
+
+    function preloadNextLine(index) {
+      const session = state.currentSession;
+      if (!session || index + 1 >= session.script.length) {
+        standbyDeck.removeAttribute("src");
+        delete standbyDeck.dataset.preloadedUrl;
+        return;
+      }
+      const nextUrl = audioUrlFor(session, session.script[index + 1]);
+      if (standbyDeck.dataset.preloadedUrl !== nextUrl) {
+        standbyDeck.src = nextUrl;
+        standbyDeck.dataset.preloadedUrl = nextUrl;
+        standbyDeck.defaultPlaybackRate = state.playbackRate;
+        standbyDeck.playbackRate = state.playbackRate;
+        standbyDeck.load();
+      }
+    }
+
+    function jumpToLine(index, { autoplay = true, instant = false } = {}) {
+      const session = state.currentSession;
+      if (!session || !session.script.length) return;
+      const clamped = Math.max(0, Math.min(index, session.script.length - 1));
+      const token = ++state.playbackToken;
+      if (breathTimer) {
+        clearTimeout(breathTimer);
+        breathTimer = null;
+      }
+
+      if (instant) {
+        el.playPauseBtn.dataset.instant = "true";
+        setTimeout(() => delete el.playPauseBtn.dataset.instant, 0);
+      }
+
+      state.currentLineIndex = clamped;
+      syncVisualLine(clamped, { scroll: true });
+      scheduleStatePatch();
+
+      const line = session.script[clamped];
+      const url = audioUrlFor(session, line);
+
+      activeDeck.pause();
+      standbyDeck.pause();
+
+      if (!autoplay) {
+        state.isPlaying = false;
+        updatePlayPauseUi();
+        if (activeDeck.dataset.loadedUrl !== url) {
+          activeDeck.src = url;
+          activeDeck.dataset.loadedUrl = url;
+          activeDeck.defaultPlaybackRate = state.playbackRate;
+          activeDeck.playbackRate = state.playbackRate;
+          activeDeck.load();
+        } else {
+          activeDeck.currentTime = 0;
+        }
+        preloadNextLine(clamped);
+        return;
+      }
+
+      unlockDecksOnGesture();
+      state.isPlaying = true;
+      updatePlayPauseUi();
+
+      if (standbyDeck.dataset.preloadedUrl === url && standbyDeck.readyState >= 2) {
+        const oldActive = activeDeck;
+        activeDeck = standbyDeck;
+        standbyDeck = oldActive;
+        activeDeck.dataset.loadedUrl = url;
+      } else if (activeDeck.dataset.loadedUrl !== url) {
+        activeDeck.src = url;
+        activeDeck.dataset.loadedUrl = url;
+        activeDeck.defaultPlaybackRate = state.playbackRate;
+        activeDeck.playbackRate = state.playbackRate;
+        activeDeck.load();
+      }
+
+      activeDeck.currentTime = 0;
+      activeDeck.defaultPlaybackRate = state.playbackRate;
+      activeDeck.playbackRate = state.playbackRate;
+      activeDeck.play().catch(() => {
+        if (token === state.playbackToken) {
+          state.isPlaying = false;
+          updatePlayPauseUi();
+        }
+      });
+      preloadNextLine(clamped);
+    }
+
+    function togglePlayPause({ instant = false } = {}) {
+      const session = state.currentSession;
+      if (!session || !session.script.length) return;
+      if (instant) {
+        el.playPauseBtn.dataset.instant = "true";
+        setTimeout(() => delete el.playPauseBtn.dataset.instant, 0);
+      }
+
+      if (state.isPlaying) {
+        state.playbackToken += 1;
+        if (breathTimer) {
+          clearTimeout(breathTimer);
+          breathTimer = null;
+        }
+        activeDeck.pause();
+        state.isPlaying = false;
+        updatePlayPauseUi();
+        scheduleStatePatch();
+        return;
+      }
+
+      unlockDecksOnGesture();
+      const line = session.script[state.currentLineIndex];
+      const url = audioUrlFor(session, line);
+      if (activeDeck.dataset.loadedUrl !== url) {
+        jumpToLine(state.currentLineIndex, { autoplay: true, instant });
+        return;
+      }
+      state.isPlaying = true;
+      updatePlayPauseUi();
+      activeDeck.playbackRate = state.playbackRate;
+      activeDeck.play().catch(() => {
+        state.isPlaying = false;
+        updatePlayPauseUi();
+      });
+      preloadNextLine(state.currentLineIndex);
+    }
+
+    function repeatCurrentLine({ instant = false } = {}) {
+      const session = state.currentSession;
+      if (!session || !session.script.length) return;
+      jumpToLine(state.currentLineIndex, { autoplay: true, instant });
+    }
+
+    function bindDeckEvents(deck) {
+      deck.addEventListener("loadedmetadata", () => {
+        deck.defaultPlaybackRate = state.playbackRate;
+        deck.playbackRate = state.playbackRate;
+      });
+      deck.addEventListener("ended", () => {
+        if (deck !== activeDeck || !state.isPlaying) return;
+        const session = state.currentSession;
+        if (!session) return;
+        const token = state.playbackToken;
+        if (state.currentLineIndex + 1 < session.script.length) {
+          breathTimer = setTimeout(() => {
+            if (token === state.playbackToken && state.isPlaying) {
+              jumpToLine(state.currentLineIndex + 1, { autoplay: true, instant: false });
+            }
+          }, 200);
+        } else {
+          state.isPlaying = false;
+          updatePlayPauseUi();
+        }
+      });
+      deck.addEventListener("error", () => {
+        if (deck !== activeDeck || !deck.getAttribute("src")) return;
+        state.isPlaying = false;
+        updatePlayPauseUi();
+        const session = state.currentSession;
+        const hasNext = session && state.currentLineIndex + 1 < session.script.length;
+        const actions = [
+          {
+            label: "Retry Line",
+            onClick: () => jumpToLine(state.currentLineIndex, { autoplay: true }),
+          },
+        ];
+        if (hasNext) {
+          actions.push({
+            label: "Skip",
+            onClick: () => jumpToLine(state.currentLineIndex + 1, { autoplay: true }),
+          });
+        }
+        showSnackbar(`Audio clip failed on line ${state.currentLineIndex + 1}.`, {
+          actions,
+          durationMs: 0,
+        });
+      });
+    }
+
+    bindDeckEvents(deckA);
+    bindDeckEvents(deckB);
+
+    function cancelAndClearPdf() {
+      if (state.observer) {
+        state.observer.disconnect();
+        state.observer = null;
+      }
+      for (const slot of state.pageSlots) {
+        if (slot.renderTask) {
+          try {
+            slot.renderTask.cancel();
+          } catch (_err) {}
+          slot.renderTask = null;
+        }
+      }
+      state.pageSlots = [];
+      state.visiblePages.clear();
+      state.pdfDoc = null;
+      el.pdfPagesContainer.textContent = "";
+    }
+
+    function sizePageSlot(slot) {
+      const w = Math.round(slot.baseWidth * state.zoomScale);
+      const h = Math.round(slot.baseHeight * state.zoomScale);
+      slot.frameEl.style.width = `${w}px`;
+      slot.frameEl.style.height = `${h}px`;
+    }
+
+    async function renderPageSlot(slot) {
+      if (!state.pdfDoc) return;
+      const dpr = Math.min(window.devicePixelRatio || 1, 2);
+      const targetScaleKey = `${state.zoomScale.toFixed(3)}@${dpr}`;
+      if (slot.renderedScale === targetScaleKey && slot.canvasEl.width > 0) return;
+
+      if (slot.renderTask) {
+        try {
+          slot.renderTask.cancel();
+        } catch (_err) {}
+        slot.renderTask = null;
+      }
+
+      const viewport = slot.pageProxy.getViewport({ scale: state.zoomScale * dpr });
+      slot.canvasEl.width = Math.max(1, Math.floor(viewport.width));
+      slot.canvasEl.height = Math.max(1, Math.floor(viewport.height));
+      const ctx = slot.canvasEl.getContext("2d", { alpha: false });
+      const task = slot.pageProxy.render({ canvasContext: ctx, viewport });
+      slot.renderTask = task;
+
+      try {
+        await task.promise;
+        if (slot.renderTask === task) {
+          slot.renderedScale = targetScaleKey;
+          slot.renderTask = null;
+        }
+      } catch (err) {
+        if (err && err.name !== "RenderingCancelledException") {
+          slot.renderedScale = null;
+        }
+      }
+    }
+
+    function evictPageSlot(slot) {
+      if (slot.renderTask) {
+        try {
+          slot.renderTask.cancel();
+        } catch (_err) {}
+        slot.renderTask = null;
+      }
+      if (slot.canvasEl.width > 0) {
+        slot.canvasEl.width = 0;
+        slot.canvasEl.height = 0;
+      }
+      slot.renderedScale = null;
+    }
+
+    function refreshPdfRenderWindow() {
+      if (!state.pageSlots.length) return;
+      const visible = Array.from(state.visiblePages);
+      const minVis = visible.length ? Math.min(...visible) : 1;
+      const maxVis = visible.length ? Math.max(...visible) : 1;
+      el.pdfPageReadout.textContent = `Page ${minVis} / ${state.pageSlots.length}`;
+
+      const renderLo = Math.max(1, minVis - 4);
+      const renderHi = Math.min(state.pageSlots.length, maxVis + 4);
+      const evictLo = minVis - 8;
+      const evictHi = maxVis + 8;
+
+      for (const slot of state.pageSlots) {
+        if (slot.pageNum >= renderLo && slot.pageNum <= renderHi) {
+          renderPageSlot(slot);
+        } else if (slot.pageNum < evictLo || slot.pageNum > evictHi) {
+          evictPageSlot(slot);
+        }
+      }
+    }
+
+    function refreshChunkOverlayStates() {
+      const session = state.currentSession;
+      const activeSet = new Set(
+        session && session.script[state.currentLineIndex]
+          ? session.script[state.currentLineIndex].chunk_ids
+          : []
+      );
+      for (const box of el.pdfPagesContainer.querySelectorAll(".chunk-box")) {
+        const cid = box.dataset.chunkId;
+        const firstLine = state.chunkFirstLine.get(cid);
+        const covered = firstLine !== undefined;
+        box.dataset.covered = String(covered);
+        box.dataset.active = String(activeSet.has(cid));
+        box.title = covered
+          ? `Chunk ${cid} — Click to jump to Turn ${firstLine + 1}`
+          : `Chunk ${cid} — Not covered yet`;
+      }
+    }
+
+    async function renderPdfForSession(session) {
+      cancelAndClearPdf();
+      if (!session) {
+        el.pdfEmptyState.classList.remove("hidden-el");
+        el.pdfPagesContainer.classList.add("hidden-el");
+        el.pdfPageReadout.textContent = "No document";
+        return;
+      }
+
+      el.pdfEmptyState.classList.add("hidden-el");
+      el.pdfPagesContainer.classList.remove("hidden-el");
+      el.pdfPageReadout.textContent = `Loading ${session.page_count} pages...`;
+
+      let pdfjsLib;
+      try {
+        pdfjsLib = await loadPdfJs();
+      } catch (_err) {
+        showSnackbar("Could not load PDF.js viewer module.");
+        return;
+      }
+
+      const task = pdfjsLib.getDocument({
+        url: `/api/sessions/${encodeURIComponent(session.session_id)}/pdf`,
+        isEvalSupported: false,
+      });
+      const pdfDoc = await task.promise;
+      if (!state.currentSession || state.currentSession.session_id !== session.session_id) {
+        return;
+      }
+      state.pdfDoc = pdfDoc;
+
+      const chunksByPage = new Map();
+      for (const ch of session.chunks) {
+        if (!chunksByPage.has(ch.page)) chunksByPage.set(ch.page, []);
+        chunksByPage.get(ch.page).push(ch);
+      }
+
+      const firstPage = await pdfDoc.getPage(1);
+      const firstVp = firstPage.getViewport({ scale: 1.0 });
+      const availableW = Math.max(320, el.pdfScroll.clientWidth - 48);
+      state.zoomScale = Math.max(0.6, Math.min(2.0, Number((availableW / firstVp.width).toFixed(2))));
+      el.zoomLabel.textContent = `${Math.round(state.zoomScale * 100)}%`;
+
+      const frag = document.createDocumentFragment();
+      for (let p = 1; p <= pdfDoc.numPages; p += 1) {
+        const pageProxy = p === 1 ? firstPage : await pdfDoc.getPage(p);
+        const vp = pageProxy.getViewport({ scale: 1.0 });
+
+        const frameEl = document.createElement("div");
+        frameEl.className = "pdf-page-frame";
+        frameEl.dataset.pageNum = String(p);
+
+        const canvasEl = document.createElement("canvas");
+        canvasEl.className = "pdf-page-canvas";
+        frameEl.appendChild(canvasEl);
+
+        const overlayLayerEl = document.createElement("div");
+        overlayLayerEl.className = "chunk-overlay-layer";
+        for (const ch of chunksByPage.get(p) || []) {
+          const [x0, y0, x1, y1] = ch.bbox;
+          const box = document.createElement("div");
+          box.className = "chunk-box";
+          box.dataset.chunkId = ch.id;
+          box.style.left = `${(x0 * 100).toFixed(3)}%`;
+          box.style.top = `${(y0 * 100).toFixed(3)}%`;
+          box.style.width = `${Math.max(0.5, (x1 - x0) * 100).toFixed(3)}%`;
+          box.style.height = `${Math.max(0.5, (y1 - y0) * 100).toFixed(3)}%`;
+          box.addEventListener("click", () => {
+            const targetIdx = state.chunkFirstLine.get(ch.id);
+            if (targetIdx !== undefined) {
+              jumpToLine(targetIdx, { autoplay: true });
+            } else {
+              showSnackbar(`Chunk ${ch.id} is not covered in the current script yet.`);
+            }
+          });
+          overlayLayerEl.appendChild(box);
+        }
+        frameEl.appendChild(overlayLayerEl);
+
+        const slot = {
+          pageNum: p,
+          pageProxy,
+          baseWidth: vp.width,
+          baseHeight: vp.height,
+          frameEl,
+          canvasEl,
+          overlayLayerEl,
+          renderTask: null,
+          renderedScale: null,
+        };
+        sizePageSlot(slot);
+        state.pageSlots.push(slot);
+        frag.appendChild(frameEl);
+      }
+
+      el.pdfPagesContainer.appendChild(frag);
+      refreshChunkOverlayStates();
+
+      state.observer = new IntersectionObserver(
+        (entries) => {
+          for (const entry of entries) {
+            const p = Number(entry.target.dataset.pageNum);
+            if (entry.isIntersecting) state.visiblePages.add(p);
+            else state.visiblePages.delete(p);
+          }
+          refreshPdfRenderWindow();
+        },
+        { root: el.pdfScroll, rootMargin: "200px 0px" }
+      );
+      for (const slot of state.pageSlots) {
+        state.observer.observe(slot.frameEl);
+      }
+      state.visiblePages.add(1);
+      refreshPdfRenderWindow();
+      syncVisualLine(state.currentLineIndex, { scroll: false });
+    }
+
+    function applyZoom(newScale) {
+      if (!state.pageSlots.length) return;
+      state.zoomScale = Math.max(0.5, Math.min(2.6, Number(newScale.toFixed(2))));
+      el.zoomLabel.textContent = `${Math.round(state.zoomScale * 100)}%`;
+      for (const slot of state.pageSlots) {
+        if (slot.renderTask) {
+          try {
+            slot.renderTask.cancel();
+          } catch (_err) {}
+          slot.renderTask = null;
+        }
+        slot.renderedScale = null;
+        sizePageSlot(slot);
+      }
+      refreshPdfRenderWindow();
+    }
+
+    function applySessionData(payload, { reloadPdf = true } = {}) {
+      state.playbackToken += 1;
+      activeDeck.pause();
+      standbyDeck.pause();
+      state.isPlaying = false;
+      updatePlayPauseUi();
+
+      state.currentSession = payload.session;
+      state.coverage = payload.coverage;
+      if (payload.voice_pairs) {
+        populateVoicePairs(payload.voice_pairs, payload.session.state.voice_pair_id);
+      } else {
+        populateVoicePairs(state.voicePairs, payload.session.state.voice_pair_id);
+      }
+
+      state.currentLineIndex = payload.session.state.last_line_index || 0;
+      state.autoScroll = payload.session.state.auto_scroll !== false;
+      state.lastKnownPage = null;
+
+      buildChunkMap(state.currentSession);
+      applyRateToBoth(payload.session.state.playback_rate || 1.0);
+      updateAutoScrollUi();
+      updateCoverageUi();
+      renderDialogueList();
+      updateActionButtons();
+      refreshChunkOverlayStates();
+
+      if (state.currentSession.script.length > 0) {
+        jumpToLine(state.currentLineIndex, { autoplay: false });
+      } else {
+        updatePlaybackReadout();
+        setDrawerOpen(true);
+      }
+
+      if (reloadPdf) {
+        renderPdfForSession(state.currentSession);
+      }
+    }
+
+    async function refreshSessionList(selectedId = null) {
+      const data = await apiJson("/api/sessions");
+      state.sessions = data.sessions || [];
+      populateSessionSelect(selectedId);
+    }
+
+    async function selectSession(sessionId) {
+      if (!sessionId) {
+        state.currentSession = null;
+        state.coverage = null;
+        cancelAndClearPdf();
+        el.pdfEmptyState.classList.remove("hidden-el");
+        el.pdfPagesContainer.classList.add("hidden-el");
+        renderDialogueList();
+        updateCoverageUi();
+        updateActionButtons();
+        updatePlaybackReadout();
+        return;
+      }
+      const payload = await apiJson(`/api/sessions/${encodeURIComponent(sessionId)}`);
+      applySessionData(payload, { reloadPdf: true });
+      populateSessionSelect(sessionId);
+    }
+
+    async function handleUploadFile(file) {
+      if (!file) return;
+      hideDrawerAlert();
+      el.uploadBtn.disabled = true;
+      el.uploadBtnLabel.textContent = "Parsing PDF...";
+      const fd = new FormData();
+      fd.append("file", file);
+      try {
+        const payload = await apiJson("/api/upload", { method: "POST", body: fd });
+        await refreshSessionList(payload.session.session_id);
+        applySessionData(payload, { reloadPdf: true });
+        if (payload.warnings && payload.warnings.length) {
+          showDrawerAlert(payload.warnings.join(" "), "warning");
+        }
+        showSnackbar(`Loaded "${payload.session.title}" (${payload.session.page_count} pages).`);
+      } catch (err) {
+        showSnackbar(err.message);
+      } finally {
+        el.uploadBtn.disabled = false;
+        el.uploadBtnLabel.textContent = "Upload PDF";
+        el.pdfInput.value = "";
+      }
+    }
+
+    async function handleCopyPrompt() {
+      const session = state.currentSession;
+      if (!session) return;
+      hideDrawerAlert();
+      const sp = Math.max(1, Number(el.fromPageInput.value || 1));
+      const ep = Math.max(sp, Number(el.toPageInput.value || sp));
+      try {
+        const res = await apiJson(
+          `/api/sessions/${encodeURIComponent(session.session_id)}/prompt?start_page=${sp}&end_page=${ep}`
+        );
+        state.lastCopiedRange = { start_page: res.start_page, end_page: res.end_page };
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          await navigator.clipboard.writeText(res.prompt);
+        } else {
+          const tmp = document.createElement("textarea");
+          tmp.value = res.prompt;
+          document.body.appendChild(tmp);
+          tmp.select();
+          document.execCommand("copy");
+          tmp.remove();
+        }
+        const [cStart, cEnd] = res.chunk_id_range;
+        showSnackbar(`Copied! Pages ${res.start_page}–${res.end_page} (${cStart}–${cEnd}).`);
+      } catch (err) {
+        showDrawerAlert(err.message, "error");
+      }
+    }
+
+    function startProgressPolling(sessionId, startedMs) {
+      el.genProgressBox.classList.remove("hidden-el");
+      el.genProgressFill.style.transform = "scaleX(0)";
+      el.genProgressText.textContent = "Preparing audio synthesis...";
+      state.statusTimer = setInterval(async () => {
+        try {
+          const prog = await apiJson(`/api/sessions/${encodeURIComponent(sessionId)}/generate/status`);
+          const elapsed = Math.floor((Date.now() - startedMs) / 1000);
+          const total = Math.max(1, prog.total || 1);
+          const ratio = Math.min(1, (prog.completed || 0) / total);
+          el.genProgressFill.style.transform = `scaleX(${ratio})`;
+          el.genProgressText.textContent =
+            `Synthesizing ${prog.completed} / ${prog.total} clips (${prog.cached} cached) · ${elapsed}s`;
+        } catch (_err) {}
+      }, 900);
+    }
+
+    function stopProgressPolling() {
+      if (state.statusTimer) {
+        clearInterval(state.statusTimer);
+        state.statusTimer = null;
+      }
+      el.genProgressBox.classList.add("hidden-el");
+    }
+
+    async function handleGenerate(mode) {
+      const session = state.currentSession;
+      if (!session) return;
+      hideDrawerAlert();
+
+      if (mode === "replace" && session.script.length > 0) {
+        const ok = window.confirm(
+          "Replace existing lecture lines with this pasted script? (You can undo the last batch afterward.)"
+        );
+        if (!ok) return;
+      }
+
+      const rawJson = el.jsonInput.value.trim();
+      if (!rawJson) {
+        showDrawerAlert("Paste Gemini's JSON array before generating audio.", "error");
+        return;
+      }
+
+      const voices = getSelectedVoices();
+      const sp = state.lastCopiedRange ? state.lastCopiedRange.start_page : Number(el.fromPageInput.value || 0);
+      const ep = state.lastCopiedRange ? state.lastCopiedRange.end_page : Number(el.toPageInput.value || 0);
+
+      state.generating = true;
+      updateActionButtons();
+      startProgressPolling(session.session_id, Date.now());
+
+      try {
+        const payload = await apiJson(`/api/sessions/${encodeURIComponent(session.session_id)}/generate`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            raw_json: rawJson,
+            host_a_voice: voices.host_a_voice,
+            host_b_voice: voices.host_b_voice,
+            mode,
+            start_page: sp > 0 ? sp : null,
+            end_page: ep >= sp && sp > 0 ? ep : null,
+          }),
+        });
+        el.jsonInput.value = "";
+        state.lastCopiedRange = null;
+        applySessionData(payload, { reloadPdf: false });
+        await refreshSessionList(payload.session.session_id);
+        if (payload.warnings && payload.warnings.length) {
+          showDrawerAlert(payload.warnings.join(" "), "warning");
+        } else {
+          setDrawerOpen(false);
+        }
+        showSnackbar(
+          `Ready! ${payload.stats.generated_count} new, ${payload.stats.cached_count} cached (${payload.stats.total_lines} lines).`
+        );
+      } catch (err) {
+        showDrawerAlert(err.message, "error");
+      } finally {
+        stopProgressPolling();
+        state.generating = false;
+        updateActionButtons();
+      }
+    }
+
+    async function handleResynthesize() {
+      const session = state.currentSession;
+      if (!session || !session.script.length) return;
+      hideDrawerAlert();
+      const voices = getSelectedVoices();
+      state.generating = true;
+      updateActionButtons();
+      startProgressPolling(session.session_id, Date.now());
+      try {
+        const payload = await apiJson(`/api/sessions/${encodeURIComponent(session.session_id)}/resynthesize`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(voices),
+        });
+        applySessionData(payload, { reloadPdf: false });
+        await refreshSessionList(payload.session.session_id);
+        showSnackbar(`Voices updated (${payload.stats.generated_count} synthesized, ${payload.stats.cached_count} cached).`);
+      } catch (err) {
+        showDrawerAlert(err.message, "error");
+      } finally {
+        stopProgressPolling();
+        state.generating = false;
+        updateActionButtons();
+      }
+    }
+
+    async function handleUndo() {
+      const session = state.currentSession;
+      if (!session) return;
+      hideDrawerAlert();
+      try {
+        const payload = await apiJson(`/api/sessions/${encodeURIComponent(session.session_id)}/undo`, {
+          method: "POST",
+        });
+        applySessionData(payload, { reloadPdf: false });
+        await refreshSessionList(payload.session.session_id);
+        showSnackbar(`Undid last batch (${payload.session.script.length} lines remaining).`);
+      } catch (err) {
+        showDrawerAlert(err.message, "error");
+      }
+    }
+
+    async function handleDeleteSession() {
+      const session = state.currentSession;
+      if (!session) return;
+      const ok = window.confirm(`Delete "${session.title}" and all cached audio clips from disk?`);
+      if (!ok) return;
+      try {
+        await apiJson(`/api/sessions/${encodeURIComponent(session.session_id)}`, { method: "DELETE" });
+        await refreshSessionList(null);
+        const nextId = state.sessions.length ? state.sessions[0].session_id : null;
+        await selectSession(nextId);
+        showSnackbar("Session deleted.");
+      } catch (err) {
+        showSnackbar(err.message);
+      }
+    }
+
+    function setMobileTab(tab) {
+      state.activeTab = tab;
+      const showPdf = tab === "pdf";
+      el.tabPdfBtn.setAttribute("aria-selected", String(showPdf));
+      el.tabDialogueBtn.setAttribute("aria-selected", String(!showPdf));
+      el.pdfPane.dataset.mobileHidden = String(!showPdf);
+      el.dialoguePane.dataset.mobileHidden = String(showPdf);
+    }
+
+    // Event Bindings
+    el.sessionSelect.addEventListener("change", () => selectSession(el.sessionSelect.value));
+    el.deleteSessionBtn.addEventListener("click", handleDeleteSession);
+    el.uploadBtn.addEventListener("click", () => el.pdfInput.click());
+    el.emptyUploadCta.addEventListener("click", () => el.pdfInput.click());
+    el.pdfInput.addEventListener("change", () => handleUploadFile(el.pdfInput.files[0]));
+
+    el.drawerToggleBtn.addEventListener("click", () => setDrawerOpen(!state.drawerOpen));
+    el.closeSheetBtn.addEventListener("click", () => setDrawerOpen(false));
+    el.scriptSheetScrim.addEventListener("click", () => setDrawerOpen(false));
+    el.dismissAlertBtn.addEventListener("click", hideDrawerAlert);
+
+    el.copyPromptBtn.addEventListener("click", handleCopyPrompt);
+    el.appendBtn.addEventListener("click", () => handleGenerate("append"));
+    el.replaceBtn.addEventListener("click", () => handleGenerate("replace"));
+    el.undoBtn.addEventListener("click", handleUndo);
+    el.resynthesizeBtn.addEventListener("click", handleResynthesize);
+
+    el.playPauseBtn.addEventListener("click", () => togglePlayPause({ instant: false }));
+    el.prevLineBtn.addEventListener("click", () => jumpToLine(state.currentLineIndex - 1, { autoplay: true }));
+    el.nextLineBtn.addEventListener("click", () => jumpToLine(state.currentLineIndex + 1, { autoplay: true }));
+    el.repeatLineBtn.addEventListener("click", () => repeatCurrentLine({ instant: false }));
+
+    el.speedGroup.addEventListener("click", (evt) => {
+      const pill = evt.target.closest(".speed-pill");
+      if (!pill) return;
+      applyRateToBoth(Number(pill.dataset.rate));
+      scheduleStatePatch();
+    });
+
+    el.lineScrubber.addEventListener("input", () => {
+      jumpToLine(Number(el.lineScrubber.value), { autoplay: state.isPlaying });
+    });
+
+    el.autoScrollBtn.addEventListener("click", () => {
+      state.autoScroll = !state.autoScroll;
+      updateAutoScrollUi();
+      scheduleStatePatch();
+    });
+
+    el.zoomOutBtn.addEventListener("click", () => applyZoom(state.zoomScale - 0.15));
+    el.zoomInBtn.addEventListener("click", () => applyZoom(state.zoomScale + 0.15));
+    el.zoomFitBtn.addEventListener("click", () => {
+      if (!state.pageSlots.length) return;
+      const availableW = Math.max(320, el.pdfScroll.clientWidth - 48);
+      applyZoom(availableW / state.pageSlots[0].baseWidth);
+    });
+
+    el.tabPdfBtn.addEventListener("click", () => setMobileTab("pdf"));
+    el.tabDialogueBtn.addEventListener("click", () => setMobileTab("dialogue"));
+
+    document.addEventListener("keydown", (evt) => {
+      if (evt.ctrlKey || evt.altKey || evt.metaKey) return;
+      const activeEl = document.activeElement;
+      if (
+        activeEl &&
+        (["INPUT", "TEXTAREA", "SELECT"].includes(activeEl.tagName) || activeEl.isContentEditable)
+      ) {
+        if (evt.key === "Escape" && state.drawerOpen) setDrawerOpen(false);
+        return;
+      }
+      if (evt.key === "Escape" && state.drawerOpen) {
+        setDrawerOpen(false);
+        return;
+      }
+      if (!state.currentSession || !state.currentSession.script.length) return;
+      if (evt.code === "Space") {
+        evt.preventDefault();
+        togglePlayPause({ instant: true });
+      } else if (evt.key === "ArrowLeft") {
+        evt.preventDefault();
+        jumpToLine(state.currentLineIndex - 1, { autoplay: true, instant: true });
+      } else if (evt.key === "ArrowRight") {
+        evt.preventDefault();
+        jumpToLine(state.currentLineIndex + 1, { autoplay: true, instant: true });
+      } else if (evt.key === "r" || evt.key === "R") {
+        evt.preventDefault();
+        repeatCurrentLine({ instant: true });
+      }
+    });
+
+    async function bootstrap() {
+      try {
+        const voices = await apiJson("/api/voices");
+        populateVoicePairs(voices.voice_pairs || [], "us_natural");
+        await refreshSessionList(null);
+        if (state.sessions.length) {
+          await selectSession(state.sessions[0].session_id);
+        } else {
+          updateActionButtons();
+          updatePlaybackReadout();
+        }
+      } catch (err) {
+        showSnackbar(`Failed to initialize workspace: ${err.message}`);
+      }
+    }
+
+    bootstrap();
+  </script>
+</body>
+</html>
