@@ -52,7 +52,11 @@ def test_full_study_lifecycle_undo_resynthesize_delete(client_and_dirs):
     client, _sdir, _static = client_and_dirs
 
     assert client.get("/").status_code == 200
-    assert len(client.get("/api/voices").json()["voice_pairs"]) == 3
+    voices = client.get("/api/voices").json()["voice_pairs"]
+    assert len(voices) == 5
+    voice_ids = {vp["id"] for vp in voices}
+    assert {"us_natural", "in_english", "uk_natural", "hi_in", "ml_in"} <= voice_ids
+    assert {vp["language"] for vp in voices} == {"en", "hi", "ml"}
 
     # Explicit JS MIME type on /static/vendor/*.mjs
     vendor_resp = client.get("/static/vendor/pdf.min.mjs")
@@ -196,7 +200,7 @@ def test_concurrent_patch_preserved_and_409_and_status_reset_on_502(client_and_d
     t.start()
     assert entered.wait(timeout=3.0)
 
-    # While generating: status is running, second generate gets 409, PATCH /state succeeds and persists
+    # While generating: status is running, second generate gets 409, reparse gets 409, PATCH /state succeeds and persists
     assert client.get(f"/api/sessions/{sid}/generate/status").json()["running"] is True
     conflict = client.post(
         f"/api/sessions/{sid}/generate",
@@ -208,6 +212,8 @@ def test_concurrent_patch_preserved_and_409_and_status_reset_on_502(client_and_d
         },
     )
     assert conflict.status_code == 409
+    reparse_conflict = client.post(f"/api/sessions/{sid}/reparse", json={"use_vision": False})
+    assert reparse_conflict.status_code == 409
 
     patch_resp = client.patch(f"/api/sessions/{sid}/state", json={"playback_rate": 1.5, "auto_scroll": False})
     assert patch_resp.status_code == 200
@@ -244,3 +250,48 @@ def test_concurrent_patch_preserved_and_409_and_status_reset_on_502(client_and_d
     assert fail_resp.status_code == 502
     assert client.get(f"/api/sessions/{sid}/generate/status").json()["running"] is False
     assert client.get(f"/api/sessions/{sid}").json()["session"]["script"][0]["text"] == "Slow line."
+
+
+def test_vision_status_and_reparse_and_pacing_language(client_and_dirs, monkeypatch):
+    from deepexamcast.vision_ocr import VisionStatus
+
+    client, _sdir, _static = client_and_dirs
+    monkeypatch.setattr(
+        app_module,
+        "check_vision_status",
+        lambda: VisionStatus(available=False, url="http://127.0.0.1:8081/v1", model="lightonocr-3"),
+    )
+    vs = client.get("/api/vision/status")
+    assert vs.status_code == 200
+    assert vs.json() == {"available": False, "url": "http://127.0.0.1:8081/v1", "model": "lightonocr-3"}
+
+    pdf_bytes = _build_test_pdf(["Page one theory.", "Page two algorithm."])
+    up = client.post(
+        "/api/upload",
+        files={"file": ("v3test.pdf", pdf_bytes, "application/pdf")},
+        data={"use_vision": "false"},
+    )
+    assert up.status_code == 200
+    up_json = up.json()
+    assert up_json["vision_used"] is False
+    sid = up_json["session"]["session_id"]
+    orig_ids = [c["id"] for c in up_json["session"]["chunks"]]
+
+    rp = client.post(f"/api/sessions/{sid}/reparse", json={"use_vision": False})
+    assert rp.status_code == 200
+    assert [c["id"] for c in rp.json()["session"]["chunks"]] == orig_ids
+
+    pr = client.get(f"/api/sessions/{sid}/prompt?start_page=1&end_page=2&pacing=revision&language=ml")
+    assert pr.status_code == 200
+    pr_json = pr.json()
+    assert pr_json["pacing"] == "revision"
+    assert pr_json["language"] == "ml"
+    assert "EXAM NIGHT SPRINT" in pr_json["prompt"]
+    assert "Malayalam script" in pr_json["prompt"]
+
+    patched = client.patch(f"/api/sessions/{sid}/state", json={"pacing": "revision", "language": "ml"})
+    assert patched.status_code == 200
+    p_json = patched.json()
+    assert p_json["state"]["pacing"] == "revision"
+    assert p_json["state"]["language"] == "ml"
+    assert "coverage" in p_json

@@ -7,13 +7,16 @@ from pathlib import Path
 import re
 from typing import Any
 
-from fastapi import FastAPI, File, HTTPException, Query, UploadFile
+from fastapi import FastAPI, File, Form, HTTPException, Query, UploadFile
 from fastapi.responses import FileResponse, HTMLResponse
 
 from deepexamcast.models import (
     VOICE_PAIRS,
     BatchRecord,
     GenerateRequest,
+    LanguageCode,
+    PacingMode,
+    ReparseRequest,
     ResynthesizeRequest,
     ScriptLine,
     SessionData,
@@ -21,7 +24,7 @@ from deepexamcast.models import (
     compute_audio_hash,
     match_voice_pair_id,
 )
-from deepexamcast.pdf_parser import PdfParseError, parse_pdf_bytes
+from deepexamcast.pdf_parser import PdfParseError
 from deepexamcast.prompt_builder import PromptBuildError, build_prompt
 from deepexamcast.script_parser import ScriptParseError, parse_gemini_script
 from deepexamcast.session_store import (
@@ -34,6 +37,7 @@ from deepexamcast.session_store import (
     utc_now_iso,
 )
 from deepexamcast.tts_engine import TtsSynthesisError, gc_unreferenced_audio, synthesize_lines
+from deepexamcast.vision_ocr import check_vision_status, extract_pdf_hybrid
 
 MAX_UPLOAD_BYTES = 100 * 1024 * 1024
 VENDOR_FILE_RE = re.compile(r"^[a-z0-9._-]+\.(?:mjs|js|css)$", re.IGNORECASE)
@@ -88,8 +92,16 @@ def create_app(sessions_dir: Path | None = None, static_dir: Path | None = None)
     async def get_voices() -> dict[str, Any]:
         return {"voice_pairs": [vp.model_dump() for vp in VOICE_PAIRS]}
 
+    @app.get("/api/vision/status")
+    async def get_vision_status() -> dict[str, Any]:
+        status = await asyncio.to_thread(check_vision_status)
+        return status.model_dump()
+
     @app.post("/api/upload")
-    async def upload_pdf(file: UploadFile = File(...)) -> dict[str, Any]:
+    async def upload_pdf(
+        file: UploadFile = File(...),
+        use_vision: bool = Form(True),
+    ) -> dict[str, Any]:
         chunks_buf = bytearray()
         total_bytes = 0
         first_chunk = True
@@ -114,18 +126,22 @@ def create_app(sessions_dir: Path | None = None, static_dir: Path | None = None)
 
         pdf_bytes = bytes(chunks_buf)
         try:
-            pages, chunks = await asyncio.to_thread(parse_pdf_bytes, pdf_bytes)
+            parsed_pdf = await asyncio.to_thread(extract_pdf_hybrid, pdf_bytes, use_vision=use_vision)
         except PdfParseError as exc:
             raise HTTPException(status_code=400, detail=str(exc)) from exc
 
         title = Path(file.filename or "lecture.pdf").name
-        session = await asyncio.to_thread(store.create_session, title, pdf_bytes, pages, chunks)
-        warnings: list[str] = []
-        if not chunks:
+        session = await asyncio.to_thread(
+            store.create_session, title, pdf_bytes, parsed_pdf.pages, parsed_pdf.chunks
+        )
+        warnings = list(parsed_pdf.warnings)
+        if not parsed_pdf.chunks:
             warnings.append(
                 "No selectable text blocks were extracted from this PDF (it may be scanned or image-only)."
             )
-        return _session_payload(session, warnings=warnings)
+        payload = _session_payload(session, warnings=warnings)
+        payload["vision_used"] = parsed_pdf.vision_used
+        return payload
 
     @app.get("/api/sessions")
     async def list_sessions() -> dict[str, Any]:
@@ -164,11 +180,60 @@ def create_app(sessions_dir: Path | None = None, static_dir: Path | None = None)
             raise _map_store_error(exc) from exc
         return FileResponse(path=pdf_path, media_type="application/pdf")
 
+    @app.post("/api/sessions/{session_id}/reparse")
+    async def reparse_session_pdf(
+        session_id: str,
+        req: ReparseRequest = ReparseRequest(),
+    ) -> dict[str, Any]:
+        try:
+            lock = store.get_lock(session_id)
+        except Exception as exc:
+            raise _map_store_error(exc) from exc
+
+        async with lock:
+            if store.is_generating(session_id):
+                raise HTTPException(status_code=409, detail="Cannot re-parse PDF while audio generation is running.")
+            try:
+                pdf_path = await asyncio.to_thread(store.get_pdf_path, session_id)
+                pdf_bytes = await asyncio.to_thread(pdf_path.read_bytes)
+            except Exception as exc:
+                raise _map_store_error(exc) from exc
+
+        try:
+            parsed_pdf = await asyncio.to_thread(extract_pdf_hybrid, pdf_bytes, use_vision=req.use_vision)
+        except PdfParseError as exc:
+            raise HTTPException(status_code=400, detail=str(exc)) from exc
+
+        async with lock:
+            if store.is_generating(session_id):
+                raise HTTPException(status_code=409, detail="Cannot re-parse PDF while audio generation is running.")
+            try:
+                fresh = await asyncio.to_thread(store.load_session, session_id)
+            except Exception as exc:
+                raise _map_store_error(exc) from exc
+
+            fresh.pages = parsed_pdf.pages
+            fresh.chunks = parsed_pdf.chunks
+            fresh.page_count = len(parsed_pdf.pages)
+            fresh.updated_at = utc_now_iso()
+            await asyncio.to_thread(store.save_session, fresh)
+
+        warnings = list(parsed_pdf.warnings)
+        if fresh.script:
+            warnings.append(
+                "PDF chunks were re-extracted; existing script chunk highlights may need regeneration if page structure changed."
+            )
+        payload = _session_payload(fresh, warnings=warnings)
+        payload["vision_used"] = parsed_pdf.vision_used
+        return payload
+
     @app.get("/api/sessions/{session_id}/prompt")
     async def get_prompt(
         session_id: str,
         start_page: int = Query(1, ge=1),
         end_page: int = Query(5, ge=1),
+        pacing: PacingMode | None = Query(None),
+        language: LanguageCode | None = Query(None),
     ) -> dict[str, Any]:
         try:
             session = await asyncio.to_thread(store.load_session, session_id)
@@ -182,6 +247,8 @@ def create_app(sessions_dir: Path | None = None, static_dir: Path | None = None)
                 start_page,
                 end_page,
                 recent_lines=session.script or None,
+                pacing=pacing or session.state.pacing,
+                language=language or session.state.language,
             )
         except PromptBuildError as exc:
             raise HTTPException(status_code=400, detail=str(exc)) from exc
@@ -277,6 +344,8 @@ def create_app(sessions_dir: Path | None = None, static_dir: Path | None = None)
                     ]
                     fresh.script = fresh.script + reindexed
 
+                eff_pacing = req.pacing or fresh.state.pacing
+                eff_language = req.language or fresh.state.language
                 page_range, missed_ids = compute_missed_chunks(fresh, synth.lines, req.start_page, req.end_page)
                 fresh.batches.append(
                     BatchRecord(
@@ -288,6 +357,8 @@ def create_app(sessions_dir: Path | None = None, static_dir: Path | None = None)
                         page_range=page_range,
                         raw_script_file=raw_rel,
                         prev_script_file=prev_rel,
+                        pacing=eff_pacing,
+                        language=eff_language,
                     )
                 )
                 await asyncio.to_thread(store.prune_prev_snapshots, fresh, 3)
@@ -295,6 +366,10 @@ def create_app(sessions_dir: Path | None = None, static_dir: Path | None = None)
                 fresh.state.host_a_voice = req.host_a_voice
                 fresh.state.host_b_voice = req.host_b_voice
                 fresh.state.voice_pair_id = match_voice_pair_id(req.host_a_voice, req.host_b_voice)
+                if req.pacing is not None:
+                    fresh.state.pacing = req.pacing
+                if req.language is not None:
+                    fresh.state.language = req.language
                 max_idx = max(0, len(fresh.script) - 1)
                 fresh.state.last_line_index = max(0, min(fresh.state.last_line_index, max_idx))
                 fresh.updated_at = utc_now_iso()
@@ -510,10 +585,15 @@ def create_app(sessions_dir: Path | None = None, static_dir: Path | None = None)
 
             if req.auto_scroll is not None:
                 session.state.auto_scroll = req.auto_scroll
+            if req.pacing is not None:
+                session.state.pacing = req.pacing
+            if req.language is not None:
+                session.state.language = req.language
 
             session.updated_at = utc_now_iso()
             await asyncio.to_thread(store.save_session, session)
-            return {"state": session.state.model_dump()}
+            cov = compute_coverage(session)
+            return {"state": session.state.model_dump(), "coverage": cov.model_dump()}
 
     return app
 
