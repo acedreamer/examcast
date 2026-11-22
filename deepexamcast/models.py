@@ -103,6 +103,7 @@ class ScriptLine(BaseModel):
     index: int
     speaker: Literal["HOST_A", "HOST_B"]
     text: str
+    tts_text: str | None = None
     chunk_ids: list[str] = Field(default_factory=list)
     exam_note: str | None = None
     voice: str

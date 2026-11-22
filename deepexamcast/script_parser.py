@@ -8,6 +8,8 @@ from typing import Any, Literal
 
 from pydantic import BaseModel, Field
 
+from deepexamcast.indic_text import normalize_tts_text
+
 _FENCE_RE = re.compile(r"```(?:json)?\s*(.*?)```", re.IGNORECASE | re.DOTALL)
 _HEADING_MD_RE = re.compile(r"(?:^|\s)#+\s*")
 _MD_CHARS_RE = re.compile(r"[*`]+")
@@ -20,6 +22,7 @@ class ScriptParseError(ValueError):
 class ParsedDialogueItem(BaseModel):
     speaker: Literal["HOST_A", "HOST_B"]
     text: str
+    tts_text: str | None = None
     chunk_ids: list[str] = Field(default_factory=list)
     exam_note: str | None = None
 
@@ -125,12 +128,24 @@ def parse_gemini_script(raw_json: str, valid_chunk_ids: set[str]) -> ParsedScrip
         raw_text = norm_map.get("text")
         if not isinstance(raw_text, str):
             raise ScriptParseError(f"Item {idx} is missing required string field 'text'.")
-        spoken_text = _strip_markdown(raw_text)
+        spoken_text = normalize_tts_text(_strip_markdown(raw_text))
         # Unicode isalnum() check — never use ASCII-only regex so Devanagari & Malayalam pass cleanly
         if not spoken_text or not any(ch.isalnum() for ch in spoken_text):
             raise ScriptParseError(
                 f"Item {idx} has no speakable alphanumeric text after cleanup (got {raw_text!r})."
             )
+
+        raw_tts = (
+            norm_map.get("tts_text")
+            or norm_map.get("ttstext")
+            or norm_map.get("spoken_text")
+            or norm_map.get("native_text")
+        )
+        tts_text: str | None = None
+        if isinstance(raw_tts, str):
+            cleaned_tts = normalize_tts_text(_strip_markdown(raw_tts))
+            if cleaned_tts and any(ch.isalnum() for ch in cleaned_tts):
+                tts_text = cleaned_tts
 
         raw_chunks = norm_map.get("chunk_ids", [])
         if raw_chunks is None:
@@ -168,6 +183,7 @@ def parse_gemini_script(raw_json: str, valid_chunk_ids: set[str]) -> ParsedScrip
             ParsedDialogueItem(
                 speaker=speaker,
                 text=spoken_text,
+                tts_text=tts_text,
                 chunk_ids=clean_chunks,
                 exam_note=exam_note,
             )

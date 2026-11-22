@@ -10,6 +10,7 @@ from typing import Any
 from fastapi import FastAPI, File, Form, HTTPException, Query, UploadFile
 from fastapi.responses import FileResponse, HTMLResponse
 
+from deepexamcast.indic_text import resolve_spoken_text, validate_script_for_voices
 from deepexamcast.models import (
     VOICE_PAIRS,
     BatchRecord,
@@ -283,16 +284,24 @@ def create_app(sessions_dir: Path | None = None, static_dir: Path | None = None)
             except ScriptParseError as exc:
                 raise HTTPException(status_code=400, detail=str(exc)) from exc
 
+            voice_spoken_pairs: list[tuple[str, str]] = []
+            swapped_detected = False
             base_index = 0 if req.mode == "replace" else len(snapshot.script)
             target_lines: list[ScriptLine] = []
+
             for offset, item in enumerate(parsed.items):
                 voice = req.host_a_voice if item.speaker == "HOST_A" else req.host_b_voice
-                ahash = compute_audio_hash(voice, item.text)
+                spoken, swapped = resolve_spoken_text(item.text, item.tts_text, voice)
+                if swapped:
+                    swapped_detected = True
+                voice_spoken_pairs.append((voice, spoken))
+                ahash = compute_audio_hash(voice, spoken)
                 target_lines.append(
                     ScriptLine(
                         index=base_index + offset,
                         speaker=item.speaker,
                         text=item.text,
+                        tts_text=item.tts_text,
                         chunk_ids=item.chunk_ids,
                         exam_note=item.exam_note,
                         voice=voice,
@@ -300,6 +309,10 @@ def create_app(sessions_dir: Path | None = None, static_dir: Path | None = None)
                         audio_file=f"{ahash}.mp3",
                     )
                 )
+
+            blocking_error, validation_warnings = validate_script_for_voices(voice_spoken_pairs)
+            if blocking_error is not None:
+                raise HTTPException(status_code=400, detail=blocking_error)
 
             try:
                 store.try_begin_generation(session_id, len(target_lines))
@@ -379,6 +392,12 @@ def create_app(sessions_dir: Path | None = None, static_dir: Path | None = None)
                 await asyncio.to_thread(gc_unreferenced_audio, store.audio_dir(session_id), keep_files)
 
             warnings = list(parsed.warnings)
+            if validation_warnings:
+                warnings.extend(validation_warnings)
+            if swapped_detected:
+                warnings.append(
+                    "Detected Romanized text in tts_text and native script in text; automatically swapped them for speech synthesis."
+                )
             if missed_ids and page_range:
                 warnings.append(
                     f"Gemini skipped {len(missed_ids)} chunk(s) in Pages {page_range[0]}–{page_range[1]}: {', '.join(missed_ids)}."
@@ -461,10 +480,13 @@ def create_app(sessions_dir: Path | None = None, static_dir: Path | None = None)
             if not snapshot.script:
                 raise HTTPException(status_code=400, detail="Cannot resynthesize voices on an empty script.")
 
+            voice_spoken_pairs: list[tuple[str, str]] = []
             target_lines: list[ScriptLine] = []
             for idx, line in enumerate(snapshot.script):
                 voice = req.host_a_voice if line.speaker == "HOST_A" else req.host_b_voice
-                ahash = compute_audio_hash(voice, line.text)
+                spoken, _ = resolve_spoken_text(line.text, line.tts_text, voice)
+                voice_spoken_pairs.append((voice, spoken))
+                ahash = compute_audio_hash(voice, spoken)
                 target_lines.append(
                     line.model_copy(
                         update={
@@ -475,6 +497,10 @@ def create_app(sessions_dir: Path | None = None, static_dir: Path | None = None)
                         }
                     )
                 )
+
+            blocking_error, validation_warnings = validate_script_for_voices(voice_spoken_pairs)
+            if blocking_error is not None:
+                raise HTTPException(status_code=400, detail=blocking_error)
 
             try:
                 store.try_begin_generation(session_id, len(target_lines))
@@ -525,7 +551,7 @@ def create_app(sessions_dir: Path | None = None, static_dir: Path | None = None)
                 await asyncio.to_thread(gc_unreferenced_audio, store.audio_dir(session_id), keep_files)
 
             cov = compute_coverage(fresh)
-            return {
+            payload: dict[str, Any] = {
                 "session": fresh.model_dump(),
                 "coverage": cov.model_dump(),
                 "stats": {
@@ -534,6 +560,9 @@ def create_app(sessions_dir: Path | None = None, static_dir: Path | None = None)
                     "total_lines": len(fresh.script),
                 },
             }
+            if validation_warnings:
+                payload["warnings"] = validation_warnings
+            return payload
         finally:
             store.end_generation(session_id)
 

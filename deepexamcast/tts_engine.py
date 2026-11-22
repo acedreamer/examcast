@@ -12,6 +12,7 @@ import uuid
 import edge_tts
 from pydantic import BaseModel
 
+from deepexamcast.indic_text import resolve_spoken_text
 from deepexamcast.models import ScriptLine
 
 _MPEG1_L3_BITRATES = [0, 32, 40, 48, 56, 64, 80, 96, 112, 128, 160, 192, 224, 256, 320, 0]
@@ -41,6 +42,11 @@ class SynthesisResult(BaseModel):
     generated_count: int
     cached_count: int
     total_lines: int
+
+
+def spoken_text_for_line(line: ScriptLine) -> str:
+    """Return the normalized text to be spoken by edge-tts for this line."""
+    return resolve_spoken_text(line.text, line.tts_text, line.voice)[0]
 
 
 def get_tts_concurrency() -> int:
@@ -129,7 +135,8 @@ async def _synthesize_single_clip(
             async with sem:
                 if target_path.exists() and target_path.stat().st_size > 0:
                     return target_path
-                comm = edge_tts.Communicate(line.text, line.voice)
+                spoken_text = spoken_text_for_line(line)
+                comm = edge_tts.Communicate(spoken_text, line.voice)
                 await asyncio.wait_for(comm.save(str(tmp_path)), timeout=timeout_sec)
 
             if not tmp_path.exists() or tmp_path.stat().st_size <= 0:

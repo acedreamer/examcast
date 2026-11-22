@@ -82,14 +82,18 @@ LANGUAGE_PROFILES: dict[str, str] = {
         "Spell out all math symbols and notation as natural spoken English (e.g., \"x squared\", \"equals\", \"greater than or equal to\", \"O of n log n\")."
     ),
     "hi": (
-        "LANGUAGE & AUDIO STYLE (HINDI / HINGLISH): Write natural conversational Indian classroom Hindi in Devanagari script "
-        "(avoid overly stiff Sanskritized news phrasing). Keep standard CS/engineering technical terms natural in context. "
-        "Keep zero markdown symbols inside spoken \"text\". IMPORTANT: Keep \"exam_note\" in crisp English keywords/formulas for written university exam recall."
+        "LANGUAGE & DUAL-SCRIPT STYLE (HINDI / HINGLISH):\n"
+        "- \"text\" (Display script shown to user): Write conversational Romanized Hinglish in easy-to-read Latin letters with standard English CS/engineering technical terms.\n"
+        "- \"tts_text\" (REQUIRED spoken script for neural TTS): Write the exact same dialogue line in pure native Devanagari script with warm, natural classroom phrasing (not stiff Sanskritized newsreader register).\n"
+        "  Transliterate all English technical terms, acronyms, and math symbols phonetically into Devanagari inside \"tts_text\" (e.g., BFS -> बी एफ एस, CPU -> सी पी यू, algorithm -> एल्गोरिदम, A* -> ए स्टार). Keep zero markdown symbols (*, #, _, `) and zero raw ASCII math symbols.\n"
+        "- \"exam_note\": Keep in crisp English keywords/formulas for written university exam recall."
     ),
     "ml": (
-        "LANGUAGE & AUDIO STYLE (MALAYALAM / MANGLISH): Write natural conversational classroom Malayalam in Malayalam script "
-        "(warm professor-student tone, NOT stiff formal newsreader Malayalam), weaving standard English CS/engineering technical terms naturally. "
-        "Keep zero markdown symbols inside spoken \"text\". IMPORTANT: Keep \"exam_note\" in crisp English keywords/formulas for written university exam recall."
+        "LANGUAGE & DUAL-SCRIPT STYLE (MALAYALAM / MANGLISH):\n"
+        "- \"text\" (Display script shown to user): Write conversational Romanized Manglish in easy-to-read Latin letters with standard English CS/engineering technical terms.\n"
+        "- \"tts_text\" (REQUIRED spoken script for neural TTS): Write the exact same dialogue line in pure native Malayalam script with warm, natural classroom phrasing (warm professor-student tone, NOT stiff formal newsreader Malayalam).\n"
+        "  Transliterate all English technical terms, acronyms, and math symbols phonetically into Malayalam script inside \"tts_text\" (e.g., BFS -> ബി എഫ് എസ്, CPU -> സി പി യു, algorithm -> അൽഗോരിതം, A* -> എ സ്റ്റാർ). Keep zero markdown symbols (*, #, _, `) and zero raw ASCII math symbols.\n"
+        "- \"exam_note\": Keep in crisp English keywords/formulas for written university exam recall."
     ),
 }
 
@@ -154,6 +158,42 @@ def build_prompt(
             f"{formatted_tail}\n"
         )
 
+    if language == "hi":
+        schema_block = (
+            "[\n"
+            "  {\n"
+            '    "speaker": "HOST_A",\n'
+            '    "text": "Romanized Hinglish dialogue for display (e.g., Aaj hum BFS algorithm samjhenge)...",\n'
+            '    "tts_text": "Exact same line in pure Devanagari script with phonetic terms (e.g., आज हम बी एफ एस एल्गोरिदम समझेंगे)...",\n'
+            f'    "chunk_ids": ["{c_start}"],\n'
+            '    "exam_note": "Optional short 1-line formula or key exam fact in English"\n'
+            "  }\n"
+            "]"
+        )
+    elif language == "ml":
+        schema_block = (
+            "[\n"
+            "  {\n"
+            '    "speaker": "HOST_A",\n'
+            '    "text": "Romanized Manglish dialogue for display (e.g., Innu nammal BFS algorithm padikkam)...",\n'
+            '    "tts_text": "Exact same line in pure Malayalam script with phonetic terms (e.g., ഇന്ന് നമ്മൾ ബി എഫ് എസ് അൽഗോരിതം പഠിക്കാം)...",\n'
+            f'    "chunk_ids": ["{c_start}"],\n'
+            '    "exam_note": "Optional short 1-line formula or key exam fact in English"\n'
+            "  }\n"
+            "]"
+        )
+    else:
+        schema_block = (
+            "[\n"
+            "  {\n"
+            '    "speaker": "HOST_A",\n'
+            '    "text": "Spoken dialogue here...",\n'
+            f'    "chunk_ids": ["{c_start}"],\n'
+            '    "exam_note": "Optional short 1-line formula or key exam fact"\n'
+            "  }\n"
+            "]"
+        )
+
     prompt = (
         f"You are scripting an in-depth, exam-prep study podcast between an enthusiastic, crystal-clear "
         f"Professor (HOST_A) and a sharp, curious Exam Student (HOST_B).\n"
@@ -165,14 +205,7 @@ def build_prompt(
         f"4. EXACT TRACEABILITY: Every turn must reference the chunk ID(s) it explains in \"chunk_ids\". "
         f"Add a concise 1-line formula, distinction, or exam trap in \"exam_note\" when helpful (omit or set null otherwise).\n"
         f"5. STRICTLY VALID JSON ONLY: Output ONLY a raw JSON array (no intro prose, no outro prose) matching this exact schema:\n"
-        f"[\n"
-        f"  {{\n"
-        f'    "speaker": "HOST_A",\n'
-        f'    "text": "Spoken dialogue here...",\n'
-        f'    "chunk_ids": ["{c_start}"],\n'
-        f'    "exam_note": "Optional short 1-line formula or key exam fact"\n'
-        f"  }}\n"
-        f"]\n"
+        f"{schema_block}\n"
         f"{continuity_block}\n"
         f"SOURCE CHUNKS ({c_start} to {c_end}):\n"
         f"{chunk_lines}"
